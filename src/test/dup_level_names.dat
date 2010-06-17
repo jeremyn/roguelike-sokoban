@@ -1,0 +1,14 @@
+# User-configurable symbols~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Floor = .
+Pit = ^
+Player = @
+Boulder = 0
+# Level maps below this line~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Test Level
+@..
+.0.
+..^
+Test Level
+...
+...
+@0^

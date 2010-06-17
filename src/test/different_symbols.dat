@@ -1,0 +1,10 @@
+# User-configurable symbols~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Floor = ~
+Pit = ?
+Player = 1
+Boulder = X
+# Level maps below this line~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Strange Level
+~~~~~
+1~X~?
+~~~~~

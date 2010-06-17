@@ -1,0 +1,49 @@
+Roguelike Sokoban v0.8
+by Jeremy Nation <jeremy@jeremynation.me>
+-----------------------------------------
+
+*** Description ***
+
+Roguelike Sokoban is an ASCII-based Sokoban game that has a look and feel
+inspired by the roguelike genre. New maps with custom symbols can easily be
+created using a regular text editor. 
+
+*** Running Roguelike Sokoban ***
+
+Roguelike Sokoban is written in Python and uses the curses library for its
+display. Many popular Linux distributions come with Python by default, and
+curses is included by default in the Python standard library for Linux. So if
+you are using Linux and Python is already installed, just execute
+
+rlsokoban.py
+
+from the main game directory to use the default maps. To use your own map file,
+use the -L option followed by the name of your map file. Use either a --help or
+-h option by itself to see command-line help.
+
+Unfortunately, Python does not come with Windows by default, nor is curses
+included in the Python standard library for Windows. So, if you are a Windows
+user, you will need to work through a few things to get the game running. I am
+even less certain about running this on a Mac. If anyone has any success with
+running Roguelike Sokoban on either Windows or Mac, please let me know.
+
+*** Writing your own levels ***
+
+It is easy to create your own maps to use with Roguelike Sokoban using a
+regular text editor. You simply type out the starting condition of the level,
+and the game brings the level to life. The included levels.dat file (in the
+levels subdirectory) is heavily documented and provides examples. More examples
+can be found in the src/test subdirectory.
+
+*** License ***
+
+Roguelike Sokoban and all included files are copyright 2010, Jeremy Nation, and
+licensed under the GNU General Public License v3, included in this release as
+COPYING.
+
+*** Known Issues ***
+
+See current and past issues and report new ones online at the Roguelike Sokoban
+issue tracker on GitHub:
+
+http://github.com/jeremyn/Roguelike-Sokoban/issues

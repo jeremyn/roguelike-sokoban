@@ -50,9 +50,6 @@ DEFAULT_LEVEL_FILE_NAME_FULL = os.path.join(os.getcwd(), "levels",
 QUIT = "q"
 PLAY_AGAIN = "r"
 
-# Formatting constants
-TERMINAL_WORD_WRAP_LENGTH = 79
-
 # Metadata
 __author__ = AUTHOR
 __email__ = AUTHOR_EMAIL

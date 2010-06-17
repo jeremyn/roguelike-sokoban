@@ -30,8 +30,7 @@ from the command line.
 
 Functions :
 
-print_wrap(s, length = const.TERMINAL_WORD_WRAP_LENGTH): Print string with
-    word wrapping.
+print_wrap(text, length = None) : Print string with word wrapping.
 
 usage() : Print usage information and exit.
 
@@ -40,6 +39,9 @@ usage() : Print usage information and exit.
 import sys
 import traceback
 import textwrap
+import fcntl
+import termios
+import struct
 import curses
 import src
 import src.constants as const
@@ -50,17 +52,27 @@ __copyright__ = const.COPYRIGHT
 __license__ = const.LICENSE
 __version__ = const.VERSION
 
-def print_wrap(text, length = const.TERMINAL_WORD_WRAP_LENGTH):
+def print_wrap(text, length = None):
     """Print string with word wrapping.
     
     Input:
     
     text : string to print.
     
-    length : word wrap length as integer. Defaults to 
-        const.TERMINAL_WORD_WRAP_LENGTH.
+    length : word wrap length as integer. Defaults to None (the function will
+        determine the length from the terminal width if a length is not
+        specified).
     
     """
+    if length is None:
+        # Pack a C struct with a format of four unsigned shorts.
+        struct_in = struct.pack("HHHH", 0, 0, 0, 0)
+        # Call fcntl.ioctl(...) and request terminal size with TIOCGWINSZ.
+        struct_out = fcntl.ioctl(sys.stdout, termios.TIOCGWINSZ, struct_in)
+        # Unpack struct_out to get terminal dimensions.
+        term_dimensions = struct.unpack("HHHH", struct_out)
+        # Terminal width is the second value in the 4-tuple.
+        length = term_dimensions[1] - 1
     print textwrap.fill(text, length)
 
 def usage():

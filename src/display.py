@@ -244,7 +244,7 @@ class Display(object):
                             "pits (" + self.level_sym["Pit"] + ").",
                     "level_name": "Level: " + univ.level_name,
                     "blank": "      ",
-                    # scroll_info_line here is just a max_sized placeholder.
+                    # scroll_info_line here is just a max sized placeholder.
                     # scroll_info_line is set in __set_scroll_line(...).
                     "scroll_info_line": "Scroll: UP, DOWN, LEFT, RIGHT",
                     "goal": "Fill every pit to solve the puzzle.",

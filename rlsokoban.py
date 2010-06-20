@@ -83,8 +83,7 @@ def usage():
     print_wrap("no options   Play with defaults in " + \
         const.DEFAULT_LEVEL_FILE_NAME_FULL)
     print_wrap("-h, --help   Display this usage information")
-    print_wrap("-L <file>    Load with specified level file rather than "\
-               "default")
+    print_wrap("-L <file>    Load specified level file rather than default")
     print_wrap("")
 
 if __name__ == "__main__":

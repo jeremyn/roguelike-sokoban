@@ -73,7 +73,7 @@ def print_wrap(text, length = None):
         term_dimensions = struct.unpack("HHHH", struct_out)
         # Terminal width is the second value in the 4-tuple.
         length = term_dimensions[1] - 1
-    # Longer than 79 is too long to comfortably read on one line
+    # Longer than 79 is too long to comfortably read on one line.
     length = min(length, 79)
     print textwrap.fill(text, length)
 

@@ -81,7 +81,7 @@ class _Movable(object):
         try:
             self.symbol = self.level_sym[self.__class__.__name__]
         except KeyError:
-            raise Exception("Unexpected _Movable class: " + \
+            raise Exception("Unexpected _Movable derived class: %s" %
                             self.__class__.__name__)
 
     def move(self, move_dir, univ, mode = None): 
@@ -127,7 +127,7 @@ class _Movable(object):
             target_y = self.curr_y
             target_x = self.curr_x + change
         else:
-            raise Exception("Unexpected direction: " + str(axis))
+            raise Exception("Unexpected direction: %s" % str(axis))
         if mode == _DRY_RUN:
             for boulder in univ.boulders:
                 if boulder.curr_y == target_y and boulder.curr_x == target_x:
@@ -138,7 +138,7 @@ class _Movable(object):
             self.curr_x = target_x
             return univ.level_map[self.curr_y][self.curr_x]
         else:
-            raise Exception("Unexpected move mode: " + str(mode))
+            raise Exception("Unexpected move mode: %s" % str(mode))
 
 class Boulder(_Movable):
     

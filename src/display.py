@@ -235,23 +235,25 @@ class Display(object):
                      "game_name": const.GAME_NAME,
                      "bug_line": "Comments welcome: " + const.ISSUE_TRACKER,
                      "instructions1": "Use the arrow keys to move around, "\
-                            "\'" + const.QUIT + "\' to quit, and \'" + \
-                            const.PLAY_AGAIN + "\' to restart this level.",
-                    "instructions2": "Move yourself (" + 
-                            self.level_sym["Player"] + ") over floor (" +\
-                            self.level_sym["Floor"] + ") into boulders (" + 
-                            self.level_sym["Boulder"] + ") to push them into "\
-                            "pits (" + self.level_sym["Pit"] + ").",
-                    "level_name": "Level: " + univ.level_name,
+                            "\'%s\' to quit, and \'%s\' to restart this "\
+                            "level." % (const.QUIT, const.PLAY_AGAIN),
+                    "instructions2": "Move yourself (%s) over floor (%s) "\
+                            "into boulders (%s) to push them into pits "\
+                            "(%s)." % (
+                                       self.level_sym["Player"],
+                                       self.level_sym["Floor"],
+                                       self.level_sym["Boulder"],
+                                       self.level_sym["Pit"],
+                                       ),
+                    "level_name": "Level: %s" % univ.level_name,
                     "blank": "      ",
                     # scroll_info_line here is just a max sized placeholder.
                     # scroll_info_line is set in __set_scroll_line(...).
                     "scroll_info_line": "Scroll: UP, DOWN, LEFT, RIGHT",
                     "goal": "Fill every pit to solve the puzzle.",
-                    "play_again_prompt": "-- Press \'" + const.PLAY_AGAIN + \
-                            "\' to play again --",
-                    "quit_prompt": "-- Press \'" + const.QUIT + \
-                            "\' to quit --",
+                    "play_again_prompt": "-- Press \'%s\' to play again --" % \
+                            const.PLAY_AGAIN,
+                    "quit_prompt": "-- Press \'%s\' to quit --" % const.QUIT,
                     }
 
     def __return_lines(self, univ):
@@ -267,12 +269,13 @@ class Display(object):
             module.
         
         """
-        self.text["status_pits"] = "Pits remaining: " + \
-               str(univ.pits_remaining)
-        self.text["status_moves"] = "Moves used: " + str(univ.moves_taken)
-        self.text["congratulations"] = "You solved the puzzle in " + \
-                str(univ.moves_taken) + " move" + \
-                ((univ.moves_taken > 1) and "s" or "") + "! Congratulations!"
+        self.text["status_pits"] = "Pits remaining: %d" % univ.pits_remaining
+        self.text["status_moves"] = "Moves used: %d" % univ.moves_taken
+        self.text["congratulations"] = "You solved the puzzle in %d move%s! "\
+                "Congratulations! " % (
+                                       univ.moves_taken,
+                                       (univ.moves_taken > 1) and "s" or "",
+                                       )
         if not univ.game_won:
             lines = {
                      "top":    [
@@ -447,9 +450,9 @@ class Display(object):
             min_height = 2 + 1 + len(level_names) + 1 + 1
             if min_height > self.scrn.getmaxyx()[0]:
                 raise WindowTooSmallError 
-            welcome = "Welcome to " + const.GAME_NAME
-            levels_found_header = "The following levels were found in " + \
-                    level_file_name + ":"
+            welcome = "Welcome to %s" % const.GAME_NAME
+            levels_found_header = "The following levels were found in %s:" % \
+                    level_file_name
             self.scrn.clear()
             curses.endwin()
             curses.curs_set(0)
@@ -462,9 +465,9 @@ class Display(object):
 
         # Start level_prompt main body.
         first_prompt = "Enter the number of the level you want to play, " \
-                "or \'" + const.QUIT + "\' to quit: "
+                "or \'%s\' to quit: " % const.QUIT
         invalid_input_prompt = "Invalid choice, please enter the number of "\
-                "an available level, or \'" + const.QUIT + "\' to quit: "
+                "an available level, or \'%s\' to quit: " % const.QUIT
 
         # If only one level available, return it.
         if len(level_names) == 1:

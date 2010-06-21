@@ -61,7 +61,7 @@ def print_wrap(text, length = None):
     
     length : word wrap length as integer. Defaults to None (the function will
         determine the length from the terminal width if a length is not
-        specified).
+        specified). It will not wrap at any greater than 79 characters.
     
     """
     if length is None:
@@ -73,15 +73,17 @@ def print_wrap(text, length = None):
         term_dimensions = struct.unpack("HHHH", struct_out)
         # Terminal width is the second value in the 4-tuple.
         length = term_dimensions[1] - 1
+    # Longer than 79 is too long to comfortably read on one line
+    length = min(length, 79)
     print textwrap.fill(text, length)
 
 def usage():
     """Print usage information and exit."""
     print_wrap("")
-    print_wrap("Options for " + const.GAME_NAME + ":")
+    print_wrap("Options for %s:" % const.GAME_NAME)
     print_wrap("")
-    print_wrap("no options   Play with defaults in " + \
-        const.DEFAULT_LEVEL_FILE_NAME_FULL)
+    print_wrap("no options   Play with defaults in %s" % 
+               const.DEFAULT_LEVEL_FILE_NAME_FULL)
     print_wrap("-h, --help   Display this usage information")
     print_wrap("-L <file>    Load specified level file rather than default")
     print_wrap("")
@@ -95,7 +97,7 @@ if __name__ == "__main__":
         elif len(sys.argv) == 3:
             if sys.argv[1] != "-L":
                 print_wrap("")
-                print_wrap("Error: unknown option \"" + sys.argv[1] + "\".")
+                print_wrap("Error: unknown option \'%s\'." % sys.argv[1])
                 usage()
             else:
                 curses.wrapper(src.main.main, sys.argv[2])
@@ -108,7 +110,7 @@ if __name__ == "__main__":
                 usage()
             else:
                 print_wrap("")
-                print_wrap("Error: unknown option \"" + sys.argv[1] + "\".")
+                print_wrap("Error: unknown option \'%s\'." % sys.argv[1])
                 usage()
         else: # len(sys.argv) == 1, use defaults
             curses.wrapper(src.main.main)
@@ -118,19 +120,18 @@ if __name__ == "__main__":
         print_wrap("Error: window too small. Please increase your terminal "
                    "size and try again.")
     except (src.levelloader.MalformedLevelFileError, IOError) as msg:
-        print_wrap("Level file error: " + str(msg) + "")
+        print_wrap("Level file error: %s" % str(msg))
         print_wrap("")
         print_wrap("This error probably means there is something wrong "\
                    "with a custom level file you are trying to use. Please "\
                    "correct that file as needed using the hints in the "\
-                   "included level file \'" + const.DEFAULT_LEVEL_FILE_NAME + \
-                   "\' and try again.")
+                   "included level file \'%s\' and try again." % 
+                   const.DEFAULT_LEVEL_FILE_NAME)
     except:
         traceback.print_exc()
-        print_wrap( "Unexpected error occurred! Please visit the " + \
-              const.GAME_NAME + " issue tracker at\n\n" + \
-              const.ISSUE_TRACKER + \
-              "\n\nand report this error as a new issue. Please include all "\
-              "error information along with a description of what was "\
-              "happening in the game leading up to the crash.\n\nYour "\
-              "feedback is greatly appreciated!")
+        print_wrap("Unexpected error occurred! Please visit the %s issue "\
+                   "tracker at\n\n%s\n\nand report this error as a new "\
+                   "issue. Please include all error information along with "\
+                   "a description of what was happening in the game leading "\
+                   "up to the crash.\n\nYour feedback is greatly "\
+                   "appreciated!" % (const.GAME_NAME, const.ISSUE_TRACKER))

@@ -93,19 +93,20 @@ class LevelLoader(object):
         try:
             level_file = open(self.level_file_name)
         except IOError:
-            raise IOError("could not open level file \'" + \
-                          self.level_file_name + "\'.")
+            reason = "could not open file \'%s\'." % self.level_file_name
+            raise IOError(reason)
         raw_level_file_lines = level_file.readlines()
         if raw_level_file_lines == []:
-            raise MalformedLevelFileError("level file \'" + \
-                                          self.level_file_name +"\' is empty.")
+            reason = "file \'%s\' is empty." % self.level_file_name
+            raise MalformedLevelFileError(reason)
         temp_level_file_lines = []
         level_symbol_lines = []
         symbol_type_counter = 0
         for i, line in enumerate(raw_level_file_lines):
             if line.strip() == "":
-                raise MalformedLevelFileError("blank line found in file \'" + \
-                                              self.level_file_name + "\'.")
+                reason = "blank line found in file \'%s\'." % \
+                        self.level_file_name
+                raise MalformedLevelFileError(reason)
             elif line[0] == const.COMMENT:
                 continue
             elif symbol_type_counter < len(const.LEVEL_SYMBOL_TYPES):
@@ -118,9 +119,9 @@ class LevelLoader(object):
                     if raw_level_file_lines[i+1][0].isalpha():
                         raise MalformedLevelFileError
                 except (IndexError, MalformedLevelFileError):
-                    raise MalformedLevelFileError("empty level \'" + \
-                            line.strip() + "\' found in file \'" + \
-                            self.level_file_name + "\'.")
+                    reason = "empty level \'%s\' found in file \'%s\'." % \
+                            (line.strip(), self.level_file_name)
+                    raise MalformedLevelFileError(reason)
                 temp_level_file_lines.append(line.rstrip())
             else:
                 temp_level_file_lines.append(line.rstrip())
@@ -152,9 +153,9 @@ class LevelLoader(object):
             name = name.strip()
             symbol = symbol.strip()
             if name not in const.LEVEL_SYMBOL_TYPES:
-                reason = "unrecognized symbol type \'" + name + \
-                        "\' found in file \'"+ self.level_file_name + "\'. "\
-                        "Recognized symbol types are: "
+                reason = "unrecognized symbol type \'%s\' found in file "\
+                        "\'%s\'. Recognized symbol types are: " % \
+                        (name, self.level_file_name)
                 for i, sym in enumerate(const.LEVEL_SYMBOL_TYPES):
                     reason += sym
                     if i != (len(const.LEVEL_SYMBOL_TYPES)-1):
@@ -164,13 +165,14 @@ class LevelLoader(object):
                 raise MalformedLevelFileError(reason)
             for key in level_sym:
                 if name == key:
-                    raise MalformedLevelFileError("\'" + name + "\' defined "\
-                            "more than once in file \'" + \
-                            self.level_file_name + "\'.")
+                    reason = "symbol type \'%s\' defined more than once in "\
+                            "file \'%s\'." % (name, self.level_file_name)
+                    raise MalformedLevelFileError(reason)
                 if symbol == level_sym[key]:
-                    raise MalformedLevelFileError("symbol \'" + symbol + \
-                            "\' used more than once in file \'" + \
-                            self.level_file_name + "\'.")
+                    reason = "symbol \'%s\' used for more than one symbol "\
+                            "type in file \'%s\'." % (symbol, 
+                                                      self.level_file_name)
+                    raise MalformedLevelFileError(reason)
             level_sym[name] = symbol
         self.level_sym = level_sym
 
@@ -190,14 +192,15 @@ class LevelLoader(object):
         for line in self.level_file_lines:
             if line[0].isalpha():
                 if line in level_names:
-                    raise MalformedLevelFileError("duplicate level name \'" +\
-                            line + "\' found in file \'" + 
-                            self.level_file_name + "\'.")
+                    reason = "duplicate level name \'%s\' found in file "\
+                    "\'%s\'." % (line, self.level_file_name)
+                    raise MalformedLevelFileError(reason)
                 else:
                     level_names.append(line)
         if level_names == []:
-            raise MalformedLevelFileError("no level names found in file \'" + \
-                    self.level_file_name + "\'.")
+            reason = "no level names found in file \'%s\'." %\
+                    self.level_file_name
+            raise MalformedLevelFileError(reason)
         self.level_names = level_names
         
     def get_level(self, disp, name = None):
@@ -307,18 +310,19 @@ class LevelLoader(object):
                 elif square == self.level_sym["Pit"]:
                     pits += 1
         if players != 1:
-            raise MalformedLevelFileError("level \'" + \
-                    self.chosen_level_name + "\' in level file \'" + \
-                    self.level_file_name + "\' does not have exactly one "\
-                    "player (" + self.level_sym["Player"] + ").")
+            reason = "level \'%s\' in file \'%s\' does not have exactly one "\
+                    "player \'%s\'." % (self.chosen_level_name,
+                                        self.level_file_name,
+                                        self.level_sym["Player"])
+            raise MalformedLevelFileError(reason)
         if pits == 0:
-            raise MalformedLevelFileError("level \'" + \
-                    self.chosen_level_name + "\' in level file \'" + \
-                    self.level_file_name + "\' has no pits (" + \
-                    self.level_sym["Pit"] + ").")
+            reason = "level \'%s\' in file \'%s\' has no pits \'%s\'." % \
+                    (self.chosen_level_name, self.level_file_name,
+                     self.level_sym["Pit"])
+            raise MalformedLevelFileError(reason)
         if boulders < pits:
-            raise MalformedLevelFileError("level \'" + \
-                    self.chosen_level_name + "\' in level file \'" + \
-                    self.level_file_name + "\' does not have enough "\
-                    "boulders (" + self.level_sym["Boulder"] + ") to fill "\
-                    "the pits (" + self.level_sym["Pit"] + ").")
+            reason = "level \'%s\' in file \'%s\' does not have enough "\
+                    "boulders (%s) to fill the pits \'%s\'." % \
+                    (self.chosen_level_name, self.level_file_name,
+                     self.level_sym["Boulder"], self.level_sym["Pit"])
+            raise MalformedLevelFileError(reason)

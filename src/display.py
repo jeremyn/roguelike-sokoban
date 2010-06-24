@@ -271,6 +271,8 @@ class Display(object):
         """
         self.text["status_pits"] = "Pits remaining: %d" % univ.pits_remaining
         self.text["status_moves"] = "Moves used: %d" % univ.moves_taken
+        self.text["status_boulders"] = "Boulders remaining: %d" % \
+                len(univ.boulders)
         self.text["congratulations"] = "You solved the puzzle in %d move%s! "\
                 "Congratulations! " % (
                                        univ.moves_taken,
@@ -288,8 +290,10 @@ class Display(object):
                      "bottom": [
                                  self.text["scroll_info_line"],
                                  self.text["status_pits"] + \
-                                    self.text["blank"] + \
-                                    self.text["status_moves"],
+                                     self.text["blank"] + \
+                                     self.text["status_boulders"] + \
+                                     self.text["blank"] + \
+                                     self.text["status_moves"],
                                  self.text["bug_line"],
                                  ],
                      }

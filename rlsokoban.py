@@ -119,7 +119,7 @@ if __name__ == "__main__":
     except src.display.WindowTooSmallError:
         print_wrap("Error: window too small. Please increase your terminal "
                    "size and try again.")
-    except (src.levelloader.MalformedLevelFileError, IOError) as msg:
+    except src.levelloader.MalformedLevelFileError as msg:
         print_wrap("Level file error: %s" % str(msg))
         print_wrap("")
         print_wrap("This error probably means there is something wrong "\
@@ -127,6 +127,8 @@ if __name__ == "__main__":
                    "correct that file as needed using the hints in the "\
                    "included level file \'%s\' and try again." % 
                    const.DEFAULT_LEVEL_FILE_NAME)
+    except IOError as msg:
+        print_wrap("File error: %s" % str(msg))
     except:
         traceback.print_exc()
         print_wrap("Unexpected error occurred! Please visit the %s issue "\

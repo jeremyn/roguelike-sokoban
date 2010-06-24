@@ -42,7 +42,7 @@ ISSUE_TRACKER = "http://github.com/jeremyn/Roguelike-Sokoban/issues"
 MAX_LEVEL_NAME_LENGTH = 50
 COMMENT = "#"
 LEVEL_SYMBOL_TYPES = ("Floor", "Pit", "Player", "Boulder")
-DEFAULT_LEVEL_FILE_NAME = "levels.dat"
+DEFAULT_LEVEL_FILE_NAME = "default_levels.dat"
 DEFAULT_LEVEL_FILE_NAME_FULL = os.path.join(os.getcwd(), "levels", 
                                             DEFAULT_LEVEL_FILE_NAME)
 

@@ -40,6 +40,7 @@ ISSUE_TRACKER = "http://github.com/jeremyn/Roguelike-Sokoban/issues"
 
 # Level constants
 MAX_LEVEL_NAME_LENGTH = 50
+MAX_LEVELS_PER_FILE = 10
 COMMENT = "#"
 LEVEL_SYMBOL_TYPES = ("Floor", "Pit", "Player", "Boulder")
 DEFAULT_LEVEL_FILE_NAME = "default_levels.dat"

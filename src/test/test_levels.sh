@@ -23,6 +23,7 @@ $PROG dup_sym_type.dat
 $PROG dup_sym.dat
 $PROG dup_level_names.dat
 $PROG no_level_names.dat
+$PROG too_many_levels.dat
 $PROG no_player.dat
 $PROG two_players.dat
 $PROG no_pits.dat

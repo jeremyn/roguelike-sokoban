@@ -1,0 +1,54 @@
+# User-configurable symbols~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Floor = .
+Pit = ^
+Player = @
+Boulder = 0
+# Level maps below this line~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Test Level
+@..
+.0.
+..^
+Test Level1
+@..
+.0.
+..^
+Test Level2
+@..
+.0.
+..^
+Test Level3
+@..
+.0.
+..^
+Test Level4
+@..
+.0.
+..^
+Test Level5
+@..
+.0.
+..^
+Test Level6
+@..
+.0.
+..^
+Test Level7
+@..
+.0.
+..^
+Test Level8
+@..
+.0.
+..^
+Test Level9
+@..
+.0.
+..^
+Test Level10
+@..
+.0.
+..^
+Test Level11
+@..
+.0.
+..^

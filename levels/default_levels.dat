@@ -36,6 +36,7 @@
 #   - Empty levels, meaning a line starting with a letter followed immediately
 #		by another line starting with a letter or by the end of the file, are
 #		not allowed.
+#   - No more than 10 levels can be included in a single level file.
 #   - Any symbol other than those associated with a symbol type will be treated
 #		as an immovable, un-walk-on-able square.
 #   - If you need blank squares in your map, use spaces, not tabs.

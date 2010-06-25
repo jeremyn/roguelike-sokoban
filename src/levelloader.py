@@ -94,6 +94,7 @@ class LevelLoader(object):
             - a symbol is used for more than one symbol type
             - a level name is found more than once
             - no level names are found in the level file
+            - more than const.MAX_LEVELS_PER_FILE levels are found in the file
         
         """
         self.level_file_name = level_file_name
@@ -193,6 +194,7 @@ class LevelLoader(object):
         MalformedLevelFileError : if
             - a level name is found more than once
             - no level names are found in the level file
+            - more than const.MAX_LEVELS_PER_FILE levels are found in the file
         
         """
         level_names = []
@@ -207,6 +209,10 @@ class LevelLoader(object):
         if level_names == []:
             reason = "no level names found in file \'%s\'." %\
                     self.level_file_name
+            raise MalformedLevelFileError(reason)
+        if len(level_names) > const.MAX_LEVELS_PER_FILE:
+            reason = "more than %d levels found in file \'%s\'." % \
+                    (const.MAX_LEVELS_PER_FILE, self.level_file_name)
             raise MalformedLevelFileError(reason)
         self.level_names = level_names
         

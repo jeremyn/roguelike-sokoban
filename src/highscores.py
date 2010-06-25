@@ -147,6 +147,11 @@ class HighScores(object):
     def save_high_scores(self, hs_file_name = None):
         """Save current high scores to file.
         
+        The method will copy the current high score file to a backup file in
+        the same directory, then try to update the current high score file, 
+        then delete the backup. The method needs write permission on both the
+        high score file and the directory the high score file is in.
+        
         Input:
         
         hs_file_name : name of file to save current high scores to. Defaults to
@@ -162,8 +167,11 @@ class HighScores(object):
         if hs_file_name is None:
             hs_file_name = self.hs_file_name
         
-        temp_backup_file_name = hs_file_name + str(time.time()) + \
-                const.HIGH_SCORE_EXTENSION
+        timestamp = "".join(str(time.time()).split("."))
+        temp_backup_file_name = os.path.join(os.path.split(hs_file_name)[0],
+                                             "temp" + timestamp + \
+                                             const.HIGH_SCORE_EXTENSION)
+
         try:
             if os.path.isfile(hs_file_name):
                 shutil.copy(hs_file_name, temp_backup_file_name)

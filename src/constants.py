@@ -46,6 +46,14 @@ DEFAULT_LEVEL_FILE_NAME = "default_levels.dat"
 DEFAULT_LEVEL_FILE_NAME_FULL = os.path.join(os.getcwd(), "levels", 
                                             DEFAULT_LEVEL_FILE_NAME)
 
+# High score file
+
+HIGH_SCORE_EXTENSION = ".sav"
+DEFAULT_HIGH_SCORE_FILE_NAME = "high_scores" + HIGH_SCORE_EXTENSION
+DEFAULT_HIGH_SCORE_FILE_NAME_FULL = os.path.join(os.getcwd(),
+                                                 DEFAULT_HIGH_SCORE_FILE_NAME)
+NO_SCORE_SET = 0
+
 # Key options
 QUIT = "q"
 PLAY_AGAIN = "r"

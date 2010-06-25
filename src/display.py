@@ -217,7 +217,7 @@ class Display(object):
         """
         self.scrn = scrn
 
-    def level_init(self, univ):
+    def level_init(self, univ, high_score):
         """Prepare Display to display level contained in Universe object univ.
         
         This method should be called after a level has been loaded into a 
@@ -226,6 +226,8 @@ class Display(object):
         Input: 
         
         univ : Universe object holding current game state.
+        
+        high_score : integer of current high score for level.
         
         """
         self.levelpad = curses.newpad(len(univ.level_map)+1, 
@@ -255,6 +257,7 @@ class Display(object):
                             const.PLAY_AGAIN,
                     "quit_prompt": "-- Press \'%s\' to quit --" % const.QUIT,
                     }
+        self.high_score = high_score
 
     def __return_lines(self, univ):
         """Returns text lines based on current game state.
@@ -278,6 +281,19 @@ class Display(object):
                                        univ.moves_taken,
                                        (univ.moves_taken > 1) and "s" or "",
                                        )
+        if self.high_score == const.NO_SCORE_SET:
+            self.text["high_score"] = "No current best score"
+            self.text["compared_to_high_score"] = "You set the first best "\
+                    "score of %d moves!" % univ.moves_taken
+        else:
+            self.text["high_score"] = "Current best score: %d" % \
+                    self.high_score
+            if univ.moves_taken < self.high_score:
+                self.text["compared_to_high_score"] = "You beat the current "\
+                        "best score of %d moves!" % self.high_score
+            else:
+                self.text["compared_to_high_score"] = ""
+        
         if not univ.game_won:
             lines = {
                      "top":    [
@@ -294,23 +310,25 @@ class Display(object):
                                      self.text["status_boulders"] + \
                                      self.text["blank"] + \
                                      self.text["status_moves"],
+                                 self.text["high_score"],
                                  self.text["bug_line"],
                                  ],
                      }
         else:
             lines = {
                      "top":    [
-                                 self.text["game_name"],
-                                 self.text["congratulations"],
-                                 self.text["blank"],
-                                 self.text["blank"],
-                                 self.text["level_name"],
-                                 ],
+                                self.text["game_name"],
+                                self.text["congratulations"],
+                                self.text["compared_to_high_score"],
+                                self.text["blank"],
+                                self.text["level_name"],
+                                ],
                      "bottom": [
-                                 self.text["play_again_prompt"],
-                                 self.text["quit_prompt"],
-                                 self.text["bug_line"],
-                                 ]
+                                self.text["blank"],
+                                self.text["play_again_prompt"],
+                                self.text["quit_prompt"],
+                                self.text["bug_line"],
+                                ]
                      }
         return lines    
     

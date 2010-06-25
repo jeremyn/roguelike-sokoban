@@ -28,8 +28,9 @@ import curses
 import action
 import constants as const
 import display
-import levelloader
 import gameobjects
+import highscores
+import levelloader
 
 __author__ = const.AUTHOR
 __email__ = const.AUTHOR_EMAIL
@@ -54,11 +55,13 @@ def main(scrn, level_file_name = const.DEFAULT_LEVEL_FILE_NAME_FULL):
         curses.use_default_colors()
     disp = display.Display(scrn)
     loader = levelloader.LevelLoader(level_file_name)
+    hs = highscores.HighScores()
     keep_playing = True
     name = None
     while keep_playing:
         univ = gameobjects.universe.Universe(loader.get_level(disp, name))
-        disp.level_init(univ)
+        high_score = hs.get_high_score(level_file_name, univ.level_name)
+        disp.level_init(univ, high_score)
         while True:
             disp.draw(univ)
             act = disp.get_action()
@@ -78,3 +81,8 @@ def main(scrn, level_file_name = const.DEFAULT_LEVEL_FILE_NAME_FULL):
                     pass
                 else:
                     univ.eval_action(act)
+                    if univ.game_won and (univ.moves_taken < high_score or
+                                          high_score == const.NO_SCORE_SET):
+                            hs.set_high_score(level_file_name, univ.level_name,
+                                              univ.moves_taken)
+                            hs.save_high_scores()

@@ -44,6 +44,13 @@ class MalformedLevelFileError(Exception):
     
     pass
 
+class LevelFileHandlingError(Exception):
+    
+    """Raised if a necessary file can't be opened, moved, written to, etc when
+    needed."""
+    
+    pass
+
 class LevelLoader(object):
     
     """Loads level from the level file and prepares it for a Universe object.
@@ -75,7 +82,7 @@ class LevelLoader(object):
         
         Raises:
         
-        IOError : if 
+        LevelFileHandlingError : if 
             - level file cannot be opened
         
         MalformedLevelFileError : if
@@ -94,7 +101,7 @@ class LevelLoader(object):
             level_file = open(self.level_file_name)
         except IOError:
             reason = "could not open file \'%s\'." % self.level_file_name
-            raise IOError(reason)
+            raise LevelFileHandlingError(reason)
         raw_level_file_lines = level_file.readlines()
         if raw_level_file_lines == []:
             reason = "file \'%s\' is empty." % self.level_file_name

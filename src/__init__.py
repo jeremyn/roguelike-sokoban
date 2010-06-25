@@ -17,6 +17,8 @@ display : Display module for Roguelike Sokoban.
 
 levelloader : Level loading module for Roguelike Sokoban.
 
+highscores : Module that handles high scores.
+
 """
 
 import main

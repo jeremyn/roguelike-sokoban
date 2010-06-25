@@ -40,6 +40,7 @@ An example conversion is
 
 to
 
+XSokoban level 1
     -----          
     |...|          
     |0..|          

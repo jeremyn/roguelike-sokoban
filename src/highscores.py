@@ -167,7 +167,7 @@ class HighScores(object):
         try:
             if os.path.isfile(hs_file_name):
                 shutil.copy(hs_file_name, temp_backup_file_name)
-        except shutil.Error:
+        except (shutil.Error, IOError):
             reason = "could not create backup for high score file \'%s\' "\
                      "before saving high scores. Current high score file is "\
                      "preserved." % hs_file_name
@@ -176,13 +176,25 @@ class HighScores(object):
         try:
             hs_file = open(hs_file_name, "wb")
         except IOError:
-            reason = "could not open high score file \'%s\' for writing." % \
-                    hs_file_name
+            if not os.path.isfile(hs_file_name):
+                reason = "could not create high score file \'%s\'." % \
+                        hs_file_name
+            else:
+                reason = "could not open high score file \'%s\' for writing."%\
+                        hs_file_name
+            try:
+                if os.path.isfile(temp_backup_file_name):
+                    os.unlink(temp_backup_file_name)
+            except OSError:
+                reason += " Also could not delete high score backup file "\
+                          "\'%s\'." % temp_backup_file_name
+                raise HighScoreFileHandlingError(reason)
             raise HighScoreFileHandlingError(reason)
         
         try:
             pickle.dump(self.scores, hs_file)
-        except pickle.PickleError:
+        except (pickle.PickleError, AttributeError, EOFError, ImportError,
+                IndexError):
             reason = "could not save current high score data to file "\
                      "\'%s\'. Your current high score data can be restored "\
                      "from file \'%s\'." % (hs_file_name,

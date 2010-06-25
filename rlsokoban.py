@@ -118,7 +118,7 @@ if __name__ == "__main__":
         print_wrap("Exiting at user request. Thanks for playing!")
     except src.display.WindowTooSmallError:
         print_wrap("Error: window too small. Please increase your terminal "
-                   "size and try again.")
+                   "size to at least 80x24 and try again.")
     except src.levelloader.MalformedLevelFileError as msg:
         print_wrap("Problem with contents of level file: %s" % str(msg))
         print_wrap("")

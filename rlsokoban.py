@@ -24,7 +24,7 @@ directory.
 
 Command-line options and usage for this executable can be found by running 
 
-rlsokoban --help
+rlsokoban.py --help
 
 from the command line.
 

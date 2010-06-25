@@ -234,7 +234,7 @@ class Display(object):
                                       len(univ.level_map[0])+1)
         self.level_sym = univ.level_sym
         self.text = {
-                     "game_name": "%s, %s" % (const.GAME_NAME, const.VERSION), 
+                     "game_name": "%s, v%s" % (const.GAME_NAME, const.VERSION), 
                      "bug_line": "Comments welcome: " + const.ISSUE_TRACKER,
                      "instructions1": "Use the arrow keys to move around, "\
                             "\'%s\' to quit, and \'%s\' to restart this "\
@@ -472,7 +472,7 @@ class Display(object):
             min_height = 2 + 1 + len(level_names) + 1 + 1
             if min_height > self.scrn.getmaxyx()[0]:
                 raise WindowTooSmallError 
-            welcome = "Welcome to %s, %s" % (const.GAME_NAME, const.VERSION)
+            welcome = "Welcome to %s, v%s" % (const.GAME_NAME, const.VERSION)
             levels_found_header = "The following levels were found in %s:" % \
                     level_file_name
             self.scrn.clear()

@@ -34,7 +34,7 @@ AUTHOR = "Jeremy Nation <jeremy@jeremynation.me>"
 AUTHOR_EMAIL = "jeremy@jeremynation.me"
 COPYRIGHT = "Copyright 2010, Jeremy Nation"
 LICENSE = "GPL"
-VERSION = "0.8"
+VERSION = "0.8.1"
 GAME_NAME = "Roguelike Sokoban"
 ISSUE_TRACKER = "http://github.com/jeremyn/Roguelike-Sokoban/issues"
 

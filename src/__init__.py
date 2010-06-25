@@ -1,4 +1,5 @@
-"""Package 'src' containing most of the code for Roguelike Sokoban.
+"""
+Package 'src' containing most of the code for Roguelike Sokoban.
 
 Packages:
 

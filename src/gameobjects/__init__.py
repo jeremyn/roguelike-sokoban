@@ -1,5 +1,5 @@
-"""Package 'gameobjects' containing modules relating to abstract game world
-objects.
+"""
+Package 'gameobjects' containing modules relating to game world objects.
 
 Contains:
 

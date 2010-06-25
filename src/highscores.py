@@ -19,7 +19,7 @@ Module that handles high scores.
 
 Classes:
 
-HighScores(object) : Loads and saves high scores.
+HighScores(object) : Class that loads and saves high scores.
 
 CorruptHighScoreFileError(Exception) : Raised if a problem is found
     interpreting the high score file.
@@ -56,7 +56,22 @@ class HighScoreFileHandlingError(Exception):
 
 class HighScores(object):
     
-    """Loads and saves high scores."""
+    """Class that loads and saves high scores.
+    
+    Methods:
+    
+    __init__(hs_file_name = const.DEFAULT_HIGH_SCORE_FILE_NAME_FULL) : Load
+        high scores from hs_file_name.
+        
+    get_high_score(file_name, level_name) : Return high score for
+        file_name/level_name.
+        
+    set_high_score(file_name, level_name, score) : Set high score for
+        file_name/level_name to score.
+        
+    save_high_scores(hs_file_name = None) : Save current high scores to file.
+    
+    """
     
     def __init__(self, 
                  hs_file_name = const.DEFAULT_HIGH_SCORE_FILE_NAME_FULL):
@@ -92,7 +107,7 @@ class HighScores(object):
             raise CorruptHighScoreFileError(reason)        
     
     def get_high_score(self, file_name, level_name):
-        """Return high score for file_name:level_name.
+        """Return high score for file_name/level_name.
         
         Input:
         
@@ -102,7 +117,7 @@ class HighScores(object):
         
         Returns:
         
-        - high score of file_name:level_name if it exists, 0 otherwise.
+        - high score of file_name/level_name if it exists, 0 otherwise.
         
         """
         file_name = os.path.split(file_name)[1]
@@ -112,7 +127,7 @@ class HighScores(object):
             return 0
 
     def set_high_score(self, file_name, level_name, score):
-        """Set high score for file_name:level_name to score.
+        """Set high score for file_name/level_name to score.
 
         Input:
         

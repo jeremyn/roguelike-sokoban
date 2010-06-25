@@ -83,6 +83,6 @@ def main(scrn, level_file_name = const.DEFAULT_LEVEL_FILE_NAME_FULL):
                     univ.eval_action(act)
                     if univ.game_won and (univ.moves_taken < high_score or
                                           high_score == const.NO_SCORE_SET):
-                            hs.set_high_score(level_file_name, univ.level_name,
-                                              univ.moves_taken)
-                            hs.save_high_scores()
+                        hs.set_high_score(level_file_name, univ.level_name,
+                                          univ.moves_taken)
+                        hs.save_high_scores()

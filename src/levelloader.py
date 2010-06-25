@@ -207,7 +207,7 @@ class LevelLoader(object):
                 else:
                     level_names.append(line)
         if level_names == []:
-            reason = "no level names found in file \'%s\'." %\
+            reason = "no level names found in file \'%s\'." % \
                     self.level_file_name
             raise MalformedLevelFileError(reason)
         if len(level_names) > const.MAX_LEVELS_PER_FILE:

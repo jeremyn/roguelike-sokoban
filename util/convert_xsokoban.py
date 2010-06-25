@@ -65,6 +65,11 @@ starts in an impossible condition for the Roguelike Sokoban type of play. The
 script does this by making sure that the symbols in the converted map are all 
 "normal": wall, player, boulder, pit, floor, or blank.
 
+Another problem with the typical Sokoban layout as far as Roguelike Sokoban is
+concerned is that that it describes walls that the player cannot cross, while
+Roguelike Sokoban describes the floor on which the player can move. This script
+will draw the floor after inspecting the walls.  
+
 The levels created by this script have not all been playtested. It's possible
 some of them are unwinnable.
 

@@ -37,25 +37,36 @@ xsokoban<x>-<y>.dat. To play them, use the -L option. For example,
 
 rlsokoban.py -L levels/xsokoban1-10.dat
 
-will start the game with the ten levels in the level file xsokoban1-10.dat in the
-levels directory.
+will start the game with the ten levels in the level file xsokoban1-10.dat in
+the levels directory.
+
+Note: the XSokoban levels have not all been playtested. They were imported into
+Roguelike Sokoban automatically using a script (see "Importing levels", below).
+They were originally written to use a slightly different set of Sokoban rules
+than Roguelike Sokoban uses. It is possible some of them are unwinnable from
+the start. Please see the documentation in the conversion script mentioned in
+"Importing levels" for more information. If you find a level that you think is
+unwinnable from the start, please visit the issue tracker mentioned in "Known
+issues", below, and create a new issue for the level (if an issue has not
+already been created for it).
 
 *** Writing your own levels ***
 
 It is easy to create your own maps to use with Roguelike Sokoban using a
 regular text editor. You simply type out the starting condition of the level,
-and the game brings the level to life. The included levels.dat file in the levels
-directory is heavily documented and provides examples. More examples, including
-examples that will fail to load, can be found in the src/test directory.
+and the game brings the level to life. The included levels.dat file in the
+levels directory is heavily documented and provides examples. More examples,
+including examples that will fail to load, can be found in the src/test
+directory.
 
 *** Importing levels ***
 
 There are many Sokoban levels available on the Internet. However, they are
 typically not in a format that will work with Roguelike Sokoban. This release
-includes a conversion script, util/convert_xsokoban.py, which was used to convert
-XSokoban levels to Roguelike Sokoban levels. You can adapt this script to import
-other levels. Please see the documentation at the top of that script for more
-information.
+includes a conversion script, util/convert_xsokoban.py, which was used to
+convert XSokoban levels to Roguelike Sokoban levels. You can adapt this script
+to import other levels. Please see the documentation at the top of that script
+for more information.
 
 *** License ***
 

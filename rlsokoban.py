@@ -2,6 +2,8 @@
 #
 # Copyright 2016, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
+import argparse
+
 import sys
 import traceback
 import textwrap
@@ -34,31 +36,20 @@ def usage():
     print_wrap("")
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '-L',
+        '--level-file',
+        nargs='?',
+        default=const.DEFAULT_LEVEL_FILE_NAME_FULL,
+        dest='level_filename',
+        help="load specified level file (default: %(default)s)",
+        metavar='FILE',
+    )
+    args = parser.parse_args()
+
     try:
-        if len(sys.argv) > 3:
-            print_wrap("")
-            print_wrap("Error: wrong number of command line options.")
-            usage()
-        elif len(sys.argv) == 3:
-            if sys.argv[1] != "-L":
-                print_wrap("")
-                print_wrap("Error: unknown option \'%s\'." % sys.argv[1])
-                usage()
-            else:
-                curses.wrapper(src.main.main, sys.argv[2])
-        elif len(sys.argv) == 2:
-            if sys.argv[1] == "-h" or sys.argv[1] == "--help":
-                usage()
-            elif sys.argv[1] == "-L":
-                print_wrap("")
-                print_wrap("Error: option \"-L\" requires a file name.")
-                usage()
-            else:
-                print_wrap("")
-                print_wrap("Error: unknown option \'%s\'." % sys.argv[1])
-                usage()
-        else:
-            curses.wrapper(src.main.main)
+        curses.wrapper(src.main.main, args.level_filename)
     except KeyboardInterrupt:
         print_wrap("Exiting at user request. Thanks for playing!")
     except src.display.WindowTooSmallError:

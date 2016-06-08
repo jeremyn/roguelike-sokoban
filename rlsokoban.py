@@ -5,7 +5,6 @@
 import argparse
 
 import sys
-import traceback
 import textwrap
 import fcntl
 import termios
@@ -94,15 +93,3 @@ if __name__ == "__main__":
         print_wrap("")
         print_wrap("Check file permissions and other possible file-related "
                    "issues and try again.")
-    except:
-        traceback.print_exc()
-        print_wrap("Unexpected error occurred! Please visit the %s issue "
-                   "tracker at" % const.GAME_NAME)
-        print_wrap("")
-        print_wrap(const.ISSUE_TRACKER)
-        print_wrap("")
-        print_wrap("and report this as a new issue if it has not already "
-                   "been reported. Please include all error information "
-                   "along with a description of what was happening in the "
-                   "game leading up to the crash. Your feedback is greatly "
-                   "appreciated!")

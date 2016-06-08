@@ -12,13 +12,7 @@ Player(_Movable) : Class representing the player.
 """
 
 from .. import action
-from .. import constants as const
 
-__author__ = const.AUTHOR
-__email__ = const.AUTHOR_EMAIL
-__copyright__ = const.COPYRIGHT
-__license__ = const.LICENSE
-__version__ = const.VERSION
 
 _MOVE_TEST = {
                action.UP: {"axis": "y", "change": -1},

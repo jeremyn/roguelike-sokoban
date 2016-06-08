@@ -18,11 +18,6 @@ import gameobjects
 import highscores
 import levelloader
 
-__author__ = const.AUTHOR
-__email__ = const.AUTHOR_EMAIL
-__copyright__ = const.COPYRIGHT
-__license__ = const.LICENSE
-__version__ = const.VERSION
 
 def main(scrn, level_file_name = const.DEFAULT_LEVEL_FILE_NAME_FULL):
     """Set up the game and enter the main game loop.

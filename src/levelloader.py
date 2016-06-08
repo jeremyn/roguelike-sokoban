@@ -18,11 +18,6 @@ MalformedLevelFileError(Exception) : Raised if a problem is found while
 
 import constants as const
 
-__author__ = const.AUTHOR
-__email__ = const.AUTHOR_EMAIL
-__copyright__ = const.COPYRIGHT
-__license__ = const.LICENSE
-__version__ = const.VERSION
 
 class MalformedLevelFileError(Exception):
     

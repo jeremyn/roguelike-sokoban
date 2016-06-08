@@ -11,14 +11,6 @@ These values should not be modified by the casual user.
 
 """
 
-import constants as const
-
-__author__ = const.AUTHOR
-__email__ = const.AUTHOR_EMAIL
-__copyright__ = const.COPYRIGHT
-__license__ = const.LICENSE
-__version__ = const.VERSION
-        
 RESIZE = "resize"
 UP = "up"
 DOWN = "down"

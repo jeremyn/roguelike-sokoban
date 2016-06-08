@@ -19,12 +19,6 @@ import curses
 import constants as const
 import action
 
-__author__ = const.AUTHOR
-__email__ = const.AUTHOR_EMAIL
-__copyright__ = const.COPYRIGHT
-__license__ = const.LICENSE
-__version__ = const.VERSION
-
 class WindowTooSmallError(Exception):
     
     """Raised if the terminal is too small for a minimal display."""

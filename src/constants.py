@@ -16,10 +16,6 @@ probably obvious, so feel free to tinker.
 import os
 
 # Metadata constants
-AUTHOR = "Jeremy Nation <jeremy@jeremynation.me>"
-AUTHOR_EMAIL = "jeremy@jeremynation.me"
-COPYRIGHT = "Copyright 2016, Jeremy Nation"
-LICENSE = "GPL"
 VERSION = "0.8.1"
 GAME_NAME = "Roguelike Sokoban"
 ISSUE_TRACKER = "http://github.com/jeremyn/Roguelike-Sokoban/issues"
@@ -44,10 +40,3 @@ NO_SCORE_SET = 0
 # Key options
 QUIT = "q"
 PLAY_AGAIN = "r"
-
-# Metadata
-__author__ = AUTHOR
-__email__ = AUTHOR_EMAIL
-__copyright__ = COPYRIGHT
-__license__ = LICENSE
-__version__ = VERSION

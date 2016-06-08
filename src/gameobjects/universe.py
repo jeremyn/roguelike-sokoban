@@ -10,13 +10,7 @@ Universe(object) : Class that holds the current state of the game world.
 """
 
 import movable
-from .. import constants as const
 
-__author__ = const.AUTHOR
-__email__ = const.AUTHOR_EMAIL
-__copyright__ = const.COPYRIGHT
-__license__ = const.LICENSE
-__version__ = const.VERSION
 
 class Universe(object):
     

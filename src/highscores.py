@@ -21,11 +21,6 @@ import pickle
 import time
 import constants as const
 
-__author__ = const.AUTHOR
-__email__ = const.AUTHOR_EMAIL
-__copyright__ = const.COPYRIGHT
-__license__ = const.LICENSE
-__version__ = const.VERSION
 
 class CorruptHighScoreFileError(Exception):
     

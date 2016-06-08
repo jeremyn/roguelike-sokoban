@@ -1,19 +1,5 @@
-# Copyright 2010, Jeremy Nation <jeremy@jeremynation.me>
-#
-# This file is part of Roguelike Sokoban.
-#
-# Roguelike Sokoban is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Roguelike Sokoban is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Roguelike Sokoban.  If not, see <http://www.gnu.org/licenses/>.
+# Copyright 2016, Jeremy Nation <jeremy@jeremynation.me>
+# Released under the GPLv3. See included LICENSE file.
 """
 Display module for Roguelike Sokoban.
 

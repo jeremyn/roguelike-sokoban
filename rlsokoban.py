@@ -2,26 +2,6 @@
 #
 # Copyright 2016, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
-"""
-The main executable for Roguelike Sokoban.
-
-Full documentation for Roguelike Sokoban can be found in README in the main 
-directory.
-
-Command-line options and usage for this executable can be found by running 
-
-rlsokoban.py --help
-
-from the command line.
-
-Functions :
-
-print_wrap(text, length = None) : Print string with word wrapping.
-
-usage() : Print usage information and exit.
-
-"""
-
 import sys
 import traceback
 import textwrap

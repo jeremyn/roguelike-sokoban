@@ -1,16 +1,5 @@
 # Copyright 2016, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
-"""
-Module containing objects that represent movable things in Roguelike Sokoban.
-
-Classes:
-
-Boulder(_Movable) : Class representing a boulder.
-
-Player(_Movable) : Class representing the player.
-
-"""
-
 from .. import action
 
 

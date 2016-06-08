@@ -1,14 +1,5 @@
 # Copyright 2016, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
-"""
-Module defining the Universe class for Roguelike Sokoban.
-
-Classes:
-
-Universe(object) : Class that holds the current state of the game world.
-
-"""
-
 import movable
 
 

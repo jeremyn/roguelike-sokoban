@@ -1,20 +1,5 @@
 # Copyright 2016, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
-"""
-Display module for Roguelike Sokoban.
-
-This module manages most of the user interface. Roguelike Sokoban uses the
-curses library for user interaction.
-
-Classes:
-
-Display(object) : Main display class used by the rest of Roguelike Sokoban.
-
-WindowTooSmallError(Exception) : Raised if the terminal is too small for a
-    minimal display.
-
-"""
-
 import curses
 import constants as const
 import action

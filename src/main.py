@@ -1,15 +1,5 @@
 # Copyright 2016, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
-"""
-Module containing the main game loop for Roguelike Sokoban.
-
-Functions:
-
-main(scrn, level_file_name = const.DEFAULT_LEVEL_FILE_NAME) : Set up the game
-    and enter the main game loop.
-    
-"""
-
 import curses
 import action
 import constants as const

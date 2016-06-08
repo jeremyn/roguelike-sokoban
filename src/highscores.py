@@ -1,20 +1,5 @@
 # Copyright 2016, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
-"""
-Module that handles high scores.
-
-Classes:
-
-HighScores(object) : Class that loads and saves high scores.
-
-CorruptHighScoreFileError(Exception) : Raised if a problem is found
-    interpreting the high score file.
-    
-HighScoreFileHandlingError(Exception) : Raised if a necessary file can't be
-    opened, moved, written to, etc when needed.
-
-"""
-
 import os
 import shutil
 import pickle

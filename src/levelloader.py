@@ -1,21 +1,5 @@
 # Copyright 2016, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
-"""
-Level loading module for Roguelike Sokoban.
-
-This module handles all of processing on the level before it is handed to a
-Universe object to set up the game.
-
-Classes:
-
-LevelLoader(object) : Loads level from the level file and prepares it for
-    a Universe object.
-
-MalformedLevelFileError(Exception) : Raised if a problem is found while
-    processing the level file.
-    
-"""
-
 import constants as const
 
 

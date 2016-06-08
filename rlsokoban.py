@@ -49,7 +49,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     try:
-        curses.wrapper(src.main.main, args.level_filename)
+        curses.wrapper(src.main, args.level_filename)
     except KeyboardInterrupt:
         print_wrap("Exiting at user request. Thanks for playing!")
     except src.display.WindowTooSmallError:

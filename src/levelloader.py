@@ -4,64 +4,16 @@ import constants as const
 
 
 class MalformedLevelFileError(Exception):
-    
-    """Raised if a problem is found while processing the level file."""
-    
+
     pass
 
 class LevelFileHandlingError(Exception):
     
-    """Raised if a necessary file can't be opened, moved, written to, etc when
-    needed."""
-    
     pass
 
 class LevelLoader(object):
-    
-    """Loads level from the level file and prepares it for a Universe object.
-    
-    This class reads the levels and the user-specified level symbols from the
-    level file specified by the user or taken by default. It prepares them as
-    needed so a Universe object can set up the level. If there are multiple
-    levels available in the level file, this class calls a Display object to
-    ask the user which level they want to play.
-    
-    There are also many places where this class can raise an exception if
-    problems are found with the level file.
-    
-    Methods:
-    
-    __init__(level_file_name) : Load and parse the level file specified.
-    
-    get_level(disp, name = None) : Determine level to play and return
-        information related to it.
-    
-    """
 
     def __init__(self, level_file_name):
-        """Load and parse the level file specified.
-        
-        Input:
-        
-        level_file_name : name of the level file the user wants to use.
-        
-        Raises:
-        
-        LevelFileHandlingError : if 
-            - level file cannot be opened
-        
-        MalformedLevelFileError : if
-            - level file is empty
-            - a blank line is found in the level file
-            - an empty level is found in the level file
-            - an unrecognized symbol type is found in the level file
-            - a symbol type is defined more than once
-            - a symbol is used for more than one symbol type
-            - a level name is found more than once
-            - no level names are found in the level file
-            - more than const.MAX_LEVELS_PER_FILE levels are found in the file
-        
-        """
         self.level_file_name = level_file_name
         try:
             level_file = open(self.level_file_name)
@@ -103,23 +55,6 @@ class LevelLoader(object):
         self.__set_level_names()
         
     def __set_level_symbols(self, level_symbol_lines):
-        """Set dictionary of level symbols using lines parsed from level file.
-        
-        This method is called during LevelLoader.__init__(...).
-        
-        Input: 
-        
-        level_symbol_lines : list of lines with level symbols parsed out of
-            the level file.
-        
-        Raises:
-        
-        MalformedLevelFileError: if
-            - an unrecognized symbol type is found in the level file
-            - a symbol type is defined more than once
-            - a symbol is used for more than one symbol type
-        
-        """
         level_sym = {}
         for line in level_symbol_lines:
             name, symbol = line.split("=")
@@ -150,18 +85,6 @@ class LevelLoader(object):
         self.level_sym = level_sym
 
     def __set_level_names(self):
-        """Set dictionary of level names.
-        
-        This method is called during LevelLoader.__init__(...).
-        
-        Raises:
-        
-        MalformedLevelFileError : if
-            - a level name is found more than once
-            - no level names are found in the level file
-            - more than const.MAX_LEVELS_PER_FILE levels are found in the file
-        
-        """
         level_names = []
         for line in self.level_file_lines:
             if line[0].isalpha():
@@ -182,41 +105,6 @@ class LevelLoader(object):
         self.level_names = level_names
         
     def get_level(self, disp, name = None):
-        """Determine level to play and return information related to it.
-        
-        The returns for this method are intended to be fed directly into the
-        initialization method for a Universe object.
-        
-        Input:
-        
-        disp : Display object for the game.
-        
-        name : name of the level to play. This defaults to None; it should only
-            be not None if the user is restarting the current level.
-            
-        Returns:
-        
-        - name of chosen file.
-        
-        - list containing lists that each represent one row in the level. They
-            will be broken up as list(string). All rows are padded out with
-            spaces to the length of the longest row to make a rectangle, and a
-            ring of spaces surrounds everything. The ring of spaces is
-            necessary because the game won't know how to handle something
-            moving into a location that is not on the map.
-                    
-        - dictionary of symbols for the level.
-        
-        Raises:
-        
-        MalformedLevelFileError : if
-            - there is not exactly one player.
-            - there is not at least one pit.
-            - there are not at least as many boulders as pits.
-        
-        """
-        # Finding the level name in self.level_names is a bit tricky because
-        # name is .stripped() but the name we're looking for is not.
         if name is not None:
             for entry in self.level_names:
                 if name == entry[:len(name)]:
@@ -239,13 +127,6 @@ class LevelLoader(object):
         return self.chosen_level_name, self.chosen_level_lines, self.level_sym
 
     def __process_level_lines(self):
-        """Do final processing on the level lines.
-        
-        This method splits the level lines as strings into lists, pads lines
-        out to the length of the longest line with spaces to make a rectangle,
-        and adds a ring of spaces around everything.
-        
-        """
         level = self.chosen_level_lines
         max_line_length = reduce(max, [len(line) for line in level])
         # Pad each line with spaces to the end of the longest line.
@@ -266,16 +147,6 @@ class LevelLoader(object):
             row.append(" ")
 
     def __exception_if_level_unplayable(self):
-        """Raise an exception if the level is not obviously playable.
-        
-        Raises:
-        
-        MalformedLevelFileError : if
-            - there is not exactly one player.
-            - there is not at least one pit.
-            - there are not at least as many boulders as pits.
-
-        """
         boulders = 0
         players = 0
         pits = 0

@@ -5,42 +5,12 @@ import constants as const
 import action
 
 class WindowTooSmallError(Exception):
-    
-    """Raised if the terminal is too small for a minimal display."""
-    
+
     pass
 
 class _Coordinates(object):
     
-    """Container class for all the coordinates used by Display.
-    
-    Data
-    ----
-    min_y, min_x : min, max row of main screen
-    max_y, max_x : min, max column of main screen
-    mid_y, mid_x : mid row, column of main screen
-    level_height : rows in level
-    level_width : columns in level
-    self.levelpad_coords : coordinates needed for levelpad.noutrefresh(...)
-    self.scroll_info : dictionary used by Display.set_scroll_line(...)
-    
-    """
-    
     def __init__(self, scrn, lines, univ):
-        """Initialize Coordinates.
-        
-        Input:
-        
-        scrn : curses main window object
-        lines : return value from Display.__return_lines(...)
-        univ : Universe object holding current game state
-        
-        Raises:
-        
-        WindowTooSmallError : if terminal is too small to display a minimal
-            view
-        
-        """
         self.min_y, self.min_x = scrn.getbegyx()
         self.max_y, self.max_x = scrn.getmaxyx()
         self.mid_y = (self.max_y + self.min_y) / 2
@@ -52,18 +22,6 @@ class _Coordinates(object):
         self.__exception_if_too_small(lines)
     
     def __exception_if_too_small(self, lines):
-        """Raise an exception if the terminal is not large enough.
-        
-        Input:
-        
-        lines : return value from Display.__return_lines(...)
-        
-        Raises:
-        
-        WindowTooSmallError : if terminal is too small to display a minimal
-            view
-            
-        """
         padding_for_level_view = 7
         extracted_lines = lines["top"] + lines["bottom"]        
         min_height = len(extracted_lines) + padding_for_level_view
@@ -72,22 +30,6 @@ class _Coordinates(object):
             raise WindowTooSmallError
     
     def __find_levelpad_coords(self, lines, univ):
-        """Calculate coordinates to display levelpad in available space.
-        
-        Input:
-        
-        lines : return value from Display.__return_lines(...)
-        
-        univ : Universe object holding current game state
-        
-        Returns:
-        
-        - 6-tuple holding input coordinates to 
-            Display.levelpad.noutrefresh(...)
-        - dictionary holding True/False state about scrolling up, down, left
-            and right
-            
-        """
         avail_min_y = self.min_y + len(lines["top"]) + 1
         avail_max_y = self.max_y - len(lines["bottom"]) - 2
         avail_min_x = self.min_x + 1
@@ -103,10 +45,7 @@ class _Coordinates(object):
         avail_mid_y = (avail_max_y + avail_min_y) / 2
         # +1 in avail_mid_x centers the map better.
         avail_mid_x = (avail_max_x + avail_min_x) / 2 + 1
-        
-        # Place the levelpad in the available space in the middle of the
-        # screen. If the levelpad is bigger than the available space, then
-        # scroll within the pad appropriately.
+
         player_y = univ.player.curr_y
         player_x = univ.player.curr_x
         
@@ -133,10 +72,7 @@ class _Coordinates(object):
                 pminx = player_x - (avail_x / 2)
             sminx = avail_min_x
             smaxx = avail_max_x
-            
-        # Construct and return a scroll information dictionary to later use to
-        # make an information line about which way(s) the level scrolls off the
-        # terminal.
+
         scroll = {}
         scroll["UP"] = pminy > 0
         scroll["DOWN"] = (self.level_height > avail_y and
@@ -148,53 +84,11 @@ class _Coordinates(object):
         return (pminy, pminx, sminy, sminx, smaxy, smaxx), scroll
         
 class Display(object):
-    
-    """Main display class used by the rest of Roguelike Sokoban.
-    
-    Main display class that displays the current state of the game on the map
-    in the available space, along with various static and status text. Also 
-    handles display for prompting user to choose a level to play.
-    
-    Methods:
-
-    __init__(scrn) : Initialize display with curses main window scrn.
-    
-    level_init(univ) : Prepare Display to display level contained in Universe
-        object univ.
-        
-    draw(univ) : Draw the screen using the level information in Universe object
-        univ.
-        
-    level_prompt(level_names, level_file_name) : Prompt the user for the level
-        to play from the available choices.
-        
-    get_action() : Get action from user.
-    
-    """
 
     def __init__(self, scrn):
-        """Initialize display with curses main window scrn.
-        
-        Input:
-        
-        scrn : main window returned by curses.wrapper(...).
-        
-        """
         self.scrn = scrn
 
     def level_init(self, univ, high_score):
-        """Prepare Display to display level contained in Universe object univ.
-        
-        This method should be called after a level has been loaded into a 
-        Universe object but before Display is called to display the game state.
-        
-        Input: 
-        
-        univ : Universe object holding current game state.
-        
-        high_score : integer of current high score for level.
-        
-        """
         self.levelpad = curses.newpad(len(univ.level_map)+1, 
                                       len(univ.level_map[0])+1)
         self.level_sym = univ.level_sym
@@ -225,18 +119,6 @@ class Display(object):
         self.high_score = high_score
 
     def __return_lines(self, univ):
-        """Returns text lines based on current game state.
-        
-        Input:
-        
-        univ : Universe object holding current game state.
-        
-        Returns:
-        
-        - dictionary 'lines' of text lines used by other methods in this
-            module.
-        
-        """
         self.text["status_pits"] = "Pits remaining: %d" % univ.pits_remaining
         self.text["status_moves"] = "Moves used: %d" % univ.moves_taken
         self.text["status_boulders"] = "Boulders remaining: %d" % \
@@ -298,14 +180,6 @@ class Display(object):
         return lines    
     
     def __set_scroll_line(self, scroll_info):
-        """Sets value for text line with scrolling information.
-        
-        Input:
-        
-        scroll_info : dictionary created by 
-            Coordinates.__find_levelpad_coords(...). 
-        
-        """
         scroll_info_line = "Scroll: "
         for direction in ("UP", "DOWN", "LEFT", "RIGHT"):
             if scroll_info[direction]:
@@ -317,22 +191,6 @@ class Display(object):
         self.text["scroll_info_line"] = scroll_info_line
         
     def __paint_line(self, row, line):
-        """Paint text line on main curses window centered horizontally.
-        
-        This method paints character by character, so curses will crash if 
-        there is not enough horizontal space on which to paint.
-        
-        Also, this method will look for the symbol representing the player,
-        for example '@', and paint it with curses attribute curses.A_REVERSE 
-        to be consistent with __paint_levelpad(...).
-        
-        Input:
-        
-        row : integer specifying the row on which to paint the line.
-        
-        line : string to paint.
-        
-        """
         t_min_x = self.coords.mid_x - (len(line)/2)
         for i, char in enumerate(line):
             if line == self.text["instructions2"] and \
@@ -342,13 +200,6 @@ class Display(object):
                 self.scrn.addch(row, t_min_x+i, char)
                 
     def __paint_text_lines(self, lines):
-        """Paint all text lines in lines onto main window.
-        
-        Input :
-        
-        lines: return value from Display.__return_lines(...).
-        
-        """
         for line_number, line in enumerate(lines["top"]):
             self.__paint_line(self.coords.min_y + line_number, line)
         for line_number, line in enumerate(lines["bottom"]):
@@ -356,39 +207,20 @@ class Display(object):
                             line_number, line)  
 
     def __paint_levelpad(self, univ):
-        """Paint the level map onto the levelpad created by level_init(...).
-        
-        Input:
-        
-        univ : Universe object holding current game state.
-        
-        """
-        # Paint the level map onto levelpad.
         for row_index, row in enumerate(univ.level_map):
             for col_index, square in enumerate(row):
                 self.levelpad.addch(row_index, col_index, square)
-        # Paint the player onto levelpad.
+
         player_y = univ.player.curr_y
         player_x = univ.player.curr_x
         player_sym = univ.player.symbol
         self.levelpad.addch(player_y, player_x, player_sym, curses.A_REVERSE)
-        # Paint the boulders onto levelpad.
+
         for boulder in univ.boulders:
             b_y, b_x, b_sym = boulder.curr_y, boulder.curr_x, boulder.symbol
             self.levelpad.addch(b_y, b_x, b_sym)
 
     def draw(self, univ):
-        """Draw the screen using the level information in Universe object univ.
-        
-        Input:
-        
-        univ : Universe object holding current game state.
-        
-        Raises:
-        
-        WindowTooSmallError : if the terminal is too small to display a minimal
-            view of the level.
-        """
         self.scrn.clear()
         lines = self.__return_lines(univ)
         self.coords = _Coordinates(self.scrn, lines, univ)
@@ -404,33 +236,11 @@ class Display(object):
 
     def level_prompt(self, level_names, level_file_name):
         """Prompt the user for the level to play from the available choices.
-        
-        If there is only one level name to choose from, this is returned
-        without prompting the user.
-        
-        Input:
-        
-        level_names : list of possible level names from level_file_name
-        level_file_name : name of the level file.
-        
-        Returns:
-        
-        - name of level chosen.
-        
-        Raises:
-            
-        WindowTooSmallError : if terminal is not tall enough to display
-            properly.
 
         """
 
         def __draw_names():
             """Paint all text for prompting other than the prompt line.
-            
-            Raises:
-            
-            WindowTooSmallError : if terminal is not tall enough to display
-                properly.
             
             """
             # Two header lines + blank + level list + blank + prompt
@@ -450,18 +260,15 @@ class Display(object):
                 self.scrn.addstr(i+3, 0, str(i+1) + ". " + level_name)
             return self.scrn.getyx()[0] + 2 # Write prompt here
 
-        # Start level_prompt main body.
         first_prompt = "Enter the number of the level you want to play, " \
                 "or \'%s\' to quit: " % const.QUIT
         invalid_input_prompt = "Invalid choice, please enter the number of "\
                 "an available level, or \'%s\' to quit: " % const.QUIT
 
-        # If only one level available, return it.
         if len(level_names) == 1:
             chosen_level_name = level_names[0]
             return chosen_level_name
 
-        # Otherwise, prompt user to choose.
         prompt = first_prompt
         while True:
             prompt_y = __draw_names()
@@ -491,13 +298,6 @@ class Display(object):
         return chosen_level_name
 
     def get_action(self):
-        """Get action from user.
-        
-        Returns:
-        
-        - one of the constant values from module action.
-        
-        """
         k = self.scrn.getch()
         if k == curses.KEY_RESIZE:
             self.scrn.clear()

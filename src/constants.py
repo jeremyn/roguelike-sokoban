@@ -2,12 +2,10 @@
 # Released under the GPLv3. See included LICENSE file.
 import os
 
-# Metadata constants
 VERSION = "0.8.1"
 GAME_NAME = "Roguelike Sokoban"
 ISSUE_TRACKER = "http://github.com/jeremyn/Roguelike-Sokoban/issues"
 
-# Level constants
 MAX_LEVEL_NAME_LENGTH = 50
 MAX_LEVELS_PER_FILE = 10
 COMMENT = "#"
@@ -16,14 +14,11 @@ DEFAULT_LEVEL_FILE_NAME = "default_levels.dat"
 DEFAULT_LEVEL_FILE_NAME_FULL = os.path.join(os.getcwd(), "levels", 
                                             DEFAULT_LEVEL_FILE_NAME)
 
-# High score file
-
 HIGH_SCORE_EXTENSION = ".sav"
 DEFAULT_HIGH_SCORE_FILE_NAME = "high_scores" + HIGH_SCORE_EXTENSION
 DEFAULT_HIGH_SCORE_FILE_NAME_FULL = os.path.join(os.getcwd(),
                                                  DEFAULT_HIGH_SCORE_FILE_NAME)
 NO_SCORE_SET = 0
 
-# Key options
 QUIT = "q"
 PLAY_AGAIN = "r"

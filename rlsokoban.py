@@ -24,16 +24,6 @@ def print_wrap(text, length=None):
     print(textwrap.fill(text, length))
 
 
-def usage():
-    print_wrap("")
-    print_wrap("Options for %s:" % const.GAME_NAME)
-    print_wrap("")
-    print_wrap("no options   Play with defaults in %s" %
-               const.DEFAULT_LEVEL_FILE_NAME_FULL)
-    print_wrap("-h, --help   Display this usage information")
-    print_wrap("-L <file>    Load specified level file rather than default")
-    print_wrap("")
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(

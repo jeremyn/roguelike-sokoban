@@ -11,7 +11,7 @@ import highscores
 import levelloader
 
 
-def main(scrn, level_file_name = const.DEFAULT_LEVEL_FILE_NAME_FULL):
+def main(scrn, level_file_name=const.DEFAULT_LEVEL_FILE_NAME_FULL):
     if curses.has_colors():
         curses.use_default_colors()
     disp = display.Display(scrn)

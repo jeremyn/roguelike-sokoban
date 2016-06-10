@@ -6,10 +6,10 @@
 # A short test script for Roguelike Sokoban.
 # Requires nosetests. See: http://nose.readthedocs.io/en/latest
 #
-PROG="../rlsokoban.py -L"
-TEST_LEVELS_DIR="test_levels"
+PROG="./rlsokoban.py -L"
+TEST_LEVELS_DIR="src/test_levels"
 
-nosetests
+nosetests -w ./src
 
 echo
 read -p 'Press <ENTER> to run game with a large level'

@@ -6,10 +6,10 @@ import curses
 import constants as const
 import action
 
-
-class WindowTooSmallError(Exception):
-
-    pass
+TERMINAL_TOO_SMALL_TEXT = (
+    "Your terminal is too small. Please increase your terminal size to at "
+    "least 80x24 and try again."
+)
 
 
 class _Coordinates(object):
@@ -32,7 +32,7 @@ class _Coordinates(object):
         min_height = len(extracted_lines) + padding_for_level_view
         min_width = reduce(max, [len(line) for line in extracted_lines])
         if self.max_y < min_height or self.max_x < min_width:
-            raise WindowTooSmallError
+            raise Exception(TERMINAL_TOO_SMALL_TEXT)
 
     def __find_levelpad_coords(self, lines, univ):
         avail_min_y = self.min_y + len(lines['top']) + 1
@@ -272,7 +272,7 @@ class Display(object):
             # Two header lines + blank + level list + blank + prompt
             min_height = 2 + 1 + len(level_names) + 1 + 1
             if min_height > self.scrn.getmaxyx()[0]:
-                raise WindowTooSmallError
+                raise Exception(TERMINAL_TOO_SMALL_TEXT)
             welcome = "Welcome to %s" % const.GAME_NAME
             levels_found_header = (
                 "The following levels were found in %s:" % level_file_name

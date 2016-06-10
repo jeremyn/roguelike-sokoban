@@ -107,7 +107,7 @@ class Display(object):
         self.level_sym = univ.level_sym
         self.text = {
             'game_name': "%s, v%s" % (const.GAME_NAME, const.VERSION),
-            'bug_line': "Comments welcome: %s" % const.ISSUE_TRACKER,
+            'bug_line': '',
             'instructions1': (
                 "Use the arrow keys to move around, '%s' to quit, and '%s' to "
                 "restart this level." % (const.QUIT, const.PLAY_AGAIN)

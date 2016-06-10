@@ -54,20 +54,13 @@ if __name__ == '__main__':
             the main game directory, you can try renaming them to
             '%(filename)s' and restarting the game. This may load good (older)
             data. Otherwise, you will need to remove your existing
-            '%(filename)s' file so the game can create a fresh file. If you
-            think this problem is the result of a software bug, please report
-            this on the %(game_name)s issue tracker at
-
-            %(issue_tracker)s
-
-            and save the corrupt high score file for later debugging.
+            '%(filename)s' file so the game can create a fresh file.
         """ % {
             'error_msg': str(e),
             'filename': const.DEFAULT_HIGH_SCORE_FILE_NAME,
             'filename_extension': const.HIGH_SCORE_EXTENSION,
             'full_filename': const.DEFAULT_HIGH_SCORE_FILE_NAME_FULL,
             'game_name': const.GAME_NAME,
-            'issue_tracker': const.ISSUE_TRACKER,
         }
     except src.highscores.HighScoreFileHandlingError as e:
         final_msg = """

@@ -4,7 +4,6 @@ import os
 
 VERSION = '0.8.1'
 GAME_NAME = 'Roguelike Sokoban'
-ISSUE_TRACKER = 'http://github.com/jeremyn/Roguelike-Sokoban/issues'
 
 MAX_LEVEL_NAME_LENGTH = 50
 MAX_LEVELS_PER_FILE = 10

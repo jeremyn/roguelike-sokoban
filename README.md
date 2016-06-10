@@ -74,8 +74,3 @@ for more information.
 Roguelike Sokoban and all included files are copyright 2016, Jeremy Nation, and
 licensed under the GNU General Public License v3, included in this release as
 COPYING.
-
-## Known issues
-
-See current and past issues and report new ones online at the Roguelike Sokoban
-[issue tracker](http://github.com/jeremyn/Roguelike-Sokoban/issues) on GitHub.

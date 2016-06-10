@@ -1,4 +1,4 @@
-# Roguelike Sokoban v0.8.1
+# Roguelike Sokoban
 
 By: Jeremy Nation <jeremy@jeremynation.me>
 

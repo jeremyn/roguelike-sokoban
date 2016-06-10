@@ -2,7 +2,6 @@
 # Released under the GPLv3. See included LICENSE file.
 import os
 
-VERSION = '0.8.1'
 GAME_NAME = 'Roguelike Sokoban'
 
 MAX_LEVEL_NAME_LENGTH = 50

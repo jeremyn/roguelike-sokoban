@@ -9,7 +9,7 @@
 PROG="../rlsokoban.py -L"
 TEST_LEVELS_DIR="test_levels"
 
-nosetests test_main.py
+nosetests
 
 echo
 read -p 'Press <ENTER> to run game with a large level'

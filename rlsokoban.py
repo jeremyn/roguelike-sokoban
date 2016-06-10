@@ -44,33 +44,6 @@ if __name__ == '__main__':
             'error_msg': str(e),
             'level_filename': const.DEFAULT_LEVEL_FILE_NAME,
         }
-    except src.highscores.CorruptHighScoreFileError as e:
-        final_msg = """
-            Problem with contents of high score file: %(error_msg)s
-
-            This error means your high score file '%(full_filename)s' is
-            corrupt. Manually modifying the high score file can leave it in a
-            corrupt state. If there are any '%(filename_extension)s' files in
-            the main game directory, you can try renaming them to
-            '%(filename)s' and restarting the game. This may load good (older)
-            data. Otherwise, you will need to remove your existing
-            '%(filename)s' file so the game can create a fresh file.
-        """ % {
-            'error_msg': str(e),
-            'filename': const.DEFAULT_HIGH_SCORE_FILE_NAME,
-            'filename_extension': const.HIGH_SCORE_EXTENSION,
-            'full_filename': const.DEFAULT_HIGH_SCORE_FILE_NAME_FULL,
-            'game_name': const.GAME_NAME,
-        }
-    except src.highscores.HighScoreFileHandlingError as e:
-        final_msg = """
-            High score file error: %(error_msg)s
-
-            Check file permissions and other possible file-related issues and
-            try again.
-        """ % {
-            'error_msg': str(e),
-        }
     except src.levelloader.LevelFileHandlingError as e:
         final_msg = """
             Level file error: %(error_msg)s

@@ -99,7 +99,7 @@ class Display(object):
     def __init__(self, scrn):
         self.scrn = scrn
 
-    def level_init(self, univ, high_score):
+    def level_init(self, univ, best_score):
         self.levelpad = curses.newpad(
             len(univ.level_map)+1,
             len(univ.level_map[0])+1,
@@ -132,7 +132,7 @@ class Display(object):
             ),
             'quit_prompt': "-- Press '%s' to quit --" % const.QUIT,
         }
-        self.high_score = high_score
+        self.best_score = best_score
 
     def __return_lines(self, univ):
         self.text['status_pits'] = "Pits remaining: %d" % univ.pits_remaining
@@ -146,22 +146,22 @@ class Display(object):
                 's' if univ.moves_taken > 1 else '',
             )
         )
-        if self.high_score == const.NO_SCORE_SET:
-            self.text['high_score'] = 'No current best score'
-            self.text['compared_to_high_score'] = (
+        if self.best_score is None:
+            self.text['best_score'] = 'No current best score'
+            self.text['compared_to_best_score'] = (
                 "You set the first best score of %d moves!" % univ.moves_taken
             )
         else:
-            self.text['high_score'] = (
-                "Current best score: %d" % self.high_score
+            self.text['best_score'] = (
+                "Current best score: %d" % self.best_score
             )
-            if univ.moves_taken < self.high_score:
-                self.text['compared_to_high_score'] = (
+            if univ.moves_taken < self.best_score:
+                self.text['compared_to_best_score'] = (
                     "You beat the current best score of %d moves!" %
-                    self.high_score
+                    self.best_score
                 )
             else:
-                self.text['compared_to_high_score'] = ''
+                self.text['compared_to_best_score'] = ''
 
         if not univ.game_won:
             lines = {
@@ -181,7 +181,7 @@ class Display(object):
                         self.text['blank'] +
                         self.text['status_moves']
                     ),
-                    self.text['high_score'],
+                    self.text['best_score'],
                     self.text['bug_line'],
                 ],
             }
@@ -190,7 +190,7 @@ class Display(object):
                 'top': [
                     self.text['game_name'],
                     self.text['congratulations'],
-                    self.text['compared_to_high_score'],
+                    self.text['compared_to_best_score'],
                     self.text['blank'],
                     self.text['level_name'],
                 ],

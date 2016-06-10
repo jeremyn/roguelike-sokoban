@@ -15,13 +15,10 @@ DEFAULT_LEVEL_FILE_NAME_FULL = os.path.join(
     DEFAULT_LEVEL_FILE_NAME,
 )
 
-HIGH_SCORE_EXTENSION = '.sav'
-DEFAULT_HIGH_SCORE_FILE_NAME = 'high_scores' + HIGH_SCORE_EXTENSION
-DEFAULT_HIGH_SCORE_FILE_NAME_FULL = os.path.join(
+SCORES_FILE_NAME = os.path.join(
     os.getcwd(),
-    DEFAULT_HIGH_SCORE_FILE_NAME,
+    'scores.sqlite3',
 )
-NO_SCORE_SET = 0
 
 QUIT = 'q'
 PLAY_AGAIN = 'r'

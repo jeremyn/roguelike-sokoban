@@ -12,7 +12,9 @@ TEST_LEVELS_DIR="src/test_levels"
 nosetests -w ./src
 
 echo
+read -p 'Press <ENTER> to run game with a simple level'
+$PROG $TEST_LEVELS_DIR/simple_level.dat
+read -p 'Press <ENTER> to run game with a simple level using different symbols'
+$PROG $TEST_LEVELS_DIR/different_symbols.dat
 read -p 'Press <ENTER> to run game with a large level'
 $PROG $TEST_LEVELS_DIR/huge_level.dat
-read -p 'Press <ENTER> to run game with a level using different symbols'
-$PROG $TEST_LEVELS_DIR/different_symbols.dat

@@ -1,6 +1,6 @@
 # Roguelike Sokoban
 
-By: Jeremy Nation <jeremy@jeremynation.me>
+By: [Jeremy Nation](mailto:jeremy@jeremynation.me)
 
 ## Description
 

@@ -273,16 +273,6 @@ def is_good_level(level):
                 return False
     return True
 
-HEADER = "# The XSokoban website is:\n"\
-         "# http://www.cs.cornell.edu/andru/xsokoban.html\n"\
-         "#\n"\
-         "# User-configurable symbols~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"\
-         "Floor = .\n"\
-         "Pit = ^\n"\
-         "Player = @\n"\
-         "Boulder = 0\n"\
-         "# Level maps below this line~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"\
-
 if __name__ == '__main__':
     for i in range(1, 10):
         start = i*10-9

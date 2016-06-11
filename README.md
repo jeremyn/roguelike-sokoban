@@ -18,7 +18,7 @@ Just execute
 
     ./rlsokoban.py
 
-from the root repository directory to use the default levels. To specify a
+from the root repository directory to play the default levels. To specify a
 level file, use the `-L` option followed by the path to the level file.
 
 On Windows, you will need to install Python and then figure out how to make

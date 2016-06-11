@@ -1,0 +1,13 @@
+---
+symbols:
+  boulder: '0'
+  floor: '.'
+  pit: '^'
+  player: '@'
+levels:
+  - name: 'Simple Level'
+    map: |
+      .....
+      @.0.^
+      .....
+...

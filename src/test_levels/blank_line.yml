@@ -1,0 +1,14 @@
+---
+symbols:
+  boulder: '0'
+  floor: '.'
+  pit: '^'
+  player: '@'
+levels:
+  - name: 'Test Level'
+    map: |
+      @..
+
+      .0.
+      ..^
+...

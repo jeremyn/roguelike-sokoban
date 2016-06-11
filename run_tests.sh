@@ -13,8 +13,8 @@ nosetests -w ./src
 
 echo
 read -p 'Press <ENTER> to run game with a simple level'
-$PROG $TEST_LEVELS_DIR/simple_level.dat
+$PROG $TEST_LEVELS_DIR/simple_level.yml
 read -p 'Press <ENTER> to run game with a simple level using different symbols'
-$PROG $TEST_LEVELS_DIR/different_symbols.dat
+$PROG $TEST_LEVELS_DIR/different_symbols.yml
 read -p 'Press <ENTER> to run game with a large level'
-$PROG $TEST_LEVELS_DIR/huge_level.dat
+$PROG $TEST_LEVELS_DIR/huge_level.yml

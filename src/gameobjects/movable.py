@@ -19,11 +19,11 @@ class _Movable(object):
         self.curr_y = start_y
         self.curr_x = start_x
         self.level_sym = level_sym
-        self.walkable = [self.level_sym['Floor']]
+        self.walkable = [self.level_sym['floor']]
         self.pushable = self.walkable[:]
-        self.pushable.append(self.level_sym['Pit'])
+        self.pushable.append(self.level_sym['pit'])
         try:
-            self.symbol = self.level_sym[self.__class__.__name__]
+            self.symbol = self.level_sym[self.__class__.__name__.lower()]
         except KeyError:
             raise Exception(
                 "Unexpected _Movable derived class: %s" %
@@ -60,9 +60,9 @@ class Boulder(_Movable):
         mov = super(Boulder, self).move(move_dir, univ, _DRY_RUN)
         if mov in self.pushable:
             super(Boulder, self).move(move_dir, univ, _DO_MOVE)
-            if mov == self.level_sym["Pit"]:
+            if mov == self.level_sym['pit']:
                 univ.level_map[self.curr_y][self.curr_x] = \
-                    self.level_sym["Floor"]
+                    self.level_sym['floor']
                 univ.pits_remaining -= 1
             return mov
 
@@ -83,5 +83,5 @@ class Player(_Movable):
             if boulder_move_sq in self.pushable:
                 super(Player, self).move(move_dir, univ, _DO_MOVE)
                 univ.moves_taken += 1
-                if boulder_move_sq == self.level_sym['Pit']:
+                if boulder_move_sq == self.level_sym['pit']:
                     univ.delete_boulder(player_move_result)

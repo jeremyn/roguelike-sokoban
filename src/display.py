@@ -115,10 +115,10 @@ class Display(object):
             'instructions2': (
                 "Move yourself (%s) over floor (%s) into boulders (%s) to "
                 "push them into pits (%s)." % (
-                    self.level_sym['Player'],
-                    self.level_sym['Floor'],
-                    self.level_sym['Boulder'],
-                    self.level_sym['Pit'],
+                    self.level_sym['player'],
+                    self.level_sym['floor'],
+                    self.level_sym['boulder'],
+                    self.level_sym['pit'],
                 )
             ),
             'level_name': "Level: %s" % univ.level_name,
@@ -218,7 +218,7 @@ class Display(object):
         t_min_x = self.coords.mid_x - (len(line)/2)
         for i, char in enumerate(line):
             if (line == self.text['instructions2'] and
-                    char == self.level_sym['Player']):
+                    char == self.level_sym['player']):
                 self.scrn.addch(row, t_min_x+i, char, curses.A_REVERSE)
             else:
                 self.scrn.addch(row, t_min_x+i, char)

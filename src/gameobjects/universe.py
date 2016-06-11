@@ -15,23 +15,23 @@ class Universe(object):
         self.moves_taken = 0
         for row_index, row in enumerate(self.level_map):
             for col_index, square in enumerate(row):
-                if square == self.level_sym['Player']:
+                if square == self.level_sym['player']:
                     self.player = movable.Player(
                         row_index,
                         col_index,
                         self.level_sym,
                     )
                     self.level_map[row_index][col_index] = (
-                        self.level_sym['Floor']
+                        self.level_sym['floor']
                     )
-                if square == self.level_sym['Boulder']:
+                if square == self.level_sym['boulder']:
                     self.boulders.append(
                         movable.Boulder(row_index, col_index, self.level_sym),
                     )
                     self.level_map[row_index][col_index] = (
-                        self.level_sym['Floor']
+                        self.level_sym['floor']
                     )
-                if square == self.level_sym['Pit']:
+                if square == self.level_sym['pit']:
                     self.pits_remaining += 1
         self.__set_win_status()
 

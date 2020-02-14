@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2016, Jeremy Nation <jeremy@jeremynation.me>
+# Copyright 2020, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
 #
 # A short test script for Roguelike Sokoban.

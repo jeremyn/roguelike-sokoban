@@ -313,7 +313,7 @@ class Display(object):
             # prompted for raw_choice. Various workarounds such as using getch
             # rather than getstr or redrawing the screen if curses.KEY_RESIZE
             # is found in raw_choice have not fixed everything.
-            raw_choice = self.scrn.getstr()
+            raw_choice = self.scrn.getstr().decode('utf-8')
             raw_choice = (''.join(raw_choice)).strip()
             curses.curs_set(0)
             curses.noecho()

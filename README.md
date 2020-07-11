@@ -42,10 +42,10 @@ let me know if one of the included levels is unwinnable.
 
 You can run the included tests with
 
-    ./run_tests.sh
+    python run_tests.py
 
-You will first need to install the Python
-[nose](http://nose.readthedocs.io/en/latest/) package.
+By default, this will just run unit tests, but you can run manual test levels by
+adding the "--include-manual-tests" option.
 
 ## License
 

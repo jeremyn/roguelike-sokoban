@@ -1,12 +1,14 @@
 # Copyright 2020, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
 import sqlite3
-from unittest import TestCase
+import unittest
 
-from score_tracking import ScoreTracker
+from src import main
+from src.score_tracking import ScoreTracker
 
 
-class TestScoreTracker(TestCase):
+class TestScoreTracker(unittest.TestCase):
+
     def test_get_best_score_none(self):
         score_tracker = ScoreTracker(':memory:', 'my_file', 'my_level')
         self.assertEquals(score_tracker.get_best_score(), None)
@@ -33,3 +35,6 @@ class TestScoreTracker(TestCase):
         score_tracker.close()
         with self.assertRaises(sqlite3.ProgrammingError):
             score_tracker.get_best_score()
+
+if __name__ == '__main__':
+    unittest.main()

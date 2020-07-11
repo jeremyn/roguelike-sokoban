@@ -19,8 +19,8 @@ class _Coordinates(object):
     def __init__(self, scrn, lines, univ):
         self.min_y, self.min_x = scrn.getbegyx()
         self.max_y, self.max_x = scrn.getmaxyx()
-        self.mid_y = (self.max_y + self.min_y) / 2
-        self.mid_x = (self.max_x + self.min_x) / 2
+        self.mid_y = (self.max_y + self.min_y) // 2
+        self.mid_x = (self.max_x + self.min_x) // 2
         self.level_height = len(univ.level_map)
         self.level_width = len(univ.level_map[0])
         self.levelpad_coords, self.scroll_info = (
@@ -49,34 +49,34 @@ class _Coordinates(object):
             avail_y -= 1
         if avail_x % 2 != 0:
             avail_x -= 1
-        avail_mid_y = (avail_max_y + avail_min_y) / 2
+        avail_mid_y = (avail_max_y + avail_min_y) // 2
         # +1 in avail_mid_x centers the map better.
-        avail_mid_x = (avail_max_x + avail_min_x) / 2 + 1
+        avail_mid_x = (avail_max_x + avail_min_x) // 2 + 1
 
         player_y = univ.player.curr_y
         player_x = univ.player.curr_x
 
         if avail_y >= self.level_height:
             pminy = 0
-            sminy = avail_mid_y - (self.level_height / 2)
-            smaxy = avail_mid_y + (self.level_height / 2)
+            sminy = avail_mid_y - (self.level_height // 2)
+            smaxy = avail_mid_y + (self.level_height // 2)
         else:
-            if (self.level_height - player_y) < (avail_y / 2):
+            if (self.level_height - player_y) < (avail_y // 2):
                 pminy = self.level_height - avail_y
             else:
-                pminy = player_y - (avail_y / 2)
+                pminy = player_y - (avail_y // 2)
             sminy = avail_min_y
             smaxy = avail_max_y
 
         if avail_x >= self.level_width:
             pminx = 0
-            sminx = avail_mid_x - (self.level_width / 2)
-            smaxx = avail_mid_x + (self.level_width / 2)
+            sminx = avail_mid_x - (self.level_width // 2)
+            smaxx = avail_mid_x + (self.level_width // 2)
         else:
-            if (self.level_width - player_x) < (avail_x / 2):
+            if (self.level_width - player_x) < (avail_x // 2):
                 pminx = self.level_width - avail_x
             else:
-                pminx = player_x - (avail_x / 2)
+                pminx = player_x - (avail_x // 2)
             sminx = avail_min_x
             smaxx = avail_max_x
 
@@ -217,7 +217,7 @@ class Display(object):
         self.text['scroll_info_line'] = scroll_info_line
 
     def __paint_line(self, row, line):
-        t_min_x = self.coords.mid_x - (len(line)/2)
+        t_min_x = self.coords.mid_x - (len(line) // 2)
         for i, char in enumerate(line):
             if (line == self.text['instructions2'] and
                     char == self.level_sym['player']):

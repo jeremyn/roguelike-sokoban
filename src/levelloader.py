@@ -68,7 +68,8 @@ class LevelLoader(object):
 
     def __init__(self, level_file_name):
         self.level_file_name = level_file_name
-        file_data = yaml.safe_load(open(self.level_file_name, 'r'))
+        with open(self.level_file_name) as level_file:
+            file_data = yaml.safe_load(level_file)
         self.symbols = file_data['symbols']
         self.levels = file_data['levels']
         _validate_level_data(self.symbols, self.levels)

@@ -13,7 +13,8 @@ using a regular text editor.
 
 Roguelike Sokoban is written in Python and uses the
 [curses](https://docs.python.org/2/library/curses.html) library for its
-display. Install the pip packages in `requirements.txt`, and then execute
+display. Install the pip packages in `requirements.txt`, or
+`requirements-dev.txt` to include development-only packages, and then execute
 
     ./rlsokoban.py
 

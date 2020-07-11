@@ -3,12 +3,14 @@
 
 import curses
 
-import action
-import constants as const
-import display
-import gameobjects
-import score_tracking
-import levelloader
+from src import (
+    action,
+    constants as const,
+    display,
+    score_tracking,
+    levelloader,
+    universe,
+)
 
 
 def main(scrn, level_file_name=const.DEFAULT_LEVEL_FILE_NAME_FULL):
@@ -19,7 +21,7 @@ def main(scrn, level_file_name=const.DEFAULT_LEVEL_FILE_NAME_FULL):
     keep_playing = True
     name = None
     while keep_playing:
-        univ = gameobjects.universe.Universe(loader.get_level(disp, name))
+        univ = universe.Universe(loader.get_level(disp, name))
         score_tracker = score_tracking.ScoreTracker(
             const.SCORES_FILE_NAME,
             level_file_name,

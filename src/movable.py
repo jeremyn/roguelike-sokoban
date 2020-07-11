@@ -1,6 +1,6 @@
 # Copyright 2020, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
-from .. import action
+from src import action
 
 
 _MOVE_TEST = {

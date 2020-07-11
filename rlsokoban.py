@@ -3,10 +3,9 @@
 # Copyright 2020, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
 import argparse
-
 import curses
+
 import src
-import src.constants as const
 
 
 if __name__ == '__main__':
@@ -15,7 +14,7 @@ if __name__ == '__main__':
         '-L',
         '--level-file',
         nargs='?',
-        default=const.DEFAULT_LEVEL_FILE_NAME_FULL,
+        default=src.constants.DEFAULT_LEVEL_FILE_NAME_FULL,
         dest='level_filename',
         help="load specified level file (default: %(default)s)",
         metavar='FILE',

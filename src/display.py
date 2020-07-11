@@ -3,8 +3,10 @@
 from functools import reduce
 
 import curses
-import constants as const
-import action
+from src import (
+    action,
+    constants as const,
+)
 
 TERMINAL_TOO_SMALL_TEXT = (
     "Your terminal is too small. Please increase your terminal size to at "

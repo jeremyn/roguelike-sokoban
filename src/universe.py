@@ -1,6 +1,6 @@
 # Copyright 2020, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
-import movable
+from src import movable
 
 
 class Universe(object):

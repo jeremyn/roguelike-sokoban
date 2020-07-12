@@ -6,10 +6,10 @@ import os
 
 GAME_NAME = 'Roguelike Sokoban'
 
+DEFAULT_LEVEL_DIR = os.path.join(os.getcwd(), 'levels')
 DEFAULT_LEVEL_FILE_NAME = 'default_levels.txt'
 DEFAULT_LEVEL_FILE_NAME_FULL = os.path.join(
-    os.getcwd(),
-    'levels',
+    DEFAULT_LEVEL_DIR,
     DEFAULT_LEVEL_FILE_NAME,
 )
 

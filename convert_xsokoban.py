@@ -66,11 +66,15 @@ Levels from XSokoban version 3.3c, processed by this script, are included as
 levels/xsokoban<x>-<y>.yml from the root repository directory.
 
 """
+import argparse
 import copy
 from functools import reduce
 import os
 
-from src.constants import LevelFileConsts
+from src.constants import (
+    DEFAULT_LEVEL_DIR,
+    LevelFileConsts,
+)
 
 # Standard format
 
@@ -94,12 +98,6 @@ RL_FLOOR = "."
 # Temp
 
 TEMP_FLOOR = "F"
-
-# Directories
-
-INPUT_DIR = '/path/to/xsokoban/screens'
-OUTPUT_DIR = '/path/to/roguelike-sokoban/levels'
-
 
 def rewrite_floor(level):
     """Do first pass for floors.
@@ -273,6 +271,24 @@ def is_good_level(level):
     return True
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    parser.add_argument(
+        'input_dir',
+        help=(
+            "input directory with XSokoban maps, containing files like "
+            "'screen.1'"
+        ),
+        metavar='input-dir',
+    )
+    parser.add_argument(
+        '--output-dir',
+        default=DEFAULT_LEVEL_DIR,
+        help="output directory",
+    )
+    args = parser.parse_args()
+
     constants = {
         'boulder': RL_BOULDER,
         'floor': RL_FLOOR,
@@ -288,7 +304,7 @@ if __name__ == '__main__':
         levels = []
         for j in range(start, end+1):
             level_lines = convert_one_level(
-                os.path.join(INPUT_DIR, "screen.%d" % j),
+                os.path.join(args.input_dir, "screen.%d" % j),
             )
             if is_good_level(level_lines):
                 levels.append({
@@ -299,7 +315,7 @@ if __name__ == '__main__':
                 })
 
         new_filename = os.path.join(
-            OUTPUT_DIR,
+            args.output_dir,
             "xsokoban%d-%d.txt" % (start, end),
         )
         with open(new_filename, 'w') as new_file:

@@ -6,23 +6,30 @@ By: [Jeremy Nation](mailto:jeremy@jeremynation.me)
 
 Roguelike Sokoban is an ASCII-based Sokoban game that has a look and feel
 inspired by the roguelike genre, particularly the Sokoban levels in the
-excellent game [Nethack](http://www.nethack.org/). You can create new maps
+excellent game [NetHack](https://www.nethack.org/). You can create new maps
 using a regular text editor.
+
+## Python version
+
+Please use a recent version of Python 3 when running anything in this
+repository.
 
 ## Running Roguelike Sokoban
 
-Roguelike Sokoban is written in Python and uses the
-[curses](https://docs.python.org/2/library/curses.html) library for its
-display. Install the pip packages in `requirements.txt`, or
-`requirements-dev.txt` to include development-only packages, and then execute
+Install the pip packages in `requirements.txt`, or `requirements-dev.txt` to
+include development-only packages, and then run
 
     python rlsokoban.py
 
 from the root repository directory to play the default levels. To specify a
 level file, use the `-L` option followed by the path to the level file.
 
-On Windows, you will need to install Python and then figure out how to make
-curses available.
+Roguelike Sokoban uses the
+[curses](https://docs.python.org/3/library/curses.html) module for its
+display. `curses` isn't included in the Python distribution for Windows, so
+on Windows you might want to use the
+[Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) or
+find some other option.
 
 ## Included levels
 

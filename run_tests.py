@@ -13,9 +13,9 @@ from test.test_scoretracker import TestScoreTracker
 TEST_DIR = 'test'
 TEST_LEVELS_DIR = os.path.join(TEST_DIR, 'test_levels')
 TEST_LEVELS = (
-    os.path.join(TEST_LEVELS_DIR, 'simple_level.yml'),
-    os.path.join(TEST_LEVELS_DIR, 'different_symbols.yml'),
-    os.path.join(TEST_LEVELS_DIR, 'huge_level.yml'),
+    os.path.join(TEST_LEVELS_DIR, 'simple_level.txt'),
+    os.path.join(TEST_LEVELS_DIR, 'different_symbols.txt'),
+    os.path.join(TEST_LEVELS_DIR, 'huge_level.txt'),
 )
 
 if __name__ == '__main__':

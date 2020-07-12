@@ -1,0 +1,9 @@
+boulder: X
+floor: ~
+pit: ?
+player: 1
+-> maps
+name: Different Symbols
+~~~~~
+1~X~?
+~~~~~

@@ -1,0 +1,9 @@
+boulder: 
+floor: .
+pit: ^
+player: @
+-> maps
+name: Test Level
+@..
+.0.
+...

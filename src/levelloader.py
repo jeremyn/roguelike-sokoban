@@ -1,6 +1,48 @@
 # Copyright 2020, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
-import yaml
+from src.constants import LevelFileConsts
+
+
+def _get_levels_from_file(level_file_name):
+    with open(level_file_name) as level_file:
+        lines = level_file.readlines()
+
+    symbols = {}
+    levels = []
+    in_maps = False
+    for line in lines:
+        line = line.rstrip()
+        if line.startswith(LevelFileConsts.COMMENT_MARKER):
+            continue
+
+        if line == LevelFileConsts.MAPS_START:
+            in_maps = True
+            continue
+
+        if not in_maps:
+            line_split = line.split(LevelFileConsts.DELIMITER)
+            if len(line_split) == 1:
+                first_part, second_part = line_split[0], ''
+            else:
+                first_part, second_part = line_split
+            symbols[first_part] = second_part
+        else:
+            if line.startswith(LevelFileConsts.NAME_PREFIX):
+                _, level_name = line.split(LevelFileConsts.DELIMITER)
+                levels.append({
+                    'name': level_name,
+                    'map': None
+                })
+            else:
+                if levels[-1]['map'] is None:
+                    levels[-1]['map'] = line
+                else:
+                    levels[-1]['map'] = '\n'.join((levels[-1]['map'], line))
+
+    return {
+        'symbols': symbols,
+        'levels': levels,
+    }
 
 
 def _validate_level_data(symbols, levels):
@@ -25,7 +67,7 @@ def _validate_level_data(symbols, levels):
             'player': 0,
             'pit': 0,
         }
-        lines = level['map'].split('\n')[:-1]
+        lines = level['map'].split('\n')
         for line in lines:
             if not line:
                 raise BlankLineError(level['name'])
@@ -51,7 +93,7 @@ def _validate_level_data(symbols, levels):
 
 
 def _create_level_array(level_string):
-    lines = level_string.split('\n')[:-1]
+    lines = level_string.split('\n')
     max_line_length = max([len(line) for line in lines])
     lines = [line.ljust(max_line_length) for line in lines]
 
@@ -68,8 +110,7 @@ class LevelLoader(object):
 
     def __init__(self, level_file_name):
         self.level_file_name = level_file_name
-        with open(self.level_file_name) as level_file:
-            file_data = yaml.safe_load(level_file)
+        file_data = _get_levels_from_file(level_file_name)
         self.symbols = file_data['symbols']
         self.levels = file_data['levels']
         _validate_level_data(self.symbols, self.levels)

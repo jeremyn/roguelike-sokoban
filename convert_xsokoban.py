@@ -25,17 +25,17 @@ An example conversion is
 to
 
 XSokoban level 1
-    -----          
-    |...|          
-    |0..|          
-  ---..0--         
-  |..0.0.|         
+    -----
+    |...|
+    |0..|
+  ---..0--
+  |..0.0.|
 ---.|.--.|   ------
 |...|.--.-----..^^|
 |.0..0..........^^|
 -----.---.|@--..^^|
     |.....---------
-    -------        
+    -------
 
 However, Roguelike Sokoban gameplay is a variant on normal Sokoban gameplay
 that is not always compatible with normal Sokoban. Specifically, normal
@@ -69,7 +69,8 @@ levels/xsokoban<x>-<y>.yml from the root repository directory.
 import copy
 from functools import reduce
 import os
-import yaml
+
+from src.constants import LevelFileConsts
 
 # Standard format
 
@@ -272,33 +273,51 @@ def is_good_level(level):
     return True
 
 if __name__ == '__main__':
+    constants = {
+        'boulder': RL_BOULDER,
+        'floor': RL_FLOOR,
+        'pit': RL_PIT,
+        'player': RL_PLAYER,
+        'delimiter': LevelFileConsts.DELIMITER,
+        'maps_start': LevelFileConsts.MAPS_START,
+        'name_prefix': LevelFileConsts.NAME_PREFIX,
+    }
     for i in range(1, 10):
         start = i*10-9
         end = i*10
-        file_data = {
-            'symbols': {
-                'boulder': RL_BOULDER,
-                'floor': RL_FLOOR,
-                'pit': RL_PIT,
-                'player': RL_PLAYER,
-            },
-            'levels': [],
-        }
+        levels = []
         for j in range(start, end+1):
             level_lines = convert_one_level(
                 os.path.join(INPUT_DIR, "screen.%d" % j),
             )
             if is_good_level(level_lines):
-                file_data['levels'].append({
+                levels.append({
                     'name': level_lines[0].strip(),
                     'map': '\n'.join(
-                        [''.join(line).rstrip('\n') for line in level_lines[1:]]
+                        [''.join(line).rstrip() for line in level_lines[1:]]
                     ) + '\n',
                 })
 
         new_filename = os.path.join(
             OUTPUT_DIR,
-            "xsokoban%d-%d.yml" % (start, end),
+            "xsokoban%d-%d.txt" % (start, end),
         )
         with open(new_filename, 'w') as new_file:
-            yaml.safe_dump(file_data, new_file, default_flow_style=False)
+            new_file.writelines((
+                "boulder{delimiter}{boulder}\n".format(**constants),
+                "floor{delimiter}{floor}\n".format(**constants),
+                "pit{delimiter}{pit}\n".format(**constants),
+                "player{delimiter}{player}\n".format(**constants),
+                "{maps_start}\n".format(**constants),
+            ))
+            for level in levels:
+                data = [
+                    (
+                        constants['name_prefix'] +
+                        constants['delimiter'] +
+                        level['name'] +
+                        '\n'
+                    ),
+                    level['map'],
+                ]
+                new_file.writelines(data)

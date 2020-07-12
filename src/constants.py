@@ -1,11 +1,12 @@
 # Copyright 2020, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
+from collections import namedtuple
 from enum import Enum
 import os
 
 GAME_NAME = 'Roguelike Sokoban'
 
-DEFAULT_LEVEL_FILE_NAME = 'default_levels.yml'
+DEFAULT_LEVEL_FILE_NAME = 'default_levels.txt'
 DEFAULT_LEVEL_FILE_NAME_FULL = os.path.join(
     os.getcwd(),
     'levels',
@@ -28,3 +29,17 @@ class Action(Enum):
     QUIT = "quit"
     PLAY_AGAIN = "play again"
     OTHER = "other"
+
+
+_LevelFileConsts = namedtuple('LevelFileConsts', [
+    'COMMENT_MARKER',
+    'DELIMITER',
+    'MAPS_START',
+    'NAME_PREFIX',
+])
+LevelFileConsts = _LevelFileConsts(
+    COMMENT_MARKER='#',
+    DELIMITER=': ',
+    MAPS_START='-> maps',
+    NAME_PREFIX='name',
+)

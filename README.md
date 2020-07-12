@@ -16,13 +16,15 @@ repository.
 
 ## Running Roguelike Sokoban
 
-Install the pip packages in `requirements.txt`, or `requirements-dev.txt` to
-include development-only packages, and then run
+Run
 
     python rlsokoban.py
 
 from the root repository directory to play the default levels. To specify a
 level file, use the `-L` option followed by the path to the level file.
+
+There is a `requirements-dev.txt` file you can install with `pip` if you want
+packages only used for development.
 
 Roguelike Sokoban uses the
 [curses](https://docs.python.org/3/library/curses.html) module for its
@@ -33,17 +35,17 @@ find some other option.
 
 ## Included levels
 
-By default, the game will use the level file `levels/default-levels.yml`. Also
+By default, the game will use the level file `levels/default-levels.txt`. Also
 included are many levels that have been adapted from the game
 [XSokoban](http://www.cs.cornell.edu/andru/xsokoban.html), which has been
 released into the public domain. These levels are included as
-`levels/xsokoban$X-$Y.yml` and can be loaded with the `-L` option.
+`levels/xsokoban$X-$Y.txt` and can be loaded with the `-L` option.
 
 *Note*: the XSokoban levels were converted using the included
-`util/convert_xsokoban.py` script and have not all been playtested. They were
+`convert_xsokoban.py` script and have not all been playtested. They were
 originally written to use a different set of Sokoban rules than Roguelike
-Sokoban uses. It is possible some of them are unwinnable from the start. Please
-let me know if one of the included levels is unwinnable.
+Sokoban uses. It is possible some of them are unwinnable from the start.
+Please let me know if one of the included levels is unwinnable.
 
 ## Testing
 

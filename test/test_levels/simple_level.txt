@@ -1,0 +1,9 @@
+boulder: 0
+floor: .
+pit: ^
+player: @
+-> maps
+name: Simple Level
+.....
+@.0.^
+.....

@@ -1,5 +1,6 @@
 # Copyright 2020, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
+from enum import Enum
 import os
 
 GAME_NAME = 'Roguelike Sokoban'
@@ -18,3 +19,12 @@ SCORES_FILE_NAME = os.path.join(
 
 QUIT = 'q'
 PLAY_AGAIN = 'r'
+
+class Action(Enum):
+    UP = "up"
+    DOWN = "down"
+    LEFT = "left"
+    RIGHT = "right"
+    QUIT = "quit"
+    PLAY_AGAIN = "play again"
+    OTHER = "other"

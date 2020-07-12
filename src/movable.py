@@ -1,13 +1,13 @@
 # Copyright 2020, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
-from src import action
+from src.constants import Action
 
 
 _MOVE_TEST = {
-    action.UP: {'axis': 'y', 'change': -1},
-    action.DOWN: {'axis': 'y', 'change': 1},
-    action.LEFT: {'axis': 'x', 'change': -1},
-    action.RIGHT: {'axis': 'x', 'change': 1},
+    Action.UP: {'axis': 'y', 'change': -1},
+    Action.DOWN: {'axis': 'y', 'change': 1},
+    Action.LEFT: {'axis': 'x', 'change': -1},
+    Action.RIGHT: {'axis': 'x', 'change': 1},
 }
 _DRY_RUN = 'dry run'
 _DO_MOVE = 'do move'

@@ -3,10 +3,9 @@
 from functools import reduce
 
 import curses
-from src import (
-    action,
-    constants as const,
-)
+from src import constants as const
+
+Action = const.Action
 
 TERMINAL_TOO_SMALL_TEXT = (
     "Your terminal is too small. Please increase your terminal size to at "
@@ -337,19 +336,19 @@ class Display(object):
             self.scrn.clear()
             curses.endwin()
             self.scrn.refresh()
-            act = action.OTHER
+            act = Action.OTHER
         if k == curses.KEY_UP:
-            act = action.UP
+            act = Action.UP
         elif k == curses.KEY_DOWN:
-            act = action.DOWN
+            act = Action.DOWN
         elif k == curses.KEY_LEFT:
-            act = action.LEFT
+            act = Action.LEFT
         elif k == curses.KEY_RIGHT:
-            act = action.RIGHT
+            act = Action.RIGHT
         elif k == ord(const.QUIT):
-            act = action.QUIT
+            act = Action.QUIT
         elif k == ord(const.PLAY_AGAIN):
-            act = action.PLAY_AGAIN
+            act = Action.PLAY_AGAIN
         else:
-            act = action.OTHER
+            act = Action.OTHER
         return act

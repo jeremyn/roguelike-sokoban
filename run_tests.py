@@ -6,6 +6,7 @@ import os
 import unittest
 
 import src
+from src.main import main
 from test.test_levelloader import TestLevelLoader
 from test.test_scoretracker import TestScoreTracker
 
@@ -35,7 +36,7 @@ if __name__ == '__main__':
         )
         for test_level in TEST_LEVELS:
             try:
-                curses.wrapper(src.main, test_level)
+                curses.wrapper(main, test_level)
             except KeyboardInterrupt:
                 pass
     else:

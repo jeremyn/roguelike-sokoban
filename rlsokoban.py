@@ -4,6 +4,7 @@ import argparse
 import curses
 
 import src
+from src.main import main
 
 
 if __name__ == '__main__':
@@ -20,6 +21,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        curses.wrapper(src.main, args.level_filename)
+        curses.wrapper(main, args.level_filename)
     except KeyboardInterrupt:
         print('Exiting at user request. Thanks for playing!')

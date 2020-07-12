@@ -16,7 +16,7 @@ Roguelike Sokoban is written in Python and uses the
 display. Install the pip packages in `requirements.txt`, or
 `requirements-dev.txt` to include development-only packages, and then execute
 
-    ./rlsokoban.py
+    python rlsokoban.py
 
 from the root repository directory to play the default levels. To specify a
 level file, use the `-L` option followed by the path to the level file.

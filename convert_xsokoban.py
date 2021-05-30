@@ -99,6 +99,7 @@ RL_FLOOR = "."
 
 TEMP_FLOOR = "F"
 
+
 def rewrite_floor(level):
     """Do first pass for floors.
 
@@ -111,7 +112,7 @@ def rewrite_floor(level):
     orig_level = copy.deepcopy(level)
     for row_num, row in enumerate(orig_level):
         for col_num, square in enumerate(row):
-            if square == ' ':
+            if square == " ":
                 object_in_each_dir = True
 
                 object_found = False
@@ -153,19 +154,19 @@ def is_sideways_wall(level, i, j):
     """
     # Set each value wall_x to 1 if there is a wall in x direction, 0 if not.
     if i > 0:
-        wall_above = (level[i-1][j] == S_WALL) and 1 or 0
+        wall_above = (level[i - 1][j] == S_WALL) and 1 or 0
     else:
         wall_above = 0
     if i < len(level) - 1:
-        wall_below = (level[i+1][j] == S_WALL) and 1 or 0
+        wall_below = (level[i + 1][j] == S_WALL) and 1 or 0
     else:
         wall_below = 0
     if j > 0:
-        wall_left = (level[i][j-1] == S_WALL) and 1 or 0
+        wall_left = (level[i][j - 1] == S_WALL) and 1 or 0
     else:
         wall_left = 0
     if j < len(level[0]) - 1:
-        wall_right = (level[i][j+1] == S_WALL) and 1 or 0
+        wall_right = (level[i][j + 1] == S_WALL) and 1 or 0
     else:
         wall_right = 0
 
@@ -232,14 +233,14 @@ def convert_one_level(filename):
         raise NameError("could not open '%s'." % filename)
     level = level_file.readlines()
     level_file.close()
-    max_line_length = reduce(max, [len(line)-1 for line in level])
+    max_line_length = reduce(max, [len(line) - 1 for line in level])
     # Pad each line with spaces to the end of the longest line.
     orig_level = copy.deepcopy(level)
     for line_num, line in enumerate(orig_level):
         line = list(line)
         line.pop()  # Remove trailing '\n'
         while len(line) < max_line_length:
-            line.append(' ')
+            line.append(" ")
         level[line_num] = line
 
     rewrite_floor(level)
@@ -261,7 +262,7 @@ def is_good_level(level):
         RL_BOULDER,
         RL_PIT,
         RL_FLOOR,
-        ' ',
+        " ",
     ]
     # level[1:] to skip the name
     for line in level[1:]:
@@ -270,70 +271,73 @@ def is_good_level(level):
                 return False
     return True
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument(
-        'input_dir',
-        help=(
-            "input directory with XSokoban maps, containing files like "
-            "'screen.1'"
-        ),
-        metavar='input-dir',
+        "input_dir",
+        help="input directory with XSokoban maps, containing files like 'screen.1'",
+        metavar="input-dir",
     )
     parser.add_argument(
-        '--output-dir',
+        "--output-dir",
         default=DEFAULT_LEVEL_DIR,
         help="output directory",
     )
     args = parser.parse_args()
 
     constants = {
-        'boulder': RL_BOULDER,
-        'floor': RL_FLOOR,
-        'pit': RL_PIT,
-        'player': RL_PLAYER,
-        'delimiter': LevelFileConsts.DELIMITER,
-        'maps_start': LevelFileConsts.MAPS_START,
-        'name_prefix': LevelFileConsts.NAME_PREFIX,
+        "boulder": RL_BOULDER,
+        "floor": RL_FLOOR,
+        "pit": RL_PIT,
+        "player": RL_PLAYER,
+        "delimiter": LevelFileConsts.DELIMITER,
+        "maps_start": LevelFileConsts.MAPS_START,
+        "name_prefix": LevelFileConsts.NAME_PREFIX,
     }
     for i in range(1, 10):
-        start = i*10-9
-        end = i*10
+        start = i * 10 - 9
+        end = i * 10
         levels = []
-        for j in range(start, end+1):
+        for j in range(start, end + 1):
             level_lines = convert_one_level(
                 os.path.join(args.input_dir, "screen.%d" % j),
             )
             if is_good_level(level_lines):
-                levels.append({
-                    'name': level_lines[0].strip(),
-                    'map': '\n'.join(
-                        [''.join(line).rstrip() for line in level_lines[1:]]
-                    ) + '\n',
-                })
+                levels.append(
+                    {
+                        "name": level_lines[0].strip(),
+                        "map": "\n".join(
+                            ["".join(line).rstrip() for line in level_lines[1:]]
+                        )
+                        + "\n",
+                    }
+                )
 
         new_filename = os.path.join(
             args.output_dir,
             "xsokoban%d-%d.txt" % (start, end),
         )
-        with open(new_filename, 'w') as new_file:
-            new_file.writelines((
-                "boulder{delimiter}{boulder}\n".format(**constants),
-                "floor{delimiter}{floor}\n".format(**constants),
-                "pit{delimiter}{pit}\n".format(**constants),
-                "player{delimiter}{player}\n".format(**constants),
-                "{maps_start}\n".format(**constants),
-            ))
+        with open(new_filename, "w") as new_file:
+            new_file.writelines(
+                (
+                    "boulder{delimiter}{boulder}\n".format(**constants),
+                    "floor{delimiter}{floor}\n".format(**constants),
+                    "pit{delimiter}{pit}\n".format(**constants),
+                    "player{delimiter}{player}\n".format(**constants),
+                    "{maps_start}\n".format(**constants),
+                )
+            )
             for level in levels:
                 data = [
                     (
-                        constants['name_prefix'] +
-                        constants['delimiter'] +
-                        level['name'] +
-                        '\n'
+                        constants["name_prefix"]
+                        + constants["delimiter"]
+                        + level["name"]
+                        + "\n"
                     ),
-                    level['map'],
+                    level["map"],
                 ]
                 new_file.writelines(data)

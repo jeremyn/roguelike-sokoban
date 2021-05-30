@@ -5,7 +5,6 @@ import sqlite3
 
 
 class ScoreTracker(object):
-
     def __init__(self, db_file_name, level_file_name, level_name):
         self.file_name = os.path.basename(level_file_name)
         self.level_name = level_name
@@ -21,7 +20,8 @@ class ScoreTracker(object):
                     score integer,
                     PRIMARY KEY (file_name, level_name)
                   )
-                """)
+                """
+            )
         except sqlite3.OperationalError:
             # Database/table already exists
             pass
@@ -34,9 +34,9 @@ class ScoreTracker(object):
               WHERE file_name=:file_name AND level_name=:level_name
             """,
             {
-                'file_name': self.file_name,
-                'level_name': self.level_name,
-            }
+                "file_name": self.file_name,
+                "level_name": self.level_name,
+            },
         )
         try:
             best_score = self.cursor.fetchone()[0]
@@ -46,9 +46,9 @@ class ScoreTracker(object):
 
     def update_best_score(self, score):
         args = {
-            'file_name': self.file_name,
-            'level_name': self.level_name,
-            'score': score,
+            "file_name": self.file_name,
+            "level_name": self.level_name,
+            "score": score,
         }
         current_best_score = self.get_best_score()
         if current_best_score is None:

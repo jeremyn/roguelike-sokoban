@@ -4,7 +4,6 @@ from src import movable
 
 
 class Universe(object):
-
     def __init__(self, level_info):
         level_name, level_map, level_sym = level_info
         self.level_map = [list(line) for line in level_map]
@@ -15,23 +14,19 @@ class Universe(object):
         self.moves_taken = 0
         for row_index, row in enumerate(self.level_map):
             for col_index, square in enumerate(row):
-                if square == self.level_sym['player']:
+                if square == self.level_sym["player"]:
                     self.player = movable.Player(
                         row_index,
                         col_index,
                         self.level_sym,
                     )
-                    self.level_map[row_index][col_index] = (
-                        self.level_sym['floor']
-                    )
-                if square == self.level_sym['boulder']:
+                    self.level_map[row_index][col_index] = self.level_sym["floor"]
+                if square == self.level_sym["boulder"]:
                     self.boulders.append(
                         movable.Boulder(row_index, col_index, self.level_sym),
                     )
-                    self.level_map[row_index][col_index] = (
-                        self.level_sym['floor']
-                    )
-                if square == self.level_sym['pit']:
+                    self.level_map[row_index][col_index] = self.level_sym["floor"]
+                if square == self.level_sym["pit"]:
                     self.pits_remaining += 1
         self.__set_win_status()
 
@@ -44,4 +39,4 @@ class Universe(object):
         self.boulders.remove(boulder)
 
     def __set_win_status(self):
-        self.game_won = (self.pits_remaining == 0)
+        self.game_won = self.pits_remaining == 0

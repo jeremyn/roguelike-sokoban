@@ -4,10 +4,10 @@ from collections import namedtuple
 from enum import Enum
 import os
 
-GAME_NAME = 'Roguelike Sokoban'
+GAME_NAME = "Roguelike Sokoban"
 
-DEFAULT_LEVEL_DIR = os.path.join(os.getcwd(), 'levels')
-DEFAULT_LEVEL_FILE_NAME = 'default_levels.txt'
+DEFAULT_LEVEL_DIR = os.path.join(os.getcwd(), "levels")
+DEFAULT_LEVEL_FILE_NAME = "default_levels.txt"
 DEFAULT_LEVEL_FILE_NAME_FULL = os.path.join(
     DEFAULT_LEVEL_DIR,
     DEFAULT_LEVEL_FILE_NAME,
@@ -15,11 +15,12 @@ DEFAULT_LEVEL_FILE_NAME_FULL = os.path.join(
 
 SCORES_FILE_NAME = os.path.join(
     os.getcwd(),
-    'scores.sqlite3',
+    "scores.sqlite3",
 )
 
-QUIT = 'q'
-PLAY_AGAIN = 'r'
+QUIT = "q"
+PLAY_AGAIN = "r"
+
 
 class Action(Enum):
     UP = "up"
@@ -31,15 +32,18 @@ class Action(Enum):
     OTHER = "other"
 
 
-_LevelFileConsts = namedtuple('LevelFileConsts', [
-    'COMMENT_MARKER',
-    'DELIMITER',
-    'MAPS_START',
-    'NAME_PREFIX',
-])
+_LevelFileConsts = namedtuple(
+    "LevelFileConsts",
+    [
+        "COMMENT_MARKER",
+        "DELIMITER",
+        "MAPS_START",
+        "NAME_PREFIX",
+    ],
+)
 LevelFileConsts = _LevelFileConsts(
-    COMMENT_MARKER='#',
-    DELIMITER=': ',
-    MAPS_START='-> maps',
-    NAME_PREFIX='name',
+    COMMENT_MARKER="#",
+    DELIMITER=": ",
+    MAPS_START="-> maps",
+    NAME_PREFIX="name",
 )

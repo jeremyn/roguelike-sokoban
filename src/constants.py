@@ -13,10 +13,7 @@ DEFAULT_LEVEL_FILE_NAME_FULL = os.path.join(
     DEFAULT_LEVEL_FILE_NAME,
 )
 
-SCORES_FILE_NAME = os.path.join(
-    os.getcwd(),
-    "scores.sqlite3",
-)
+SCORES_FILE_NAME = "scores.json"
 
 QUIT = "q"
 PLAY_AGAIN = "r"

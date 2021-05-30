@@ -36,7 +36,7 @@ if __name__ == "__main__":
         )
         for test_level in TEST_LEVELS:
             try:
-                curses.wrapper(main, test_level)
+                curses.wrapper(main, level_file_name=test_level, update_scores=False)
             except KeyboardInterrupt:
                 pass
     else:

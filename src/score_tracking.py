@@ -1,78 +1,42 @@
 # Copyright 2021, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
-import os
-import sqlite3
+import json
 
 
-class ScoreTracker(object):
-    def __init__(self, db_file_name, level_file_name, level_name):
-        self.file_name = os.path.basename(level_file_name)
-        self.level_name = level_name
+class Scores(object):
+    def __init__(self, db_file_name=None):
+        self._db_file_name = db_file_name
+        if self._db_file_name is None:
+            self._scores = {}
+        else:
+            try:
+                with open(self._db_file_name) as score_file:
+                    self._scores = json.load(score_file)
+            except FileNotFoundError:
+                self._scores = {}
 
-        self.conn = sqlite3.connect(db_file_name)
-        self.cursor = self.conn.cursor()
+    def get_best_score(self, level_file_name, level_name):
         try:
-            self.cursor.execute(
-                """
-                  CREATE TABLE scores (
-                    file_name text,
-                    level_name text,
-                    score integer,
-                    PRIMARY KEY (file_name, level_name)
-                  )
-                """
-            )
-        except sqlite3.OperationalError:
-            # Database/table already exists
-            pass
-
-    def get_best_score(self):
-        self.cursor.execute(
-            """
-              SELECT score
-              FROM scores
-              WHERE file_name=:file_name AND level_name=:level_name
-            """,
-            {
-                "file_name": self.file_name,
-                "level_name": self.level_name,
-            },
-        )
-        try:
-            best_score = self.cursor.fetchone()[0]
-        except TypeError:
+            best_score = self._scores[level_file_name][level_name]
+        except KeyError:
             best_score = None
         return best_score
 
-    def update_best_score(self, score):
-        args = {
-            "file_name": self.file_name,
-            "level_name": self.level_name,
-            "score": score,
-        }
-        current_best_score = self.get_best_score()
+    def update_best_score(self, level_file_name, level_name, score):
+        current_best_score = self.get_best_score(level_file_name, level_name)
+        updated = True
         if current_best_score is None:
-            self.cursor.execute(
-                """
-                  INSERT INTO scores
-                  (file_name, level_name, score)
-                  VALUES (:file_name, :level_name, :score)
-                """,
-                args,
-            )
-            self.conn.commit()
+            if level_file_name in self._scores:
+                self._scores[level_file_name][level_name] = score
+            else:
+                self._scores[level_file_name] = {level_name: score}
         else:
             if score < current_best_score:
-                self.cursor.execute(
-                    """
-                      UPDATE scores
-                      SET score=:score
-                      WHERE file_name=:file_name AND level_name=:level_name
-                    """,
-                    args,
-                )
-                self.conn.commit()
+                self._scores[level_file_name][level_name] = score
+            else:
+                updated = False
 
-    def close(self):
-        self.cursor.close()
-        self.conn.close()
+        if updated and self._db_file_name is not None:
+            with open(self._db_file_name, mode="w") as score_file:
+                json.dump(self._scores, score_file, sort_keys=True, indent=2)
+                score_file.write("\n")

@@ -1,2 +1,2 @@
-*.sqlite3
 __pycache__/
+scores.json

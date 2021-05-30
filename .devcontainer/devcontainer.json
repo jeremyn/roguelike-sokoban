@@ -1,0 +1,19 @@
+{
+	"context": "..",
+	"dockerFile": "../Dockerfile",
+	"extensions": [
+		"ms-azuretools.vscode-docker",
+		"ms-python.python"
+	],
+	"mounts": [
+		"source=roguelike-sokoban-vscode-extensions,target=/home/docker/.vscode-server/extensions,type=volume"
+	],
+	"settings": {
+		"editor.formatOnSave": true,
+		"python.pythonPath": "/usr/bin/python3",
+		"terminal.integrated.shell.linux": "/bin/bash",
+		"python.formatting.provider": "black"
+	},
+	"workspaceFolder": "/workdir",
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workdir,type=bind,consistency=delegated"
+}

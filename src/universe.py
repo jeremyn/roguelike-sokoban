@@ -93,9 +93,9 @@ class _Boulder(_Movable):
 
     def move(self, move_dir: Action, univ: "Universe") -> Union[str, "_Boulder"]:
         """Check if boulder can move, and if so, move it and update universe."""
-        mov = super(_Boulder, self)._move(move_dir, univ, _MoveMode.DRY_RUN)
+        mov = super()._move(move_dir, univ, _MoveMode.DRY_RUN)
         if mov in self.pushable:
-            super(_Boulder, self)._move(move_dir, univ, _MoveMode.DO_MOVE)
+            super()._move(move_dir, univ, _MoveMode.DO_MOVE)
             if mov == self.level_sym["pit"]:
                 univ.level_map[self.curr_y][self.curr_x] = self.level_sym["floor"]
                 univ.pits_remaining -= 1
@@ -109,16 +109,14 @@ class _Player(_Movable):
 
     def move(self, move_dir: Action, univ: "Universe") -> None:
         """Check if player can move, and if so, move them and update universe."""
-        player_move_result = super(_Player, self)._move(
-            move_dir, univ, _MoveMode.DRY_RUN
-        )
+        player_move_result = super()._move(move_dir, univ, _MoveMode.DRY_RUN)
         if player_move_result in self.walkable:
-            super(_Player, self)._move(move_dir, univ, _MoveMode.DO_MOVE)
+            super()._move(move_dir, univ, _MoveMode.DO_MOVE)
             univ.moves_taken += 1
         if isinstance(player_move_result, _Boulder):
             boulder_move_sq = player_move_result.move(move_dir, univ)
             if boulder_move_sq in self.pushable:
-                super(_Player, self)._move(move_dir, univ, _MoveMode.DO_MOVE)
+                super()._move(move_dir, univ, _MoveMode.DO_MOVE)
                 univ.moves_taken += 1
                 if boulder_move_sq == self.level_sym["pit"]:
                     univ.boulders.remove(player_move_result)

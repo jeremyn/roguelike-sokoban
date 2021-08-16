@@ -232,7 +232,7 @@ def convert_one_level(filename: str) -> tuple[str, _Level]:
     rewrite_walls(level)
     rewrite_final(level)
 
-    level_name = "XSokoban level %s" % filename.split(".")[1]
+    level_name = "XSokoban level {level}".format(level=filename.split(".")[1])
 
     return level_name, level
 
@@ -291,7 +291,7 @@ def main(args: argparse.Namespace) -> None:
         levels: LevelsStr = []
         for j in range(start, end + 1):
             level_name, level_lines = convert_one_level(
-                os.path.join(input_dir, "screen.%d" % j)
+                os.path.join(input_dir, "screen.{num}".format(num=j))
             )
             if is_good_level(level_lines):
                 levels.append(
@@ -304,7 +304,9 @@ def main(args: argparse.Namespace) -> None:
                     }
                 )
 
-        new_filename = os.path.join(output_dir, "xsokoban%d-%d.txt" % (start, end))
+        new_filename = os.path.join(
+            output_dir, "xsokoban{start}-{end}.txt".format(start=start, end=end)
+        )
         with open(new_filename, "w") as new_file:
             new_file.writelines(
                 (

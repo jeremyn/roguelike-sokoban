@@ -61,7 +61,9 @@ def _validate_level_data(symbols: Symbols, levels: LevelsStr) -> None:
         if len(symbol_value) < 1:
             raise EmptySymbolError(symbol_name)
         if len(symbol_value) > 1:
-            raise SymbolTooBigError("%s: '%s'" % (symbol_name, symbol_value))
+            raise SymbolTooBigError(
+                "{name}: '{value}'".format(name=symbol_name, value=symbol_value)
+            )
 
     for symbol_name in ("boulder", "floor", "pit", "player"):
         if symbol_name not in symbols:
@@ -132,9 +134,9 @@ class LevelLoader(object):
         min_height = 2 + 1 + len(self.levels) + 1 + 1
         if min_height > scrn.getmaxyx()[0]:
             raise Exception(const.TERMINAL_TOO_SMALL_TEXT)
-        welcome = "Welcome to %s" % const.GAME_NAME
-        levels_found_header = (
-            "The following levels were found in %s:" % self.level_file_name
+        welcome = "Welcome to {name}".format(name=const.GAME_NAME)
+        levels_found_header = "The following levels were found in {name}:".format(
+            name=self.level_file_name
         )
         scrn.clear()
         curses.endwin()
@@ -151,12 +153,12 @@ class LevelLoader(object):
         """Prompt the user for the level to play from the available choices."""
 
         first_prompt = (
-            "Enter the number of the level you want to play, or '%s' to "
-            "quit: " % const.QUIT
+            "Enter the number of the level you want to play, or '{quit}' to "
+            "quit: ".format(quit=const.QUIT)
         )
         invalid_input_prompt = (
-            "Invalid choice, please enter the number of an available level, or"
-            "'%s' to quit: " % const.QUIT
+            "Invalid choice, please enter the number of an available level, or "
+            "'{quit}' to quit: ".format(quit=const.QUIT)
         )
 
         level_names = list(self.levels.keys())

@@ -4,46 +4,56 @@ Released under the GPLv3. See included LICENSE file.
 
 """
 import json
+from pathlib import Path
 from typing import Optional
+
+from src.util import UTF_8
 
 
 class Scores(object):
-    def __init__(self, db_file_name: Optional[str] = None):
-        self._db_file_name = db_file_name
-        self._scores: dict[str, dict[str, int]]
-        if self._db_file_name is None:
+    def __init__(self, scores_filename: Optional[Path] = None):
+        self._scores_filename = scores_filename
+        self._scores: dict[Path, dict[str, int]]
+        if self._scores_filename is None:
             self._scores = {}
         else:
             try:
-                with open(self._db_file_name) as score_file:
-                    self._scores = json.load(score_file)
+                self._scores = {
+                    Path(k): v
+                    for k, v in json.loads(
+                        self._scores_filename.read_text(encoding=UTF_8)
+                    ).items()
+                }
             except FileNotFoundError:
                 self._scores = {}
 
-    def get_best_score(self, level_file_name: str, level_name: str) -> Optional[int]:
+    def get_score(self, level_filename: Path, level_name: str) -> Optional[int]:
+        level_filename = level_filename.resolve()
         try:
-            best_score: Optional[int] = self._scores[level_file_name][level_name]
+            best_score: Optional[int] = self._scores[level_filename][level_name]
         except KeyError:
             best_score = None
         return best_score
 
-    def update_best_score(
-        self, level_file_name: str, level_name: str, score: int
-    ) -> None:
-        current_best_score = self.get_best_score(level_file_name, level_name)
-        updated = True
-        if current_best_score is None:
-            if level_file_name in self._scores:
-                self._scores[level_file_name][level_name] = score
-            else:
-                self._scores[level_file_name] = {level_name: score}
+    def set_score(self, level_filename: Path, level_name: str, score: int) -> None:
+        level_filename = level_filename.resolve()
+        if level_filename in self._scores:
+            self._scores[level_filename][level_name] = score
         else:
-            if score < current_best_score:
-                self._scores[level_file_name][level_name] = score
-            else:
-                updated = False
+            self._scores[level_filename] = {level_name: score}
 
-        if updated and self._db_file_name is not None:
-            with open(self._db_file_name, mode="w") as score_file:
-                json.dump(self._scores, score_file, sort_keys=True, indent=2)
-                score_file.write("\n")
+    def update_best_score(
+        self, level_filename: Path, level_name: str, score: int
+    ) -> None:
+        current_best_score = self.get_score(level_filename, level_name)
+        if (current_best_score is None) or (score < current_best_score):
+            self.set_score(level_filename, level_name, score)
+            if self._scores_filename is not None:
+                with self._scores_filename.open(mode="w", encoding=UTF_8) as file:
+                    json.dump(
+                        {str(k): v for k, v in self._scores.items()},
+                        file,
+                        sort_keys=True,
+                        indent=2,
+                    )
+                    file.write("\n")

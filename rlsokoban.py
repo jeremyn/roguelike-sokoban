@@ -5,9 +5,10 @@ Released under the GPLv3. See included LICENSE file.
 """
 import argparse
 import curses
+from pathlib import Path
 
 from src.main import main
-from src.util import DEFAULT_LEVEL_FILE_NAME_FULL
+from src.util import DEFAULT_LEVEL_FILENAME
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -15,10 +16,11 @@ if __name__ == "__main__":
         "-L",
         "--level-file",
         nargs="?",
-        default=DEFAULT_LEVEL_FILE_NAME_FULL,
+        default=DEFAULT_LEVEL_FILENAME,
         dest="level_filename",
         help="load specified level file (default: %(default)s)",
         metavar="FILE",
+        type=Path,
     )
     args = parser.parse_args()
 

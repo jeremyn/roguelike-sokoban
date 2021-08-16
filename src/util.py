@@ -3,20 +3,14 @@ Copyright 2021, Jeremy Nation <jeremy@jeremynation.me>
 Released under the GPLv3. See included LICENSE file.
 
 """
-import os
 from enum import Enum
+from pathlib import Path
 from typing import NamedTuple
 
 GAME_NAME = "Roguelike Sokoban"
 
-DEFAULT_LEVEL_DIR = os.path.join(os.getcwd(), "levels")
-DEFAULT_LEVEL_FILE_NAME = "default_levels.txt"
-DEFAULT_LEVEL_FILE_NAME_FULL = os.path.join(
-    DEFAULT_LEVEL_DIR,
-    DEFAULT_LEVEL_FILE_NAME,
-)
-
-SCORES_FILE_NAME = "scores.json"
+DEFAULT_LEVEL_FILENAME = Path("levels") / "default_levels.txt"
+SCORES_FILENAME = Path("scores.json")
 
 QUIT = "q"
 PLAY_AGAIN = "r"
@@ -25,6 +19,8 @@ TERMINAL_TOO_SMALL_TEXT = (
     "Your terminal is too small. Please increase your terminal size to at "
     "least 80x24 and try again."
 )
+
+UTF_8 = "utf-8"
 
 
 class Action(Enum):

@@ -4,37 +4,36 @@ Released under the GPLv3. See included LICENSE file.
 
 """
 import curses
-import os
+from pathlib import Path
 
 from src.display import Display
 from src.levelloader import LevelLoader
 from src.score_tracking import Scores
 from src.universe import Universe
-from src.util import DEFAULT_LEVEL_FILE_NAME_FULL, SCORES_FILE_NAME, Action
+from src.util import SCORES_FILENAME, Action
 
 
 def main(
     scrn: curses.window,
-    level_file_name: str = DEFAULT_LEVEL_FILE_NAME_FULL,
+    level_filename: Path,
     update_scores: bool = True,
 ) -> None:
     if curses.has_colors():
         curses.use_default_colors()
 
     if update_scores:
-        scores = Scores(SCORES_FILE_NAME)
+        scores = Scores(SCORES_FILENAME)
     else:
         scores = Scores()
 
-    base_level_filename = os.path.basename(level_file_name)
-    loader = LevelLoader(level_file_name)
+    loader = LevelLoader(level_filename)
     level_name = None
     keep_playing = True
     while keep_playing:
         if level_name is None:
             level_name = loader.level_prompt(scrn)
         univ = Universe(level_name, loader.levels[level_name], loader.symbols)
-        best_score = scores.get_best_score(base_level_filename, univ.level_name)
+        best_score = scores.get_score(level_filename, univ.level_name)
         disp = Display(scrn, univ, best_score)
         while True:
             disp.draw(univ)
@@ -57,7 +56,5 @@ def main(
                     univ.eval_action(act)
                     if univ.game_won:
                         scores.update_best_score(
-                            base_level_filename,
-                            univ.level_name,
-                            univ.moves_taken,
+                            level_filename, univ.level_name, univ.moves_taken
                         )

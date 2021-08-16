@@ -4,9 +4,10 @@ Released under the GPLv3. See included LICENSE file.
 
 """
 import curses
+from pathlib import Path
 from typing import Sequence, TypedDict
 
-from src.util import GAME_NAME, QUIT, TERMINAL_TOO_SMALL_TEXT, LevelFileConsts
+from src.util import GAME_NAME, QUIT, TERMINAL_TOO_SMALL_TEXT, UTF_8, LevelFileConsts
 
 
 class LevelStr(TypedDict):
@@ -19,9 +20,9 @@ LevelsStr = list[LevelStr]
 Symbols = dict[str, str]
 
 
-def _get_levels_from_file(level_file_name: str) -> tuple[Symbols, LevelsStr]:
-    with open(level_file_name) as level_file:
-        lines = level_file.readlines()
+def _get_levels_from_file(level_filename: Path) -> tuple[Symbols, LevelsStr]:
+    with level_filename.open(encoding=UTF_8) as file:
+        lines = file.readlines()
 
     symbols: Symbols = {}
     levels: LevelsStr = []
@@ -122,9 +123,9 @@ def _create_level_array(level_string: str) -> Sequence[str]:
 
 
 class LevelLoader(object):
-    def __init__(self, level_file_name: str):
-        self.level_file_name = level_file_name
-        self.symbols, levels_str = _get_levels_from_file(level_file_name)
+    def __init__(self, level_filename: Path):
+        self.level_filename = level_filename
+        self.symbols, levels_str = _get_levels_from_file(self.level_filename)
         _validate_level_data(self.symbols, levels_str)
         self.levels: dict[str, Sequence[str]] = {
             level["name"]: _create_level_array(level["map"]) for level in levels_str
@@ -138,7 +139,7 @@ class LevelLoader(object):
             raise Exception(TERMINAL_TOO_SMALL_TEXT)
         welcome = "Welcome to {name}".format(name=GAME_NAME)
         levels_found_header = "The following levels were found in {name}:".format(
-            name=self.level_file_name
+            name=self.level_filename
         )
         scrn.clear()
         curses.endwin()

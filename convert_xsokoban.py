@@ -70,10 +70,10 @@ the test code for more information.
 """
 import argparse
 import copy
-import os
+from pathlib import Path
 
 from src.levelloader import LevelsStr
-from src.util import DEFAULT_LEVEL_DIR, LevelFileConsts
+from src.util import UTF_8, LevelFileConsts
 
 # Standard format
 
@@ -208,7 +208,7 @@ def rewrite_final(level: _Level) -> None:
                 level[row_num][col_num] = RL_FLOOR
 
 
-def convert_one_level(filename: str) -> tuple[str, _Level]:
+def convert_one_level(filename: Path) -> tuple[str, _Level]:
     """Convert the XSokoban level in "filename" to Roguelike Sokoban-style.
 
     Convert the XSokoban level in "filename" to a list of strings that
@@ -216,8 +216,8 @@ def convert_one_level(filename: str) -> tuple[str, _Level]:
     list will be the level name "XSokoban level <number>".
 
     """
-    with open(filename) as level_file:
-        orig_level = level_file.readlines()
+    with filename.open(encoding=UTF_8) as file:
+        orig_level = file.readlines()
     max_line_length = max([len(line) - 1 for line in orig_level])
     # Pad each line with spaces to the end of the longest line.
     level: _Level = []
@@ -232,7 +232,8 @@ def convert_one_level(filename: str) -> tuple[str, _Level]:
     rewrite_walls(level)
     rewrite_final(level)
 
-    level_name = "XSokoban level {level}".format(level=filename.split(".")[1])
+    # [1:] skips the leading '.'
+    level_name = "XSokoban level {level}".format(level=filename.suffix[1:])
 
     return level_name, level
 
@@ -273,9 +274,9 @@ def get_level_groups(max_level: int) -> list[tuple[int, int]]:
 
 
 def main(args: argparse.Namespace) -> None:
-    input_dir = args.input_dir
-    max_level = args.max_level
-    output_dir = args.output_dir
+    input_dir: Path = args.input_dir
+    max_level: int = args.max_level
+    output_dir: Path = args.output_dir if args.output_dir else input_dir
 
     constants = {
         "boulder": RL_BOULDER,
@@ -291,7 +292,7 @@ def main(args: argparse.Namespace) -> None:
         levels: LevelsStr = []
         for j in range(start, end + 1):
             level_name, level_lines = convert_one_level(
-                os.path.join(input_dir, "screen.{num}".format(num=j))
+                input_dir / "screen.{num}".format(num=j)
             )
             if is_good_level(level_lines):
                 levels.append(
@@ -304,11 +305,11 @@ def main(args: argparse.Namespace) -> None:
                     }
                 )
 
-        new_filename = os.path.join(
-            output_dir, "xsokoban{start}-{end}.txt".format(start=start, end=end)
+        output_filename = output_dir / "xsokoban{start}-{end}.txt".format(
+            start=start, end=end
         )
-        with open(new_filename, "w") as new_file:
-            new_file.writelines(
+        with output_filename.open(mode="w", encoding=UTF_8) as file:
+            file.writelines(
                 (
                     "boulder{delimiter}{boulder}\n".format(**constants),
                     "floor{delimiter}{floor}\n".format(**constants),
@@ -327,7 +328,7 @@ def main(args: argparse.Namespace) -> None:
                     ),
                     level["map"],
                 ]
-                new_file.writelines(data)
+                file.writelines(data)
 
 
 def get_parser() -> argparse.ArgumentParser:
@@ -338,10 +339,13 @@ def get_parser() -> argparse.ArgumentParser:
         "input_dir",
         help="input directory with XSokoban maps, containing files like 'screen.1'",
         metavar="input-dir",
+        type=Path,
     )
     parser.add_argument("--max-level", default=90, help="max level", type=int)
     parser.add_argument(
-        "--output-dir", default=DEFAULT_LEVEL_DIR, help="output directory"
+        "--output-dir",
+        help="output directory, defaults to input directory",
+        type=Path,
     )
     return parser
 

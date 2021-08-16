@@ -4,16 +4,16 @@ Released under the GPLv3. See included LICENSE file.
 
 """
 import filecmp
-import os
 import unittest
+from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from convert_xsokoban import get_level_groups, get_parser, main
 
-TEST_LEVELS_DIR = os.path.join("test", "xsokoban_src")
-VALID_LEVELS_DIR = "levels"
+CONVERTED_LEVELS_DIR = Path("levels")
+SRC_LEVELS_DIR = Path("test") / "xsokoban_src"
 
-VALID_FILENAME = "xsokoban1-10.txt"
+CONVERTED_FILENAME_STR = "xsokoban1-10.txt"
 
 
 class TestConvertXSokoban(unittest.TestCase):
@@ -24,19 +24,20 @@ class TestConvertXSokoban(unittest.TestCase):
         self.assertEqual([(1, 10), (11, 20), (21, 23)], get_level_groups(23))
 
     def test_main(self) -> None:
-        with TemporaryDirectory() as output_dir:
+        with TemporaryDirectory() as output_dir_str:
             parser = get_parser()
             inputs = [
                 "--output-dir",
-                output_dir,
+                output_dir_str,
                 "--max-level",
                 str(10),
-                str(TEST_LEVELS_DIR),
+                str(SRC_LEVELS_DIR),
             ]
             args = parser.parse_args(inputs)
+            output_dir = Path(output_dir_str)
             self.assertEqual(
                 {
-                    "input_dir": TEST_LEVELS_DIR,
+                    "input_dir": SRC_LEVELS_DIR,
                     "max_level": 10,
                     "output_dir": output_dir,
                 },
@@ -46,7 +47,7 @@ class TestConvertXSokoban(unittest.TestCase):
             main(args)
             self.assertTrue(
                 filecmp.cmp(
-                    os.path.join(VALID_LEVELS_DIR, VALID_FILENAME),
-                    os.path.join(output_dir, VALID_FILENAME),
+                    CONVERTED_LEVELS_DIR / CONVERTED_FILENAME_STR,
+                    output_dir / CONVERTED_FILENAME_STR,
                 )
             )

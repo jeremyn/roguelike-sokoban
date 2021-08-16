@@ -5,18 +5,18 @@ Released under the GPLv3. See included LICENSE file.
 """
 import argparse
 import curses
-import os
 import unittest
+from pathlib import Path
 
 from src.main import main
 from src.util import QUIT
 
-TEST_DIR = "test"
-TEST_LEVELS_DIR = os.path.join(TEST_DIR, "test_levels")
+TEST_DIR = Path("test")
+TEST_LEVELS_DIR = TEST_DIR / "test_levels"
 TEST_LEVELS = (
-    os.path.join(TEST_LEVELS_DIR, "simple_level.txt"),
-    os.path.join(TEST_LEVELS_DIR, "different_symbols.txt"),
-    os.path.join(TEST_LEVELS_DIR, "huge_level.txt"),
+    TEST_LEVELS_DIR / "simple_level.txt",
+    TEST_LEVELS_DIR / "different_symbols.txt",
+    TEST_LEVELS_DIR / "huge_level.txt",
 )
 
 if __name__ == "__main__":
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     parser.add_argument("--include-manual-tests", action="store_true")
     args = parser.parse_args()
 
-    test_loader = unittest.TestLoader().discover(TEST_DIR)
+    test_loader = unittest.TestLoader().discover(str(TEST_DIR))
     unittest.TextTestRunner().run(test_loader)
 
     print()
@@ -37,7 +37,7 @@ if __name__ == "__main__":
         )
         for test_level in TEST_LEVELS:
             try:
-                curses.wrapper(main, level_file_name=test_level, update_scores=False)
+                curses.wrapper(main, level_filename=test_level, update_scores=False)
             except KeyboardInterrupt:
                 pass
     else:

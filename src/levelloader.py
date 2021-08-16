@@ -64,6 +64,10 @@ def _validate_level_data(symbols, levels):
             "player": 0,
             "pit": 0,
         }
+
+        if not level["map"]:
+            raise EmptyMapError(level["name"])
+
         lines = level["map"].split("\n")
         for line in lines:
             if not line:
@@ -140,6 +144,10 @@ class BlankLineError(Exception):
 
 
 class DuplicateSymbolValuesError(Exception):
+    pass
+
+
+class EmptyMapError(Exception):
     pass
 
 

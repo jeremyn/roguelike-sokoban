@@ -6,6 +6,7 @@ import unittest
 from src.levelloader import (
     BlankLineError,
     DuplicateSymbolValuesError,
+    EmptyMapError,
     EmptySymbolError,
     LevelLoader,
     MissingSymbolDefinitionError,
@@ -30,6 +31,12 @@ class TestLevelLoader(unittest.TestCase):
         with self.assertRaises(DuplicateSymbolValuesError):
             LevelLoader(
                 os.path.join(TEST_LEVELS_DIR, "duplicate_symbol_values.txt"),
+            )
+
+    def test_empty_map_error(self):
+        with self.assertRaises(EmptyMapError):
+            LevelLoader(
+                os.path.join(TEST_LEVELS_DIR, "empty_map.txt"),
             )
 
     def test_empty_symbol_error(self):

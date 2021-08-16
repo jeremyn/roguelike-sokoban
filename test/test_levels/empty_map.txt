@@ -1,0 +1,7 @@
+boulder: 0
+floor: .
+pit: ^
+player: @
+-> maps
+name: Empty Map
+name: Empty Map 2

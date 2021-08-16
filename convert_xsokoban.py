@@ -63,8 +63,9 @@ homepage is
 
 http://www.cs.cornell.edu/andru/xsokoban.html
 
-Levels from XSokoban version 3.3c, processed by this script, are included as
-levels/xsokoban<x>-<y>.yml from the root repository directory.
+The 90 levels from XSokoban version 3.3c, processed by this script, are included as
+levels/xsokoban<x>-<y>.txt. An original XSokoban file is also included for testing, see
+the test code for more information.
 
 """
 import argparse
@@ -152,23 +153,11 @@ def is_sideways_wall(level: _Level, i: int, j: int) -> bool:
     otherwise.
 
     """
-    # Set each value wall_x to 1 if there is a wall in x direction, 0 if not.
-    if i > 0:
-        wall_above = (level[i - 1][j] == S_WALL) and 1 or 0
-    else:
-        wall_above = 0
-    if i < len(level) - 1:
-        wall_below = (level[i + 1][j] == S_WALL) and 1 or 0
-    else:
-        wall_below = 0
-    if j > 0:
-        wall_left = (level[i][j - 1] == S_WALL) and 1 or 0
-    else:
-        wall_left = 0
-    if j < len(level[0]) - 1:
-        wall_right = (level[i][j + 1] == S_WALL) and 1 or 0
-    else:
-        wall_right = 0
+    # Set each value wall_x to True if there is a wall in x direction, False if not.
+    wall_above = (i > 0) and (level[i - 1][j] == S_WALL)
+    wall_below = (i < len(level) - 1) and (level[i + 1][j] == S_WALL)
+    wall_left = (j > 0) and (level[i][j - 1] == S_WALL)
+    wall_right = (j < len(level[0]) - 1) and (level[i][j + 1] == S_WALL)
 
     wall_status = [wall_above, wall_below, wall_left, wall_right]
     if sum(wall_status) == 1:
@@ -227,12 +216,8 @@ def convert_one_level(filename: str) -> tuple[str, _Level]:
     list will be the level name "XSokoban level <number>".
 
     """
-    try:
-        level_file = open(filename)
-    except NameError:
-        raise NameError("could not open '%s'." % filename)
-    orig_level = level_file.readlines()
-    level_file.close()
+    with open(filename) as level_file:
+        orig_level = level_file.readlines()
     max_line_length = max([len(line) - 1 for line in orig_level])
     # Pad each line with spaces to the end of the longest line.
     level: _Level = []
@@ -271,21 +256,26 @@ def is_good_level(level: _Level) -> bool:
     return True
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    )
-    parser.add_argument(
-        "input_dir",
-        help="input directory with XSokoban maps, containing files like 'screen.1'",
-        metavar="input-dir",
-    )
-    parser.add_argument(
-        "--output-dir",
-        default=DEFAULT_LEVEL_DIR,
-        help="output directory",
-    )
-    args = parser.parse_args()
+def get_level_groups(max_level: int) -> list[tuple[int, int]]:
+    """Get level groups.
+
+    For example, if max_levels is 23, level groups will be [(1, 10), (11, 20), (21, 23)].
+
+    """
+    level_groups: list[tuple[int, int]] = []
+    if max_level // 10:
+        level_groups += [(i * 10 - 9, i * 10) for i in range(1, (max_level // 10) + 1)]
+
+    if max_level % 10:
+        level_groups += [(max_level + 1 - max_level % 10, max_level)]
+
+    return level_groups
+
+
+def main(args: argparse.Namespace) -> None:
+    input_dir = args.input_dir
+    max_level = args.max_level
+    output_dir = args.output_dir
 
     constants = {
         "boulder": RL_BOULDER,
@@ -296,13 +286,12 @@ if __name__ == "__main__":
         "maps_start": LevelFileConsts.MAPS_START,
         "name_prefix": LevelFileConsts.NAME_PREFIX,
     }
-    for i in range(1, 10):
-        start = i * 10 - 9
-        end = i * 10
+
+    for start, end in get_level_groups(max_level):
         levels: LevelsStr = []
         for j in range(start, end + 1):
             level_name, level_lines = convert_one_level(
-                os.path.join(args.input_dir, "screen.%d" % j),
+                os.path.join(input_dir, "screen.%d" % j)
             )
             if is_good_level(level_lines):
                 levels.append(
@@ -315,10 +304,7 @@ if __name__ == "__main__":
                     }
                 )
 
-        new_filename = os.path.join(
-            args.output_dir,
-            "xsokoban%d-%d.txt" % (start, end),
-        )
+        new_filename = os.path.join(output_dir, "xsokoban%d-%d.txt" % (start, end))
         with open(new_filename, "w") as new_file:
             new_file.writelines(
                 (
@@ -340,3 +326,24 @@ if __name__ == "__main__":
                     level["map"],
                 ]
                 new_file.writelines(data)
+
+
+def get_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    parser.add_argument(
+        "input_dir",
+        help="input directory with XSokoban maps, containing files like 'screen.1'",
+        metavar="input-dir",
+    )
+    parser.add_argument("--max-level", default=90, help="max level", type=int)
+    parser.add_argument(
+        "--output-dir", default=DEFAULT_LEVEL_DIR, help="output directory"
+    )
+    return parser
+
+
+if __name__ == "__main__":
+    parser = get_parser()
+    main(parser.parse_args())

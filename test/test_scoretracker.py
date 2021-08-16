@@ -20,12 +20,12 @@ class TestScoreTracker(unittest.TestCase):
 
     def test_get_best_score_none(self) -> None:
         scores = Scores()
-        self.assertEquals(scores.get_best_score(self._filename, self._level_name), None)
+        self.assertEqual(scores.get_best_score(self._filename, self._level_name), None)
 
     def test_update_best_score(self) -> None:
         scores = Scores()
         scores.update_best_score(self._filename, self._level_name, 10)
-        self.assertEquals(scores.get_best_score(self._filename, self._level_name), 10)
+        self.assertEqual(scores.get_best_score(self._filename, self._level_name), 10)
 
     def test_update_best_score_with_better_score(self) -> None:
         scores = Scores()

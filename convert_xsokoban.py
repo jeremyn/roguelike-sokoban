@@ -72,8 +72,8 @@ import argparse
 import copy
 import os
 
-from src.constants import DEFAULT_LEVEL_DIR, LevelFileConsts
 from src.levelloader import LevelsStr
+from src.util import DEFAULT_LEVEL_DIR, LevelFileConsts
 
 # Standard format
 

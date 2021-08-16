@@ -6,8 +6,8 @@ Released under the GPLv3. See included LICENSE file.
 from enum import Enum
 from typing import Literal, Optional, Sequence, TypedDict, Union
 
-from src.constants import Action
 from src.levelloader import Symbols
+from src.util import Action
 
 
 class _MoveTestItem(TypedDict):

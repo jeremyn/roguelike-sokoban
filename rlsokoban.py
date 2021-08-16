@@ -6,8 +6,8 @@ Released under the GPLv3. See included LICENSE file.
 import argparse
 import curses
 
-from src import constants as const
 from src.main import main
+from src.util import DEFAULT_LEVEL_FILE_NAME_FULL
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -15,7 +15,7 @@ if __name__ == "__main__":
         "-L",
         "--level-file",
         nargs="?",
-        default=const.DEFAULT_LEVEL_FILE_NAME_FULL,
+        default=DEFAULT_LEVEL_FILE_NAME_FULL,
         dest="level_filename",
         help="load specified level file (default: %(default)s)",
         metavar="FILE",

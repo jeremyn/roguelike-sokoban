@@ -8,8 +8,8 @@ import curses
 import os
 import unittest
 
-from src import constants as const
 from src.main import main
+from src.util import QUIT
 
 TEST_DIR = "test"
 TEST_LEVELS_DIR = os.path.join(TEST_DIR, "test_levels")
@@ -32,7 +32,7 @@ if __name__ == "__main__":
         input(
             "Unit tests complete, press <ENTER> to run manual tests. (Pressing "
             "'{const_quit}' will move you to the next test level.) ".format(
-                const_quit=const.QUIT,
+                const_quit=QUIT,
             )
         )
         for test_level in TEST_LEVELS:

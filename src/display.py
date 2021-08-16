@@ -6,10 +6,8 @@ Released under the GPLv3. See included LICENSE file.
 import curses
 from typing import Literal, Optional
 
-from src import constants as const
 from src.universe import Universe
-
-Action = const.Action
+from src.util import GAME_NAME, PLAY_AGAIN, QUIT, TERMINAL_TOO_SMALL_TEXT, Action
 
 _Lines = dict[Literal["top", "bottom"], list[str]]
 _Scroll = dict[str, bool]
@@ -32,7 +30,7 @@ class _Coordinates(object):
         min_height = len(extracted_lines) + padding_for_level_view
         min_width = max([len(line) for line in extracted_lines])
         if self.max_y < min_height or self.max_x < min_width:
-            raise Exception(const.TERMINAL_TOO_SMALL_TEXT)
+            raise Exception(TERMINAL_TOO_SMALL_TEXT)
 
     def _find_levelpad_coords(
         self, lines: _Lines, univ: Universe
@@ -103,13 +101,11 @@ class Display(object):
         )
         self.level_sym = univ.level_sym
         self.text = {
-            "game_name": const.GAME_NAME,
+            "game_name": GAME_NAME,
             "bug_line": "",
             "instructions1": (
                 "Use the arrow keys to move around, '{quit}' to quit, and '{play_again}' to "
-                "restart this level.".format(
-                    quit=const.QUIT, play_again=const.PLAY_AGAIN
-                )
+                "restart this level.".format(quit=QUIT, play_again=PLAY_AGAIN)
             ),
             "instructions2": (
                 "Move yourself ({player}) over floor ({floor}) into boulders ({boulder}) to "
@@ -127,9 +123,9 @@ class Display(object):
             "scroll_info_line": "Scroll: UP, DOWN, LEFT, RIGHT",
             "goal": "Fill every pit to solve the puzzle.",
             "play_again_prompt": "-- Press '{play_again}' to play again --".format(
-                play_again=const.PLAY_AGAIN
+                play_again=PLAY_AGAIN
             ),
-            "quit_prompt": "-- Press '{quit}' to quit --".format(quit=const.QUIT),
+            "quit_prompt": "-- Press '{quit}' to quit --".format(quit=QUIT),
         }
         self.best_score = best_score
 
@@ -280,9 +276,9 @@ class Display(object):
             act = Action.LEFT
         elif k == curses.KEY_RIGHT:
             act = Action.RIGHT
-        elif k == ord(const.QUIT):
+        elif k == ord(QUIT):
             act = Action.QUIT
-        elif k == ord(const.PLAY_AGAIN):
+        elif k == ord(PLAY_AGAIN):
             act = Action.PLAY_AGAIN
         else:
             act = Action.OTHER

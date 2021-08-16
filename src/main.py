@@ -6,25 +6,23 @@ Released under the GPLv3. See included LICENSE file.
 import curses
 import os
 
-from src import constants as const
 from src.display import Display
 from src.levelloader import LevelLoader
 from src.score_tracking import Scores
 from src.universe import Universe
-
-Action = const.Action
+from src.util import DEFAULT_LEVEL_FILE_NAME_FULL, SCORES_FILE_NAME, Action
 
 
 def main(
     scrn: curses.window,
-    level_file_name: str = const.DEFAULT_LEVEL_FILE_NAME_FULL,
+    level_file_name: str = DEFAULT_LEVEL_FILE_NAME_FULL,
     update_scores: bool = True,
 ) -> None:
     if curses.has_colors():
         curses.use_default_colors()
 
     if update_scores:
-        scores = Scores(const.SCORES_FILE_NAME)
+        scores = Scores(SCORES_FILE_NAME)
     else:
         scores = Scores()
 

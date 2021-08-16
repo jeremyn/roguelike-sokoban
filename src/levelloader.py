@@ -6,8 +6,7 @@ Released under the GPLv3. See included LICENSE file.
 import curses
 from typing import Sequence, TypedDict
 
-from src import constants as const
-from src.constants import LevelFileConsts
+from src.util import GAME_NAME, QUIT, TERMINAL_TOO_SMALL_TEXT, LevelFileConsts
 
 
 class LevelStr(TypedDict):
@@ -133,8 +132,8 @@ class LevelLoader(object):
         # Two header lines + blank + level list + blank + prompt
         min_height = 2 + 1 + len(self.levels) + 1 + 1
         if min_height > scrn.getmaxyx()[0]:
-            raise Exception(const.TERMINAL_TOO_SMALL_TEXT)
-        welcome = "Welcome to {name}".format(name=const.GAME_NAME)
+            raise Exception(TERMINAL_TOO_SMALL_TEXT)
+        welcome = "Welcome to {name}".format(name=GAME_NAME)
         levels_found_header = "The following levels were found in {name}:".format(
             name=self.level_file_name
         )
@@ -154,11 +153,11 @@ class LevelLoader(object):
 
         first_prompt = (
             "Enter the number of the level you want to play, or '{quit}' to "
-            "quit: ".format(quit=const.QUIT)
+            "quit: ".format(quit=QUIT)
         )
         invalid_input_prompt = (
             "Invalid choice, please enter the number of an available level, or "
-            "'{quit}' to quit: ".format(quit=const.QUIT)
+            "'{quit}' to quit: ".format(quit=QUIT)
         )
 
         level_names = list(self.levels.keys())
@@ -184,7 +183,7 @@ class LevelLoader(object):
                 raise Exception("unknown value from getstr")
             curses.curs_set(0)
             curses.noecho()
-            if raw_choice == const.QUIT:
+            if raw_choice == QUIT:
                 raise KeyboardInterrupt
             else:
                 try:

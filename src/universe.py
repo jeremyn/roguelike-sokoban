@@ -149,14 +149,10 @@ class Universe:
                     self.level_map[row_index][col_index] = self.level_sym["floor"]
                 if square == self.level_sym["pit"]:
                     self.pits_remaining += 1
-        self._set_win_status()
+        self.game_won = False
 
     def eval_action(self, act: Action) -> None:
         """Move the player and see if they win."""
         move_dir = act
         self.player.move(move_dir, self)
-        self._set_win_status()
-
-    def _set_win_status(self) -> None:
-        """Update universe if the player has won."""
         self.game_won = self.pits_remaining == 0

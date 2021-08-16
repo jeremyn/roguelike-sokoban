@@ -20,7 +20,7 @@ _Lines = dict[Literal["top", "bottom"], list[str]]
 _Scroll = dict[str, bool]
 
 
-class _Coordinates(object):
+class _Coordinates:
     """Manages coordinates."""
 
     def __init__(self, scrn: curses.window, lines: _Lines, univ: Universe):
@@ -103,7 +103,7 @@ class _Coordinates(object):
         return (pminy, pminx, sminy, sminx, smaxy, smaxx), scroll
 
 
-class Display(object):
+class Display:
     """Represents the display."""
 
     def __init__(self, scrn: curses.window, univ: Universe, best_score: Optional[int]):

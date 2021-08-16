@@ -156,7 +156,7 @@ def _create_level_array(level_string: str) -> Sequence[str]:
     return lines
 
 
-class LevelLoader(object):
+class LevelLoader:
     """Manages initializing levels."""
 
     def __init__(self, level_filename: Path):

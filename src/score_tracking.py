@@ -12,7 +12,7 @@ from typing import Optional
 from src.util import UTF_8
 
 
-class Scores(object):
+class Scores:
     """Manages scores."""
 
     def __init__(self, scores_filename: Optional[Path] = None):

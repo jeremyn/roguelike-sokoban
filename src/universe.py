@@ -28,7 +28,7 @@ class _MoveMode(Enum):
     DRY_RUN = "dry run"
 
 
-class _Movable(object):
+class _Movable:
     """Represents items that can move."""
 
     _SYMBOL_LOOKUP: str
@@ -124,7 +124,7 @@ class _Player(_Movable):
                     univ.boulders.remove(player_move_result)
 
 
-class Universe(object):
+class Universe:
     """Represents the game universe."""
 
     def __init__(

@@ -71,19 +71,18 @@ class _Movable:
         else:
             raise RoguelikeSokobanError("Unexpected direction: {dir}".format(dir=axis))
 
+        if mode == _MoveMode.DO_MOVE:
+            self.curr_y = target_y
+            self.curr_x = target_x
+            return univ.level_map[self.curr_y][self.curr_x]
+
         if mode == _MoveMode.DRY_RUN:
             for boulder in univ.boulders:
                 if boulder.curr_y == target_y and boulder.curr_x == target_x:
                     return boulder
             return univ.level_map[target_y][target_x]
-        elif mode == _MoveMode.DO_MOVE:
-            self.curr_y = target_y
-            self.curr_x = target_x
-            return univ.level_map[self.curr_y][self.curr_x]
-        else:
-            raise RoguelikeSokobanError(
-                "Unexpected move mode: {mode}".format(mode=mode)
-            )
+
+        raise RoguelikeSokobanError("Unexpected move mode: {mode}".format(mode=mode))
 
 
 class _Boulder(_Movable):

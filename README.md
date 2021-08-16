@@ -8,7 +8,7 @@ Roguelike Sokoban is an ASCII-based Sokoban game that has a look and feel inspir
 
 ## Python version
 
-Please use a recent version of Python 3 when running anything in this repository. See the `Dockerfile` for guidance on a specific configuration.
+Please use a recent version of Python 3 when running anything in this repository.
 
 ## Running Roguelike Sokoban
 
@@ -21,8 +21,6 @@ from the root repository directory to play the default levels. To specify a leve
 There is a `requirements-dev.txt` file you can install with `pip` if you want packages only used for development.
 
 Roguelike Sokoban uses the [curses](https://docs.python.org/3/library/curses.html) module for its display. `curses` isn't included in the Python distribution for Windows, so on Windows you might want to use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) or find some other option.
-
-You can also run this with Docker as described later.
 
 ## Included levels
 
@@ -37,18 +35,6 @@ You can run the included tests with
     python3 run_tests.py
 
 By default, this will just run unit tests, but you can run manual test levels by adding the "--include-manual-tests" option.
-
-## Docker
-
-To run this with Docker, first build the image from the base directory with:
-
-    docker build -t jeremyn/roguelike-sokoban .
-
-Then run a container while mapping the code into it, for example:
-
-    docker run -it --rm -v ${PWD}:/workdir jeremyn/roguelike-sokoban
-
-This will give you a Bash prompt in the container in `/workdir` with the code.
 
 ## License
 

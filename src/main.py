@@ -39,23 +39,18 @@ def main(
         while True:
             disp.draw(univ)
             act = disp.get_action()
+            if act == Action.OTHER:
+                continue
+
             if act == Action.QUIT:
                 raise KeyboardInterrupt
-            elif univ.game_won:
-                if act == Action.PLAY_AGAIN:
-                    level_name = None
-                    break
-                else:
-                    pass
-            else:
-                if act == Action.PLAY_AGAIN:
-                    level_name = univ.level_name
-                    break
-                elif act == Action.OTHER:
-                    pass
-                else:
-                    univ.eval_action(act)
-                    if univ.game_won:
-                        scores.update_best_score(
-                            level_filename, univ.level_name, univ.moves_taken
-                        )
+
+            if act == Action.PLAY_AGAIN:
+                level_name = None if univ.game_won else univ.level_name
+                break
+
+            univ.eval_action(act)
+            if univ.game_won:
+                scores.update_best_score(
+                    level_filename, univ.level_name, univ.moves_taken
+                )

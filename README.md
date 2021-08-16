@@ -8,19 +8,15 @@ Roguelike Sokoban is an ASCII-based Sokoban game that has a look and feel inspir
 
 ## Python version
 
-Please use a recent version of Python 3 when running anything in this repository.
+Python 3.9. No external dependencies are needed, but the game requires the `curses` library which is not included with Python for Windows, though you can use [WSL](https://docs.microsoft.com/en-us/windows/wsl/).
 
 ## Running Roguelike Sokoban
 
 Run
 
-    python3 rlsokoban.py
+    python3.9 rlsokoban.py
 
 from the root repository directory to play the default levels. To specify a level file, use the `-L` option followed by the path to the level file.
-
-There is a `requirements-dev.txt` file you can install with `pip` if you want packages only used for development.
-
-Roguelike Sokoban uses the [curses](https://docs.python.org/3/library/curses.html) module for its display. `curses` isn't included in the Python distribution for Windows, so on Windows you might want to use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) or find some other option.
 
 ## Included levels
 
@@ -28,13 +24,15 @@ By default, the game will use the level file `levels/default-levels.txt`. Also i
 
 *Note*: the XSokoban levels were converted using the included `convert_xsokoban.py` script and have not all been playtested. They were originally written to use a different set of Sokoban rules than Roguelike Sokoban uses. It is possible some of them are unwinnable from the start. Please let me know if one of the included levels is unwinnable.
 
-## Testing
+## Development/Testing
+
+`requirements-dev.txt` has various formatting/linting packages you can install with pip.
 
 You can run the included tests with
 
-    python3 run_tests.py
+    python3.9 run_tests.py
 
-By default, this will just run unit tests, but you can run manual test levels by adding the "--include-manual-tests" option.
+By default, this will just run unit tests, but you can also play test levels by using the `--include-manual-tests` option.
 
 ## License
 

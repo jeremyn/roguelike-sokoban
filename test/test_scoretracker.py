@@ -79,7 +79,3 @@ class TestScoreTracker(unittest.TestCase):
                 {str(filename): {second_level_name: 15, self._level_name: 5}},
                 scores_data,
             )
-
-
-if __name__ == "__main__":
-    unittest.main()

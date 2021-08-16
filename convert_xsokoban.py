@@ -282,7 +282,7 @@ def main(args: argparse.Namespace) -> None:
         "floor": RL_FLOOR,
         "pit": RL_PIT,
         "player": RL_PLAYER,
-        "delimiter": LevelFileConsts.DELIMITER,
+        "delimiter": LevelFileConsts.DELIMITER + " ",
         "maps_start": LevelFileConsts.MAPS_START,
         "name_prefix": LevelFileConsts.NAME_PREFIX,
     }

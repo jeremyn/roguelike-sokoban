@@ -38,13 +38,16 @@ def _get_levels_from_file(level_file_name: str) -> tuple[Symbols, LevelsStr]:
         if not in_maps:
             line_split = line.split(LevelFileConsts.DELIMITER)
             if len(line_split) == 1:
-                first_part, second_part = line_split[0], ""
+                first_part, second_part = (
+                    line_split[0].strip().rstrip(LevelFileConsts.DELIMITER),
+                    "",
+                )
             else:
-                first_part, second_part = line_split
+                first_part, second_part = [part.strip() for part in line_split]
             symbols[first_part] = second_part
         else:
             if line.startswith(LevelFileConsts.NAME_PREFIX):
-                _, level_name = line.split(LevelFileConsts.DELIMITER)
+                level_name = line.split(LevelFileConsts.DELIMITER)[1].strip()
                 levels.append({"name": level_name, "map": ""})
             else:
                 if not levels[-1]["map"]:

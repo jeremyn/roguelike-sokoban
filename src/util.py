@@ -39,7 +39,7 @@ class Action(Enum):
 
 class _LevelFileConsts(NamedTuple):
     COMMENT_MARKER: str = "#"
-    DELIMITER: str = ": "
+    DELIMITER: str = ":"
     MAPS_START: str = "-> maps"
     NAME_PREFIX: str = "name"
 

@@ -232,22 +232,22 @@ class Display:
             scroll_info_line = scroll_info_line[:-2]
         self.text["scroll_info_line"] = scroll_info_line
 
-    def _paint_line(self, row: int, line: str) -> None:
+    def _paint_line(self, row: int, mid_x: int, line: str) -> None:
         """Write line to screen."""
-        t_min_x = self.coords.mid_x - (len(line) // 2)
+        t_min_x = mid_x - (len(line) // 2)
         for i, char in enumerate(line):
             if line == self.text["instructions2"] and char == self.level_sym["player"]:
                 self.scrn.addch(row, t_min_x + i, char, curses.A_REVERSE)
             else:
                 self.scrn.addch(row, t_min_x + i, char)
 
-    def _paint_text_lines(self, lines: _Lines) -> None:
+    def _paint_text_lines(self, coords: _Coordinates, lines: _Lines) -> None:
         """Write multiple informational lines to screen."""
         for line_number, line in enumerate(lines["top"]):
-            self._paint_line(self.coords.min_y + line_number, line)
+            self._paint_line(coords.min_y + line_number, coords.mid_x, line)
         for line_number, line in enumerate(lines["bottom"]):
             self._paint_line(
-                self.coords.max_y - len(lines["bottom"]) + line_number, line
+                coords.max_y - len(lines["bottom"]) + line_number, coords.mid_x, line
             )
 
     def _paint_levelpad(self, univ: Universe) -> None:
@@ -269,13 +269,13 @@ class Display:
         """(Re)draw the entire display."""
         self.scrn.clear()
         lines = self._return_lines(univ)
-        self.coords = _Coordinates(self.scrn, lines, univ)
-        self._set_scroll_line(self.coords.scroll_info)
+        coords = _Coordinates(self.scrn, lines, univ)
+        self._set_scroll_line(coords.scroll_info)
         lines = self._return_lines(univ)
-        self._paint_text_lines(lines)
+        self._paint_text_lines(coords, lines)
         self.scrn.noutrefresh()
         self._paint_levelpad(univ)
-        pminy, pminx, sminy, sminx, smaxy, smaxx = self.coords.levelpad_coords
+        pminy, pminx, sminy, sminx, smaxy, smaxx = coords.levelpad_coords
         self.levelpad.noutrefresh(pminy, pminx, sminy, sminx, smaxy, smaxx)
         curses.doupdate()
         curses.curs_set(0)

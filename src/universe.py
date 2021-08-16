@@ -101,7 +101,7 @@ class _Player(_Movable):
                 super(_Player, self)._move(move_dir, univ, _MoveMode.DO_MOVE)
                 univ.moves_taken += 1
                 if boulder_move_sq == self.level_sym["pit"]:
-                    univ.delete_boulder(player_move_result)
+                    univ.boulders.remove(player_move_result)
 
 
 class Universe(object):
@@ -135,9 +135,6 @@ class Universe(object):
         move_dir = act
         self.player.move(move_dir, self)
         self.__set_win_status()
-
-    def delete_boulder(self, boulder: _Boulder) -> None:
-        self.boulders.remove(boulder)
 
     def __set_win_status(self) -> None:
         self.game_won = self.pits_remaining == 0

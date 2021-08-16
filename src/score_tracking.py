@@ -3,8 +3,10 @@ Copyright 2021, Jeremy Nation <jeremy@jeremynation.me>
 Released under the GPLv3. See included LICENSE file.
 
 """
+import filecmp
 import json
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import Optional
 
 from src.util import UTF_8
@@ -49,11 +51,23 @@ class Scores(object):
         if (current_best_score is None) or (score < current_best_score):
             self.set_score(level_filename, level_name, score)
             if self._scores_filename is not None:
-                with self._scores_filename.open(mode="w", encoding=UTF_8) as file:
-                    json.dump(
-                        {str(k): v for k, v in self._scores.items()},
-                        file,
-                        sort_keys=True,
-                        indent=2,
-                    )
-                    file.write("\n")
+                # write first to a temp file so if the program crashes, we don't destroy
+                # the existing score file
+                with TemporaryDirectory() as temp_dir_str:
+                    temp_filename = Path(temp_dir_str) / "new_scores.json"
+                    with temp_filename.open(mode="w", encoding=UTF_8) as file:
+                        json.dump(
+                            {str(k): v for k, v in self._scores.items()},
+                            file,
+                            sort_keys=True,
+                            indent=2,
+                        )
+                        file.write("\n")
+
+                    files_match = False
+                    try:
+                        files_match = filecmp.cmp(temp_filename, self._scores_filename)
+                    except FileNotFoundError:
+                        pass
+                    if not files_match:
+                        temp_filename.rename(self._scores_filename)

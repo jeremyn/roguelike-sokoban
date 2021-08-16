@@ -257,29 +257,27 @@ class Display(object):
         curses.doupdate()
         curses.curs_set(0)
 
+    def __draw_names(self, level_names: Sequence[str], level_file_name: str) -> int:
+        """Paint all text for prompting other than the prompt line."""
+        # Two header lines + blank + level list + blank + prompt
+        min_height = 2 + 1 + len(level_names) + 1 + 1
+        if min_height > self.scrn.getmaxyx()[0]:
+            raise Exception(TERMINAL_TOO_SMALL_TEXT)
+        welcome = "Welcome to %s" % const.GAME_NAME
+        levels_found_header = "The following levels were found in %s:" % level_file_name
+        self.scrn.clear()
+        curses.endwin()
+        curses.curs_set(0)
+        self.scrn.refresh()
+        self.scrn.addstr(0, 0, welcome)
+        self.scrn.addstr(1, 0, levels_found_header)
+        for i, level_name in enumerate(level_names):
+            self.scrn.addstr(i + 3, 0, str(i + 1) + ". " + level_name)
+        # Write prompt here
+        return self.scrn.getyx()[0] + 2
+
     def level_prompt(self, level_names: Sequence[str], level_file_name: str) -> str:
         """Prompt the user for the level to play from the available choices."""
-
-        def __draw_names() -> int:
-            """Paint all text for prompting other than the prompt line."""
-            # Two header lines + blank + level list + blank + prompt
-            min_height = 2 + 1 + len(level_names) + 1 + 1
-            if min_height > self.scrn.getmaxyx()[0]:
-                raise Exception(TERMINAL_TOO_SMALL_TEXT)
-            welcome = "Welcome to %s" % const.GAME_NAME
-            levels_found_header = (
-                "The following levels were found in %s:" % level_file_name
-            )
-            self.scrn.clear()
-            curses.endwin()
-            curses.curs_set(0)
-            self.scrn.refresh()
-            self.scrn.addstr(0, 0, welcome)
-            self.scrn.addstr(1, 0, levels_found_header)
-            for i, level_name in enumerate(level_names):
-                self.scrn.addstr(i + 3, 0, str(i + 1) + ". " + level_name)
-            # Write prompt here
-            return self.scrn.getyx()[0] + 2
 
         first_prompt = (
             "Enter the number of the level you want to play, or '%s' to "
@@ -296,7 +294,7 @@ class Display(object):
 
         prompt = first_prompt
         while True:
-            prompt_y = __draw_names()
+            prompt_y = self.__draw_names(level_names, level_file_name)
             self.scrn.addstr(prompt_y, 0, prompt)
             curses.echo()
             curses.curs_set(1)

@@ -353,5 +353,4 @@ def get_parser() -> argparse.ArgumentParser:
 
 
 if __name__ == "__main__":
-    parser = get_parser()
-    main(parser.parse_args())
+    main(get_parser().parse_args())

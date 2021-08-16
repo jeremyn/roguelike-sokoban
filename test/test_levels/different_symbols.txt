@@ -3,7 +3,7 @@ floor: ~
 pit: ?
 player: 1
 -> maps
-name: Different Symbols
+name: Different Symbols Level
 ~~~~~
 1~X~?
 ~~~~~

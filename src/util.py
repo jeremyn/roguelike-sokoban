@@ -41,3 +41,8 @@ class _LevelFileConsts(NamedTuple):
 
 
 LevelFileConsts = _LevelFileConsts()
+
+
+class RoguelikeSokobanError(Exception):
+
+    pass

@@ -2,7 +2,7 @@ floor: .
 pit: ^
 player: @
 -> maps
-name: Test Level
+name: Missing Symbol Definition Level
 @..
 .0.
 ..^

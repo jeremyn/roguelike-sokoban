@@ -7,7 +7,7 @@ from enum import Enum
 from typing import Literal, Optional, Sequence, TypedDict, Union
 
 from src.levelloader import Symbols
-from src.util import Action
+from src.util import Action, RoguelikeSokobanError
 
 
 class _MoveTestItem(TypedDict):
@@ -41,12 +41,12 @@ class _Movable(object):
         self.pushable.append(self.level_sym["pit"])
         try:
             self.symbol = self.level_sym[self._SYMBOL_LOOKUP]
-        except KeyError:
-            raise Exception(
-                "Unexpected _Movable derived class: {lookup}".format(
+        except KeyError as exc:
+            raise RoguelikeSokobanError(
+                "Unexpected _SYMBOL_LOOKUP: '{lookup}'".format(
                     lookup=self._SYMBOL_LOOKUP
                 )
-            )
+            ) from exc
 
     def _move(
         self, move_dir: Action, univ: "Universe", mode: Optional[_MoveMode] = None
@@ -60,7 +60,7 @@ class _Movable(object):
             target_y = self.curr_y
             target_x = self.curr_x + change
         else:
-            raise Exception("Unexpected direction: {dir}".format(dir=axis))
+            raise RoguelikeSokobanError("Unexpected direction: {dir}".format(dir=axis))
 
         if mode == _MoveMode.DRY_RUN:
             for boulder in univ.boulders:
@@ -72,7 +72,9 @@ class _Movable(object):
             self.curr_x = target_x
             return univ.level_map[self.curr_y][self.curr_x]
         else:
-            raise Exception("Unexpected move mode: {mode}".format(mode=mode))
+            raise RoguelikeSokobanError(
+                "Unexpected move mode: {mode}".format(mode=mode)
+            )
 
 
 class _Boulder(_Movable):

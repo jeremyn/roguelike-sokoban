@@ -3,7 +3,7 @@ floor: .
 pit: ^
 player: @
 -> maps
-name: Test Level
+name: No Pits Level
 @..
 .0.
 ...

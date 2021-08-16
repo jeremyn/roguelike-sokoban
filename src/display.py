@@ -7,7 +7,14 @@ import curses
 from typing import Literal, Optional
 
 from src.universe import Universe
-from src.util import GAME_NAME, PLAY_AGAIN, QUIT, TERMINAL_TOO_SMALL_TEXT, Action
+from src.util import (
+    GAME_NAME,
+    PLAY_AGAIN,
+    QUIT,
+    TERMINAL_TOO_SMALL_TEXT,
+    Action,
+    RoguelikeSokobanError,
+)
 
 _Lines = dict[Literal["top", "bottom"], list[str]]
 _Scroll = dict[str, bool]
@@ -30,7 +37,7 @@ class _Coordinates(object):
         min_height = len(extracted_lines) + padding_for_level_view
         min_width = max([len(line) for line in extracted_lines])
         if self.max_y < min_height or self.max_x < min_width:
-            raise Exception(TERMINAL_TOO_SMALL_TEXT)
+            raise RoguelikeSokobanError(TERMINAL_TOO_SMALL_TEXT)
 
     def _find_levelpad_coords(
         self, lines: _Lines, univ: Universe

@@ -3,5 +3,5 @@ floor: .
 pit: ^
 player: @
 -> maps
-name: Empty Map
-name: Empty Map 2
+name: Empty Map Level
+name: Empty Map Level 2

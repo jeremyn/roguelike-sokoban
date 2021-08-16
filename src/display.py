@@ -25,12 +25,10 @@ class _Coordinates(object):
         self.mid_x = (self.max_x + self.min_x) // 2
         self.level_height = len(univ.level_map)
         self.level_width = len(univ.level_map[0])
-        self.levelpad_coords, self.scroll_info = self.__find_levelpad_coords(
-            lines, univ
-        )
-        self.__exception_if_too_small(lines)
+        self.levelpad_coords, self.scroll_info = self._find_levelpad_coords(lines, univ)
+        self._exception_if_too_small(lines)
 
-    def __exception_if_too_small(self, lines: _Lines) -> None:
+    def _exception_if_too_small(self, lines: _Lines) -> None:
         padding_for_level_view = 7
         extracted_lines = lines["top"] + lines["bottom"]
         min_height = len(extracted_lines) + padding_for_level_view
@@ -38,7 +36,7 @@ class _Coordinates(object):
         if self.max_y < min_height or self.max_x < min_width:
             raise Exception(TERMINAL_TOO_SMALL_TEXT)
 
-    def __find_levelpad_coords(
+    def _find_levelpad_coords(
         self, lines: _Lines, univ: Universe
     ) -> tuple[tuple[int, int, int, int, int, int], _Scroll]:
         avail_min_y = self.min_y + len(lines["top"]) + 1
@@ -136,7 +134,7 @@ class Display(object):
         }
         self.best_score = best_score
 
-    def __return_lines(self, univ: Universe) -> _Lines:
+    def _return_lines(self, univ: Universe) -> _Lines:
         self.text["status_pits"] = "Pits remaining: %d" % univ.pits_remaining
         self.text["status_moves"] = "Moves used: %d" % univ.moves_taken
         self.text["status_boulders"] = "Boulders remaining: %d" % len(univ.boulders)
@@ -201,7 +199,7 @@ class Display(object):
             }
         return lines
 
-    def __set_scroll_line(self, scroll_info: _Scroll) -> None:
+    def _set_scroll_line(self, scroll_info: _Scroll) -> None:
         scroll_info_line = "Scroll: "
         for direction in ("UP", "DOWN", "LEFT", "RIGHT"):
             if scroll_info[direction]:
@@ -212,7 +210,7 @@ class Display(object):
             scroll_info_line = scroll_info_line[:-2]
         self.text["scroll_info_line"] = scroll_info_line
 
-    def __paint_line(self, row: int, line: str) -> None:
+    def _paint_line(self, row: int, line: str) -> None:
         t_min_x = self.coords.mid_x - (len(line) // 2)
         for i, char in enumerate(line):
             if line == self.text["instructions2"] and char == self.level_sym["player"]:
@@ -220,16 +218,15 @@ class Display(object):
             else:
                 self.scrn.addch(row, t_min_x + i, char)
 
-    def __paint_text_lines(self, lines: _Lines) -> None:
+    def _paint_text_lines(self, lines: _Lines) -> None:
         for line_number, line in enumerate(lines["top"]):
-            self.__paint_line(self.coords.min_y + line_number, line)
+            self._paint_line(self.coords.min_y + line_number, line)
         for line_number, line in enumerate(lines["bottom"]):
-            self.__paint_line(
-                self.coords.max_y - len(lines["bottom"]) + line_number,
-                line,
+            self._paint_line(
+                self.coords.max_y - len(lines["bottom"]) + line_number, line
             )
 
-    def __paint_levelpad(self, univ: Universe) -> None:
+    def _paint_levelpad(self, univ: Universe) -> None:
         for row_index, row in enumerate(univ.level_map):
             for col_index, square in enumerate(row):
                 self.levelpad.addch(row_index, col_index, square)
@@ -245,19 +242,19 @@ class Display(object):
 
     def draw(self, univ: Universe) -> None:
         self.scrn.clear()
-        lines = self.__return_lines(univ)
+        lines = self._return_lines(univ)
         self.coords = _Coordinates(self.scrn, lines, univ)
-        self.__set_scroll_line(self.coords.scroll_info)
-        lines = self.__return_lines(univ)
-        self.__paint_text_lines(lines)
+        self._set_scroll_line(self.coords.scroll_info)
+        lines = self._return_lines(univ)
+        self._paint_text_lines(lines)
         self.scrn.noutrefresh()
-        self.__paint_levelpad(univ)
+        self._paint_levelpad(univ)
         pminy, pminx, sminy, sminx, smaxy, smaxx = self.coords.levelpad_coords
         self.levelpad.noutrefresh(pminy, pminx, sminy, sminx, smaxy, smaxx)
         curses.doupdate()
         curses.curs_set(0)
 
-    def __draw_names(self, level_names: Sequence[str], level_file_name: str) -> int:
+    def _draw_names(self, level_names: Sequence[str], level_file_name: str) -> int:
         """Paint all text for prompting other than the prompt line."""
         # Two header lines + blank + level list + blank + prompt
         min_height = 2 + 1 + len(level_names) + 1 + 1
@@ -294,7 +291,7 @@ class Display(object):
 
         prompt = first_prompt
         while True:
-            prompt_y = self.__draw_names(level_names, level_file_name)
+            prompt_y = self._draw_names(level_names, level_file_name)
             self.scrn.addstr(prompt_y, 0, prompt)
             curses.echo()
             curses.curs_set(1)

@@ -13,6 +13,8 @@ from src.util import UTF_8
 
 
 class TestScoreTracker(unittest.TestCase):
+    """Test the score tracker."""
+
     _filename: Path
     _level_name: str
 
@@ -23,6 +25,7 @@ class TestScoreTracker(unittest.TestCase):
         return super().setUpClass()
 
     def test_set_get_score(self) -> None:
+        """Test setting and getting scores."""
         scores = Scores()
         self.assertEqual(scores.get_score(self._filename, self._level_name), None)
 
@@ -33,23 +36,27 @@ class TestScoreTracker(unittest.TestCase):
         self.assertEqual(scores.get_score(self._filename, self._level_name), 2)
 
     def test_update_best_score(self) -> None:
+        """Test simple update_best_score."""
         scores = Scores()
         scores.update_best_score(self._filename, self._level_name, 10)
         self.assertEqual(scores.get_score(self._filename, self._level_name), 10)
 
     def test_update_best_score_with_better_score(self) -> None:
+        """Test update_best_score with a better score."""
         scores = Scores()
         scores.update_best_score(self._filename, self._level_name, 10)
         scores.update_best_score(self._filename, self._level_name, 5)
         self.assertEqual(scores.get_score(self._filename, self._level_name), 5)
 
     def test_update_best_score_with_worse_score(self) -> None:
+        """Test update_best_score with a worse score."""
         scores = Scores()
         scores.update_best_score(self._filename, self._level_name, 10)
         scores.update_best_score(self._filename, self._level_name, 15)
         self.assertEqual(scores.get_score(self._filename, self._level_name), 10)
 
     def test_update_best_score_file(self) -> None:
+        """Test update_best_score when writing to a file."""
         with TemporaryDirectory() as temp_dir_str:
             filename = Path(temp_dir_str) / "test_scores.json"
             scores = Scores(filename)

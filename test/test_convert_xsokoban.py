@@ -17,13 +17,17 @@ CONVERTED_FILENAME_STR = "xsokoban1-10.txt"
 
 
 class TestConvertXSokoban(unittest.TestCase):
+    """Test convert_sokoban.py."""
+
     def test_get_level_groups(self) -> None:
+        """Test get_level_groups."""
         self.assertEqual([(1, 7)], get_level_groups(7))
         self.assertEqual([(1, 10)], get_level_groups(10))
         self.assertEqual([(1, 10), (11, 20)], get_level_groups(20))
         self.assertEqual([(1, 10), (11, 20), (21, 23)], get_level_groups(23))
 
     def test_main(self) -> None:
+        """Test main."""
         with TemporaryDirectory() as output_dir_str:
             parser = get_parser()
             inputs = [

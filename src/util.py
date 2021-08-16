@@ -24,6 +24,8 @@ UTF_8 = "utf-8"
 
 
 class Action(Enum):
+    """Represents actions the player can choose."""
+
     UP = "up"
     DOWN = "down"
     LEFT = "left"
@@ -44,5 +46,4 @@ LevelFileConsts = _LevelFileConsts()
 
 
 class RoguelikeSokobanError(Exception):
-
-    pass
+    """Class for all game-specific errors."""

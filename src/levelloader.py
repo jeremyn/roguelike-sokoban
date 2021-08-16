@@ -18,6 +18,8 @@ from src.util import (
 
 
 class LevelStr(TypedDict):
+    """Represents a level read directly from a file."""
+
     name: str
     map: str
 
@@ -28,6 +30,7 @@ Symbols = dict[str, str]
 
 
 def _get_levels_from_file(level_filename: Path) -> tuple[Symbols, LevelsStr]:
+    """Return all level information from a file."""
     with level_filename.open(encoding=UTF_8) as file:
         lines = file.readlines()
 
@@ -67,6 +70,7 @@ def _get_levels_from_file(level_filename: Path) -> tuple[Symbols, LevelsStr]:
 
 
 def _validate_level_data(symbols: Symbols, levels: LevelsStr) -> None:
+    """Validate level data."""
     for symbol_name, symbol_value in symbols.items():
         if len(symbol_value) < 1:
             raise RoguelikeSokobanError(
@@ -138,6 +142,7 @@ def _validate_level_data(symbols: Symbols, levels: LevelsStr) -> None:
 
 
 def _create_level_array(level_string: str) -> Sequence[str]:
+    """Convert level-as-one-str to level-as-ROW-NUM-of-strs with padding."""
     lines = level_string.split("\n")
     max_line_length = max([len(line) for line in lines])
     lines = [line.ljust(max_line_length) for line in lines]
@@ -152,6 +157,8 @@ def _create_level_array(level_string: str) -> Sequence[str]:
 
 
 class LevelLoader(object):
+    """Manages initializing levels."""
+
     def __init__(self, level_filename: Path):
         self.level_filename = level_filename
         self.symbols, levels_str = _get_levels_from_file(self.level_filename)
@@ -161,7 +168,7 @@ class LevelLoader(object):
         }
 
     def _draw_names(self, scrn: curses.window) -> int:
-        """Paint all text for prompting other than the prompt line."""
+        """Paint text to prepare for asking the player to choose a level."""
         # Two header lines + blank + level list + blank + prompt
         min_height = 2 + 1 + len(self.levels) + 1 + 1
         if min_height > scrn.getmaxyx()[0]:

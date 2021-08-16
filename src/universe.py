@@ -29,6 +29,7 @@ class _MoveMode(Enum):
 
 
 class _Movable(object):
+    """Represents items that can move."""
 
     _SYMBOL_LOOKUP: str
 
@@ -36,7 +37,9 @@ class _Movable(object):
         self.curr_y = start_y
         self.curr_x = start_x
         self.level_sym = level_sym
+        # things that the player can walk over
         self.walkable = [self.level_sym["floor"]]
+        # things that a boulder can be pushed over or into
         self.pushable = self.walkable[:]
         self.pushable.append(self.level_sym["pit"])
         try:
@@ -51,6 +54,12 @@ class _Movable(object):
     def _move(
         self, move_dir: Action, univ: "Universe", mode: Optional[_MoveMode] = None
     ) -> Union[str, "_Boulder"]:
+        """Handle movement math for subclasses.
+
+        Return new grid coords for movement target (destination), or if DRY_RUN and the
+        target is a boulder, return the boulder object.
+
+        """
         axis = _MOVE_TEST[move_dir]["axis"]
         change = _MOVE_TEST[move_dir]["change"]
         if axis == "y":
@@ -78,10 +87,12 @@ class _Movable(object):
 
 
 class _Boulder(_Movable):
+    """Represents boulders."""
 
     _SYMBOL_LOOKUP = "boulder"
 
     def move(self, move_dir: Action, univ: "Universe") -> Union[str, "_Boulder"]:
+        """Check if boulder can move, and if so, move it and update universe."""
         mov = super(_Boulder, self)._move(move_dir, univ, _MoveMode.DRY_RUN)
         if mov in self.pushable:
             super(_Boulder, self)._move(move_dir, univ, _MoveMode.DO_MOVE)
@@ -92,10 +103,12 @@ class _Boulder(_Movable):
 
 
 class _Player(_Movable):
+    """Represents the player."""
 
     _SYMBOL_LOOKUP = "player"
 
     def move(self, move_dir: Action, univ: "Universe") -> None:
+        """Check if player can move, and if so, move them and update universe."""
         player_move_result = super(_Player, self)._move(
             move_dir, univ, _MoveMode.DRY_RUN
         )
@@ -112,6 +125,8 @@ class _Player(_Movable):
 
 
 class Universe(object):
+    """Represents the game universe."""
+
     def __init__(
         self, level_name: str, level_map: Sequence[str], level_sym: Symbols
     ) -> None:
@@ -140,9 +155,11 @@ class Universe(object):
         self._set_win_status()
 
     def eval_action(self, act: Action) -> None:
+        """Move the player and see if they win."""
         move_dir = act
         self.player.move(move_dir, self)
         self._set_win_status()
 
     def _set_win_status(self) -> None:
+        """Update universe if the player has won."""
         self.game_won = self.pits_remaining == 0

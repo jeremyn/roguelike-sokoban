@@ -13,6 +13,8 @@ from src.util import UTF_8
 
 
 class Scores(object):
+    """Manages scores."""
+
     def __init__(self, scores_filename: Optional[Path] = None):
         self._scores_filename = scores_filename
         self._scores: dict[Path, dict[str, int]]
@@ -30,6 +32,7 @@ class Scores(object):
                 self._scores = {}
 
     def get_score(self, level_filename: Path, level_name: str) -> Optional[int]:
+        """Get current (best) score for given info, or None if no score."""
         level_filename = level_filename.resolve()
         try:
             best_score: Optional[int] = self._scores[level_filename][level_name]
@@ -38,6 +41,7 @@ class Scores(object):
         return best_score
 
     def set_score(self, level_filename: Path, level_name: str, score: int) -> None:
+        """Unconditionally set a score."""
         level_filename = level_filename.resolve()
         if level_filename in self._scores:
             self._scores[level_filename][level_name] = score
@@ -47,6 +51,7 @@ class Scores(object):
     def update_best_score(
         self, level_filename: Path, level_name: str, score: int
     ) -> None:
+        """Update score if it's better (lower) and rewrite score file if defined."""
         current_best_score = self.get_score(level_filename, level_name)
         if (current_best_score is None) or (score < current_best_score):
             self.set_score(level_filename, level_name, score)

@@ -274,6 +274,7 @@ def get_level_groups(max_level: int) -> list[tuple[int, int]]:
 
 
 def main(args: argparse.Namespace) -> None:
+    """Main function for script."""
     input_dir: Path = args.input_dir
     max_level: int = args.max_level
     output_dir: Path = args.output_dir if args.output_dir else input_dir
@@ -332,6 +333,7 @@ def main(args: argparse.Namespace) -> None:
 
 
 def get_parser() -> argparse.ArgumentParser:
+    """Get the argparse parser."""
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )

@@ -18,6 +18,7 @@ def main(
     level_filename: Path,
     update_scores: bool = True,
 ) -> None:
+    """Main function for game."""
     if curses.has_colors():
         curses.use_default_colors()
 

@@ -21,6 +21,8 @@ _Scroll = dict[str, bool]
 
 
 class _Coordinates(object):
+    """Manages coordinates."""
+
     def __init__(self, scrn: curses.window, lines: _Lines, univ: Universe):
         self.min_y, self.min_x = scrn.getbegyx()
         self.max_y, self.max_x = scrn.getmaxyx()
@@ -32,6 +34,7 @@ class _Coordinates(object):
         self._exception_if_too_small(lines)
 
     def _exception_if_too_small(self, lines: _Lines) -> None:
+        """Raise an exception if the screen is too small."""
         padding_for_level_view = 7
         extracted_lines = lines["top"] + lines["bottom"]
         min_height = len(extracted_lines) + padding_for_level_view
@@ -42,6 +45,7 @@ class _Coordinates(object):
     def _find_levelpad_coords(
         self, lines: _Lines, univ: Universe
     ) -> tuple[tuple[int, int, int, int, int, int], _Scroll]:
+        """Get coords representing the playable level within the overall display."""
         avail_min_y = self.min_y + len(lines["top"]) + 1
         avail_max_y = self.max_y - len(lines["bottom"]) - 2
         avail_min_x = self.min_x + 1
@@ -100,6 +104,8 @@ class _Coordinates(object):
 
 
 class Display(object):
+    """Represents the display."""
+
     def __init__(self, scrn: curses.window, univ: Universe, best_score: Optional[int]):
         self.scrn = scrn
         self.levelpad = curses.newpad(
@@ -137,6 +143,7 @@ class Display(object):
         self.best_score = best_score
 
     def _return_lines(self, univ: Universe) -> _Lines:
+        """Set some internal values and return lines to print to screen."""
         self.text["status_pits"] = "Pits remaining: {pit_num}".format(
             pit_num=univ.pits_remaining
         )
@@ -214,6 +221,7 @@ class Display(object):
         return lines
 
     def _set_scroll_line(self, scroll_info: _Scroll) -> None:
+        """Set info about which direction(s) the map extends offscreen."""
         scroll_info_line = "Scroll: "
         for direction in ("UP", "DOWN", "LEFT", "RIGHT"):
             if scroll_info[direction]:
@@ -225,6 +233,7 @@ class Display(object):
         self.text["scroll_info_line"] = scroll_info_line
 
     def _paint_line(self, row: int, line: str) -> None:
+        """Write line to screen."""
         t_min_x = self.coords.mid_x - (len(line) // 2)
         for i, char in enumerate(line):
             if line == self.text["instructions2"] and char == self.level_sym["player"]:
@@ -233,6 +242,7 @@ class Display(object):
                 self.scrn.addch(row, t_min_x + i, char)
 
     def _paint_text_lines(self, lines: _Lines) -> None:
+        """Write multiple informational lines to screen."""
         for line_number, line in enumerate(lines["top"]):
             self._paint_line(self.coords.min_y + line_number, line)
         for line_number, line in enumerate(lines["bottom"]):
@@ -241,6 +251,7 @@ class Display(object):
             )
 
     def _paint_levelpad(self, univ: Universe) -> None:
+        """Write the playable area to screen."""
         for row_index, row in enumerate(univ.level_map):
             for col_index, square in enumerate(row):
                 self.levelpad.addch(row_index, col_index, square)
@@ -255,6 +266,7 @@ class Display(object):
             self.levelpad.addch(b_y, b_x, b_sym)
 
     def draw(self, univ: Universe) -> None:
+        """(Re)draw the entire display."""
         self.scrn.clear()
         lines = self._return_lines(univ)
         self.coords = _Coordinates(self.scrn, lines, univ)
@@ -269,6 +281,7 @@ class Display(object):
         curses.curs_set(0)
 
     def get_action(self) -> Action:
+        """Get an action from the player."""
         k = self.scrn.getch()
         if k == curses.KEY_RESIZE:
             self.scrn.clear()

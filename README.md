@@ -70,8 +70,6 @@ Then run a container while mapping the code into it, for example:
 
 This will give you a Bash prompt in the container in `/workdir` with the code.
 
-You can also open this project with VS Code in a container with the included [`devcontainer.json`](https://code.visualstudio.com/docs/remote/create-dev-container#_create-a-devcontainerjson-file).
-
 ## License
 
 GPLv3 or later (see included `LICENSE` file).

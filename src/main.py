@@ -22,26 +22,22 @@ def main(
 ) -> None:
     if curses.has_colors():
         curses.use_default_colors()
-    disp = Display(scrn)
-    loader = LevelLoader(level_file_name)
-    keep_playing = True
-    base_level_filename = os.path.basename(level_file_name)
-    level_name = None
 
     if update_scores:
         scores = Scores(const.SCORES_FILE_NAME)
     else:
         scores = Scores()
 
+    base_level_filename = os.path.basename(level_file_name)
+    loader = LevelLoader(level_file_name)
+    level_name = None
+    keep_playing = True
     while keep_playing:
         if level_name is None:
-            level_name = disp.level_prompt(
-                list(loader.levels.keys()), loader.level_file_name
-            )
-
-        univ = Universe(loader.get_level(level_name))
+            level_name = loader.level_prompt(scrn)
+        univ = Universe(level_name, loader.levels[level_name], loader.symbols)
         best_score = scores.get_best_score(base_level_filename, univ.level_name)
-        disp.level_init(univ, best_score)
+        disp = Display(scrn, univ, best_score)
         while True:
             disp.draw(univ)
             act = disp.get_action()

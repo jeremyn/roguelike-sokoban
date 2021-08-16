@@ -4,17 +4,12 @@ Released under the GPLv3. See included LICENSE file.
 
 """
 import curses
-from typing import Literal, Optional, Sequence
+from typing import Literal, Optional
 
 from src import constants as const
 from src.universe import Universe
 
 Action = const.Action
-
-TERMINAL_TOO_SMALL_TEXT = (
-    "Your terminal is too small. Please increase your terminal size to at "
-    "least 80x24 and try again."
-)
 
 _Lines = dict[Literal["top", "bottom"], list[str]]
 _Scroll = dict[str, bool]
@@ -37,7 +32,7 @@ class _Coordinates(object):
         min_height = len(extracted_lines) + padding_for_level_view
         min_width = max([len(line) for line in extracted_lines])
         if self.max_y < min_height or self.max_x < min_width:
-            raise Exception(TERMINAL_TOO_SMALL_TEXT)
+            raise Exception(const.TERMINAL_TOO_SMALL_TEXT)
 
     def _find_levelpad_coords(
         self, lines: _Lines, univ: Universe
@@ -100,10 +95,8 @@ class _Coordinates(object):
 
 
 class Display(object):
-    def __init__(self, scrn: curses.window):
+    def __init__(self, scrn: curses.window, univ: Universe, best_score: Optional[int]):
         self.scrn = scrn
-
-    def level_init(self, univ: Universe, best_score: Optional[int]) -> None:
         self.levelpad = curses.newpad(
             len(univ.level_map) + 1,
             len(univ.level_map[0]) + 1,
@@ -256,72 +249,6 @@ class Display(object):
         self.levelpad.noutrefresh(pminy, pminx, sminy, sminx, smaxy, smaxx)
         curses.doupdate()
         curses.curs_set(0)
-
-    def _draw_names(self, level_names: Sequence[str], level_file_name: str) -> int:
-        """Paint all text for prompting other than the prompt line."""
-        # Two header lines + blank + level list + blank + prompt
-        min_height = 2 + 1 + len(level_names) + 1 + 1
-        if min_height > self.scrn.getmaxyx()[0]:
-            raise Exception(TERMINAL_TOO_SMALL_TEXT)
-        welcome = "Welcome to %s" % const.GAME_NAME
-        levels_found_header = "The following levels were found in %s:" % level_file_name
-        self.scrn.clear()
-        curses.endwin()
-        curses.curs_set(0)
-        self.scrn.refresh()
-        self.scrn.addstr(0, 0, welcome)
-        self.scrn.addstr(1, 0, levels_found_header)
-        for i, level_name in enumerate(level_names):
-            self.scrn.addstr(i + 3, 0, str(i + 1) + ". " + level_name)
-        # Write prompt here
-        return self.scrn.getyx()[0] + 2
-
-    def level_prompt(self, level_names: Sequence[str], level_file_name: str) -> str:
-        """Prompt the user for the level to play from the available choices."""
-
-        first_prompt = (
-            "Enter the number of the level you want to play, or '%s' to "
-            "quit: " % const.QUIT
-        )
-        invalid_input_prompt = (
-            "Invalid choice, please enter the number of an available level, or"
-            "'%s' to quit: " % const.QUIT
-        )
-
-        if len(level_names) == 1:
-            chosen_level_name = level_names[0]
-            return chosen_level_name
-
-        prompt = first_prompt
-        while True:
-            prompt_y = self._draw_names(level_names, level_file_name)
-            self.scrn.addstr(prompt_y, 0, prompt)
-            curses.echo()
-            curses.curs_set(1)
-            # FIXME: Weird things happen if you resize the terminal while being
-            # prompted for raw_choice. Various workarounds such as using getch
-            # rather than getstr or redrawing the screen if curses.KEY_RESIZE
-            # is found in raw_choice have not fixed everything.
-            raw_choice_unknown = self.scrn.getstr()
-            if isinstance(raw_choice_unknown, bytes):
-                raw_choice = raw_choice_unknown.decode("utf-8").strip()
-            else:
-                raise Exception("unknown value from getstr")
-            curses.curs_set(0)
-            curses.noecho()
-            if raw_choice == const.QUIT:
-                raise KeyboardInterrupt
-            else:
-                try:
-                    choice = int(raw_choice)
-                    if choice in range(1, len(level_names) + 1):
-                        break
-                except ValueError:
-                    pass
-                prompt = invalid_input_prompt
-        choice -= 1
-        chosen_level_name = level_names[choice]
-        return chosen_level_name.rstrip()
 
     def get_action(self) -> Action:
         k = self.scrn.getch()

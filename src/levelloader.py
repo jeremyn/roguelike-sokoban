@@ -3,8 +3,10 @@ Copyright 2021, Jeremy Nation <jeremy@jeremynation.me>
 Released under the GPLv3. See included LICENSE file.
 
 """
+import curses
 from typing import Sequence, TypedDict
 
+from src import constants as const
 from src.constants import LevelFileConsts
 
 
@@ -16,8 +18,6 @@ class LevelStr(TypedDict):
 LevelsStr = list[LevelStr]
 
 Symbols = dict[str, str]
-
-LevelInfo = tuple[str, Sequence[str], Symbols]
 
 
 def _get_levels_from_file(level_file_name: str) -> tuple[Symbols, LevelsStr]:
@@ -126,8 +126,75 @@ class LevelLoader(object):
             level["name"]: _create_level_array(level["map"]) for level in levels_str
         }
 
-    def get_level(self, level_name: str) -> LevelInfo:
-        return level_name, self.levels[level_name], self.symbols
+    def _draw_names(self, scrn: curses.window) -> int:
+        """Paint all text for prompting other than the prompt line."""
+        # Two header lines + blank + level list + blank + prompt
+        min_height = 2 + 1 + len(self.levels) + 1 + 1
+        if min_height > scrn.getmaxyx()[0]:
+            raise Exception(const.TERMINAL_TOO_SMALL_TEXT)
+        welcome = "Welcome to %s" % const.GAME_NAME
+        levels_found_header = (
+            "The following levels were found in %s:" % self.level_file_name
+        )
+        scrn.clear()
+        curses.endwin()
+        curses.curs_set(0)
+        scrn.refresh()
+        scrn.addstr(0, 0, welcome)
+        scrn.addstr(1, 0, levels_found_header)
+        for i, level_name in enumerate(self.levels):
+            scrn.addstr(i + 3, 0, str(i + 1) + ". " + level_name)
+        # Write prompt here
+        return scrn.getyx()[0] + 2
+
+    def level_prompt(self, scrn: curses.window) -> str:
+        """Prompt the user for the level to play from the available choices."""
+
+        first_prompt = (
+            "Enter the number of the level you want to play, or '%s' to "
+            "quit: " % const.QUIT
+        )
+        invalid_input_prompt = (
+            "Invalid choice, please enter the number of an available level, or"
+            "'%s' to quit: " % const.QUIT
+        )
+
+        level_names = list(self.levels.keys())
+
+        if len(level_names) == 1:
+            chosen_level_name = level_names[0]
+            return chosen_level_name
+
+        prompt = first_prompt
+        while True:
+            prompt_y = self._draw_names(scrn)
+            scrn.addstr(prompt_y, 0, prompt)
+            curses.echo()
+            curses.curs_set(1)
+            # FIXME: Weird things happen if you resize the terminal while being
+            # prompted for raw_choice. Various workarounds such as using getch
+            # rather than getstr or redrawing the screen if curses.KEY_RESIZE
+            # is found in raw_choice have not fixed everything.
+            raw_choice_unknown = scrn.getstr()
+            if isinstance(raw_choice_unknown, bytes):
+                raw_choice = raw_choice_unknown.decode("utf-8").strip()
+            else:
+                raise Exception("unknown value from getstr")
+            curses.curs_set(0)
+            curses.noecho()
+            if raw_choice == const.QUIT:
+                raise KeyboardInterrupt
+            else:
+                try:
+                    choice = int(raw_choice)
+                    if choice in range(1, len(level_names) + 1):
+                        break
+                except ValueError:
+                    pass
+                prompt = invalid_input_prompt
+        choice -= 1
+        chosen_level_name = level_names[choice]
+        return chosen_level_name.rstrip()
 
 
 class BlankLineError(Exception):

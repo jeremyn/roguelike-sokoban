@@ -4,10 +4,10 @@ Released under the GPLv3. See included LICENSE file.
 
 """
 from enum import Enum
-from typing import Literal, Optional, TypedDict, Union
+from typing import Literal, Optional, Sequence, TypedDict, Union
 
 from src.constants import Action
-from src.levelloader import LevelInfo, Symbols
+from src.levelloader import Symbols
 
 
 class _MoveTestItem(TypedDict):
@@ -108,8 +108,9 @@ class _Player(_Movable):
 
 
 class Universe(object):
-    def __init__(self, level_info: LevelInfo) -> None:
-        level_name, level_map, level_sym = level_info
+    def __init__(
+        self, level_name: str, level_map: Sequence[str], level_sym: Symbols
+    ) -> None:
         self.level_map = [list(line) for line in level_map]
         self.level_name = level_name
         self.level_sym = level_sym

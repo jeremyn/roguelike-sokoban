@@ -21,6 +21,11 @@ SCORES_FILE_NAME = "scores.json"
 QUIT = "q"
 PLAY_AGAIN = "r"
 
+TERMINAL_TOO_SMALL_TEXT = (
+    "Your terminal is too small. Please increase your terminal size to at "
+    "least 80x24 and try again."
+)
+
 
 class Action(Enum):
     UP = "up"

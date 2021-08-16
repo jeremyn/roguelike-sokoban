@@ -1,6 +1,7 @@
-# Copyright 2021, Jeremy Nation <jeremy@jeremynation.me>
-# Released under the GPLv3. See included LICENSE file.
 """
+Copyright 2021, Jeremy Nation <jeremy@jeremynation.me>
+Released under the GPLv3. See included LICENSE file.
+
 Script that converts XSokoban levels into Roguelike Sokoban-style level files.
 
 The XSokoban levels seem to use standard Sokoban level formatting as described

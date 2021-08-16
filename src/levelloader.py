@@ -1,5 +1,8 @@
-# Copyright 2021, Jeremy Nation <jeremy@jeremynation.me>
-# Released under the GPLv3. See included LICENSE file.
+"""
+Copyright 2021, Jeremy Nation <jeremy@jeremynation.me>
+Released under the GPLv3. See included LICENSE file.
+
+"""
 from typing import Sequence, TypedDict
 
 from src.constants import LevelFileConsts

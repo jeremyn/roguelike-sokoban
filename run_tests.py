@@ -4,11 +4,11 @@ import argparse
 import curses
 import os
 import unittest
+from test.test_levelloader import TestLevelLoader
+from test.test_scoretracker import TestScoreTracker
 
 import src
 from src.main import main
-from test.test_levelloader import TestLevelLoader
-from test.test_scoretracker import TestScoreTracker
 
 TEST_DIR = "test"
 TEST_LEVELS_DIR = os.path.join(TEST_DIR, "test_levels")

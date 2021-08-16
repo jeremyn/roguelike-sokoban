@@ -4,13 +4,8 @@
 import curses
 import os
 
-from src import (
-    constants as const,
-    display,
-    score_tracking,
-    levelloader,
-    universe,
-)
+from src import constants as const
+from src import display, levelloader, score_tracking, universe
 
 Action = const.Action
 

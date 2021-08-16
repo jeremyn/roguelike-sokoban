@@ -2,7 +2,6 @@
 # Released under the GPLv3. See included LICENSE file.
 from src.constants import Action
 
-
 _MOVE_TEST = {
     Action.UP: {"axis": "y", "change": -1},
     Action.DOWN: {"axis": "y", "change": 1},

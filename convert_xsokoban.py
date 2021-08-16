@@ -68,13 +68,10 @@ levels/xsokoban<x>-<y>.yml from the root repository directory.
 """
 import argparse
 import copy
-from functools import reduce
 import os
+from functools import reduce
 
-from src.constants import (
-    DEFAULT_LEVEL_DIR,
-    LevelFileConsts,
-)
+from src.constants import DEFAULT_LEVEL_DIR, LevelFileConsts
 
 # Standard format
 

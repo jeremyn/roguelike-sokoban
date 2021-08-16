@@ -1,8 +1,8 @@
 # Copyright 2021, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
+import curses
 from functools import reduce
 
-import curses
 from src import constants as const
 
 Action = const.Action

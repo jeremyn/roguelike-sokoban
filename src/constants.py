@@ -1,8 +1,8 @@
 # Copyright 2021, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
+import os
 from collections import namedtuple
 from enum import Enum
-import os
 
 GAME_NAME = "Roguelike Sokoban"
 

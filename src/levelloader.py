@@ -225,14 +225,16 @@ class LevelLoader:
             curses.noecho()
             if raw_choice == QUIT:
                 raise KeyboardInterrupt
-            else:
-                try:
-                    choice = int(raw_choice)
-                    if choice in range(1, len(level_names) + 1):
-                        break
-                except ValueError:
-                    pass
-                prompt = invalid_input_prompt
+
+            try:
+                choice = int(raw_choice)
+                if choice in range(1, len(level_names) + 1):
+                    break
+            except ValueError:
+                pass
+
+            prompt = invalid_input_prompt
+
         choice -= 1
         chosen_level_name = level_names[choice]
         return chosen_level_name.rstrip()

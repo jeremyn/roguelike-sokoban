@@ -3,7 +3,7 @@
 import argparse
 import curses
 
-import src
+from src import constants as const
 from src.main import main
 
 if __name__ == "__main__":
@@ -12,7 +12,7 @@ if __name__ == "__main__":
         "-L",
         "--level-file",
         nargs="?",
-        default=src.constants.DEFAULT_LEVEL_FILE_NAME_FULL,
+        default=const.DEFAULT_LEVEL_FILE_NAME_FULL,
         dest="level_filename",
         help="load specified level file (default: %(default)s)",
         metavar="FILE",

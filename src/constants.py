@@ -1,8 +1,8 @@
 # Copyright 2021, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
 import os
-from collections import namedtuple
 from enum import Enum
+from typing import NamedTuple
 
 GAME_NAME = "Roguelike Sokoban"
 
@@ -29,18 +29,11 @@ class Action(Enum):
     OTHER = "other"
 
 
-_LevelFileConsts = namedtuple(
-    "LevelFileConsts",
-    [
-        "COMMENT_MARKER",
-        "DELIMITER",
-        "MAPS_START",
-        "NAME_PREFIX",
-    ],
-)
-LevelFileConsts = _LevelFileConsts(
-    COMMENT_MARKER="#",
-    DELIMITER=": ",
-    MAPS_START="-> maps",
-    NAME_PREFIX="name",
-)
+class _LevelFileConsts(NamedTuple):
+    COMMENT_MARKER: str = "#"
+    DELIMITER: str = ": "
+    MAPS_START: str = "-> maps"
+    NAME_PREFIX: str = "name"
+
+
+LevelFileConsts = _LevelFileConsts()

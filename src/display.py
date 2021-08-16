@@ -1,9 +1,10 @@
 # Copyright 2021, Jeremy Nation <jeremy@jeremynation.me>
 # Released under the GPLv3. See included LICENSE file.
 import curses
-from functools import reduce
+from typing import Literal, Optional, Sequence
 
 from src import constants as const
+from src.universe import Universe
 
 Action = const.Action
 
@@ -12,9 +13,12 @@ TERMINAL_TOO_SMALL_TEXT = (
     "least 80x24 and try again."
 )
 
+_Lines = dict[Literal["top", "bottom"], list[str]]
+_Scroll = dict[str, bool]
+
 
 class _Coordinates(object):
-    def __init__(self, scrn, lines, univ):
+    def __init__(self, scrn: curses.window, lines: _Lines, univ: Universe):
         self.min_y, self.min_x = scrn.getbegyx()
         self.max_y, self.max_x = scrn.getmaxyx()
         self.mid_y = (self.max_y + self.min_y) // 2
@@ -26,15 +30,17 @@ class _Coordinates(object):
         )
         self.__exception_if_too_small(lines)
 
-    def __exception_if_too_small(self, lines):
+    def __exception_if_too_small(self, lines: _Lines) -> None:
         padding_for_level_view = 7
         extracted_lines = lines["top"] + lines["bottom"]
         min_height = len(extracted_lines) + padding_for_level_view
-        min_width = reduce(max, [len(line) for line in extracted_lines])
+        min_width = max([len(line) for line in extracted_lines])
         if self.max_y < min_height or self.max_x < min_width:
             raise Exception(TERMINAL_TOO_SMALL_TEXT)
 
-    def __find_levelpad_coords(self, lines, univ):
+    def __find_levelpad_coords(
+        self, lines: _Lines, univ: Universe
+    ) -> tuple[tuple[int, int, int, int, int, int], _Scroll]:
         avail_min_y = self.min_y + len(lines["top"]) + 1
         avail_max_y = self.max_y - len(lines["bottom"]) - 2
         avail_min_x = self.min_x + 1
@@ -78,7 +84,7 @@ class _Coordinates(object):
             sminx = avail_min_x
             smaxx = avail_max_x
 
-        scroll = {
+        scroll: _Scroll = {
             "UP": pminy > 0,
             "DOWN": (
                 self.level_height > avail_y and pminy < self.level_height - avail_y
@@ -93,10 +99,10 @@ class _Coordinates(object):
 
 
 class Display(object):
-    def __init__(self, scrn):
+    def __init__(self, scrn: curses.window):
         self.scrn = scrn
 
-    def level_init(self, univ, best_score):
+    def level_init(self, univ: Universe, best_score: Optional[int]) -> None:
         self.levelpad = curses.newpad(
             len(univ.level_map) + 1,
             len(univ.level_map[0]) + 1,
@@ -130,7 +136,7 @@ class Display(object):
         }
         self.best_score = best_score
 
-    def __return_lines(self, univ):
+    def __return_lines(self, univ: Universe) -> _Lines:
         self.text["status_pits"] = "Pits remaining: %d" % univ.pits_remaining
         self.text["status_moves"] = "Moves used: %d" % univ.moves_taken
         self.text["status_boulders"] = "Boulders remaining: %d" % len(univ.boulders)
@@ -154,6 +160,7 @@ class Display(object):
             else:
                 self.text["compared_to_best_score"] = ""
 
+        lines: _Lines
         if not univ.game_won:
             lines = {
                 "top": [
@@ -194,7 +201,7 @@ class Display(object):
             }
         return lines
 
-    def __set_scroll_line(self, scroll_info):
+    def __set_scroll_line(self, scroll_info: _Scroll) -> None:
         scroll_info_line = "Scroll: "
         for direction in ("UP", "DOWN", "LEFT", "RIGHT"):
             if scroll_info[direction]:
@@ -205,7 +212,7 @@ class Display(object):
             scroll_info_line = scroll_info_line[:-2]
         self.text["scroll_info_line"] = scroll_info_line
 
-    def __paint_line(self, row, line):
+    def __paint_line(self, row: int, line: str) -> None:
         t_min_x = self.coords.mid_x - (len(line) // 2)
         for i, char in enumerate(line):
             if line == self.text["instructions2"] and char == self.level_sym["player"]:
@@ -213,7 +220,7 @@ class Display(object):
             else:
                 self.scrn.addch(row, t_min_x + i, char)
 
-    def __paint_text_lines(self, lines):
+    def __paint_text_lines(self, lines: _Lines) -> None:
         for line_number, line in enumerate(lines["top"]):
             self.__paint_line(self.coords.min_y + line_number, line)
         for line_number, line in enumerate(lines["bottom"]):
@@ -222,7 +229,7 @@ class Display(object):
                 line,
             )
 
-    def __paint_levelpad(self, univ):
+    def __paint_levelpad(self, univ: Universe) -> None:
         for row_index, row in enumerate(univ.level_map):
             for col_index, square in enumerate(row):
                 self.levelpad.addch(row_index, col_index, square)
@@ -236,7 +243,7 @@ class Display(object):
             b_y, b_x, b_sym = boulder.curr_y, boulder.curr_x, boulder.symbol
             self.levelpad.addch(b_y, b_x, b_sym)
 
-    def draw(self, univ):
+    def draw(self, univ: Universe) -> None:
         self.scrn.clear()
         lines = self.__return_lines(univ)
         self.coords = _Coordinates(self.scrn, lines, univ)
@@ -250,10 +257,10 @@ class Display(object):
         curses.doupdate()
         curses.curs_set(0)
 
-    def level_prompt(self, level_names, level_file_name):
+    def level_prompt(self, level_names: Sequence[str], level_file_name: str) -> str:
         """Prompt the user for the level to play from the available choices."""
 
-        def __draw_names():
+        def __draw_names() -> int:
             """Paint all text for prompting other than the prompt line."""
             # Two header lines + blank + level list + blank + prompt
             min_height = 2 + 1 + len(level_names) + 1 + 1
@@ -297,8 +304,11 @@ class Display(object):
             # prompted for raw_choice. Various workarounds such as using getch
             # rather than getstr or redrawing the screen if curses.KEY_RESIZE
             # is found in raw_choice have not fixed everything.
-            raw_choice = self.scrn.getstr().decode("utf-8")
-            raw_choice = ("".join(raw_choice)).strip()
+            raw_choice_unknown = self.scrn.getstr()
+            if isinstance(raw_choice_unknown, bytes):
+                raw_choice = raw_choice_unknown.decode("utf-8").strip()
+            else:
+                raise Exception("unknown value from getstr")
             curses.curs_set(0)
             curses.noecho()
             if raw_choice == const.QUIT:
@@ -313,9 +323,9 @@ class Display(object):
                 prompt = invalid_input_prompt
         choice -= 1
         chosen_level_name = level_names[choice]
-        return chosen_level_name
+        return chosen_level_name.rstrip()
 
-    def get_action(self):
+    def get_action(self) -> Action:
         k = self.scrn.getch()
         if k == curses.KEY_RESIZE:
             self.scrn.clear()

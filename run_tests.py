@@ -4,10 +4,8 @@ import argparse
 import curses
 import os
 import unittest
-from test.test_levelloader import TestLevelLoader
-from test.test_scoretracker import TestScoreTracker
 
-import src
+from src import constants as const
 from src.main import main
 
 TEST_DIR = "test"
@@ -31,7 +29,7 @@ if __name__ == "__main__":
         input(
             "Unit tests complete, press <ENTER> to run manual tests. (Pressing "
             "'{const_quit}' will move you to the next test level.) ".format(
-                const_quit=src.constants.QUIT,
+                const_quit=const.QUIT,
             )
         )
         for test_level in TEST_LEVELS:

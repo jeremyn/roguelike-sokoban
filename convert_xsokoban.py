@@ -69,9 +69,9 @@ levels/xsokoban<x>-<y>.yml from the root repository directory.
 import argparse
 import copy
 import os
-from functools import reduce
 
 from src.constants import DEFAULT_LEVEL_DIR, LevelFileConsts
+from src.levelloader import LevelsStr
 
 # Standard format
 
@@ -96,8 +96,10 @@ RL_FLOOR = "."
 
 TEMP_FLOOR = "F"
 
+_Level = list[list[str]]
 
-def rewrite_floor(level):
+
+def rewrite_floor(level: _Level) -> None:
     """Do first pass for floors.
 
     Go through level and figure out which blanks are floor and which are
@@ -144,7 +146,7 @@ def rewrite_floor(level):
                     level[row_num][col_num] = TEMP_FLOOR
 
 
-def is_sideways_wall(level, i, j):
+def is_sideways_wall(level: _Level, i: int, j: int) -> bool:
     """Return True if wall level[i][j] should be written with a "-", False
     otherwise.
 
@@ -179,7 +181,7 @@ def is_sideways_wall(level, i, j):
     return False
 
 
-def rewrite_walls(level):
+def rewrite_walls(level: _Level) -> None:
     """Rewrite walls.
 
     Go through level and rewrite each wall from "#" to either "-" or "|"
@@ -196,7 +198,7 @@ def rewrite_walls(level):
                     level[row_num][col_num] = RL_VERT_WALL
 
 
-def rewrite_final(level):
+def rewrite_final(level: _Level) -> None:
     """Finish rewriting.
 
     Go through level and finish rewriting, including rewriting TEMP_FLOOR to
@@ -216,7 +218,7 @@ def rewrite_final(level):
                 level[row_num][col_num] = RL_FLOOR
 
 
-def convert_one_level(filename):
+def convert_one_level(filename: str) -> tuple[str, _Level]:
     """Convert the XSokoban level in "filename" to Roguelike Sokoban-style.
 
     Convert the XSokoban level in "filename" to a list of strings that
@@ -228,29 +230,28 @@ def convert_one_level(filename):
         level_file = open(filename)
     except NameError:
         raise NameError("could not open '%s'." % filename)
-    level = level_file.readlines()
+    orig_level = level_file.readlines()
     level_file.close()
-    max_line_length = reduce(max, [len(line) - 1 for line in level])
+    max_line_length = max([len(line) - 1 for line in orig_level])
     # Pad each line with spaces to the end of the longest line.
-    orig_level = copy.deepcopy(level)
-    for line_num, line in enumerate(orig_level):
-        line = list(line)
+    level: _Level = []
+    for orig_line in orig_level:
+        line = list(orig_line)
         line.pop()  # Remove trailing '\n'
         while len(line) < max_line_length:
             line.append(" ")
-        level[line_num] = line
+        level.append(line)
 
     rewrite_floor(level)
     rewrite_walls(level)
     rewrite_final(level)
 
     level_name = "XSokoban level %s" % filename.split(".")[1]
-    level.insert(0, level_name)
 
-    return level
+    return level_name, level
 
 
-def is_good_level(level):
+def is_good_level(level: _Level) -> bool:
     """Return True if level has only valid RL characters, False otherwise."""
     valid_char = [
         RL_HORIZ_WALL,
@@ -297,17 +298,17 @@ if __name__ == "__main__":
     for i in range(1, 10):
         start = i * 10 - 9
         end = i * 10
-        levels = []
+        levels: LevelsStr = []
         for j in range(start, end + 1):
-            level_lines = convert_one_level(
+            level_name, level_lines = convert_one_level(
                 os.path.join(args.input_dir, "screen.%d" % j),
             )
             if is_good_level(level_lines):
                 levels.append(
                     {
-                        "name": level_lines[0].strip(),
+                        "name": level_name.strip(),
                         "map": "\n".join(
-                            ["".join(line).rstrip() for line in level_lines[1:]]
+                            ["".join(line).rstrip() for line in level_lines]
                         )
                         + "\n",
                     }

@@ -46,9 +46,7 @@ class _Movable:
             self.symbol = self.level_sym[self._SYMBOL_LOOKUP]
         except KeyError as exc:
             raise RoguelikeSokobanError(
-                "Unexpected _SYMBOL_LOOKUP: '{lookup}'".format(
-                    lookup=self._SYMBOL_LOOKUP
-                )
+                f"Unexpected _SYMBOL_LOOKUP: '{self._SYMBOL_LOOKUP}'"
             ) from exc
 
     def _move(
@@ -69,7 +67,7 @@ class _Movable:
             target_y = self.curr_y
             target_x = self.curr_x + change
         else:
-            raise RoguelikeSokobanError("Unexpected direction: {dir}".format(dir=axis))
+            raise RoguelikeSokobanError(f"Unexpected direction: {axis}")
 
         if mode == _MoveMode.DO_MOVE:
             self.curr_y = target_y
@@ -82,7 +80,7 @@ class _Movable:
                     return boulder
             return univ.level_map[target_y][target_x]
 
-        raise RoguelikeSokobanError("Unexpected move mode: {mode}".format(mode=mode))
+        raise RoguelikeSokobanError(f"Unexpected move mode: {mode}")
 
 
 class _Boulder(_Movable):

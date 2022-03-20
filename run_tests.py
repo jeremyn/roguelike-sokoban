@@ -30,10 +30,8 @@ if __name__ == "__main__":
     print()
     if args.include_manual_tests:
         input(
-            "Unit tests complete, press <ENTER> to run manual tests. (Pressing "
-            "'{const_quit}' will move you to the next test level.) ".format(
-                const_quit=QUIT,
-            )
+            f"Unit tests complete, press <ENTER> to run manual tests. (Pressing '{QUIT}' will move "
+            "you to the next test level.) "
         )
         for test_level in TEST_LEVELS:
             try:

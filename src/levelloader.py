@@ -64,7 +64,7 @@ def _get_levels_from_file(level_filename: Path) -> tuple[Symbols, LevelsStr]:
                 if not levels[-1]["map"]:
                     levels[-1]["map"] = line
                 else:
-                    levels[-1]["map"] = "\n".join((levels[-1]["map"], line))
+                    levels[-1]["map"] = f"{levels[-1]['map']}\n{line}"
 
     return symbols, levels
 
@@ -73,28 +73,19 @@ def _validate_level_data(symbols: Symbols, levels: LevelsStr) -> None:
     """Validate level data."""
     for symbol_name, symbol_value in symbols.items():
         if len(symbol_value) < 1:
-            raise RoguelikeSokobanError(
-                "empty symbol: '{name}'".format(name=symbol_name)
-            )
+            raise RoguelikeSokobanError(f"empty symbol: '{symbol_name}'")
         if len(symbol_value) > 1:
             raise RoguelikeSokobanError(
-                "symbol too big: '{name}': '{value}'".format(
-                    name=symbol_name, value=symbol_value
-                )
+                f"symbol too big: '{symbol_name}': '{symbol_value}'"
             )
 
     for symbol_name in ("boulder", "floor", "pit", "player"):
         if symbol_name not in symbols:
-            raise RoguelikeSokobanError(
-                "missing symbol definition: '{name}'".format(name=symbol_name)
-            )
+            raise RoguelikeSokobanError(f"missing symbol definition: '{symbol_name}'")
 
     if len(set(symbols.values())) != len(symbols.values()):
-        raise RoguelikeSokobanError(
-            "duplicate symbols in: '{values}'".format(
-                values=", ".join("=".join((k, v)) for k, v in symbols.items())
-            )
-        )
+        values = ", ".join(f"{k}={v}" for k, v in symbols.items())
+        raise RoguelikeSokobanError(f"duplicate symbols in: '{values}'")
 
     level_names: list[str] = []
     for level in levels:
@@ -103,15 +94,13 @@ def _validate_level_data(symbols: Symbols, levels: LevelsStr) -> None:
 
         if not level["map"]:
             raise RoguelikeSokobanError(
-                "empty map for level: '{name}'".format(name=level["name"])
+                f"empty map for level: '{level['name']}'".format(name=level["name"])
             )
 
         lines = level["map"].split("\n")
         for line in lines:
             if not line:
-                raise RoguelikeSokobanError(
-                    "blank line in level: '{name}'".format(name=level["name"])
-                )
+                raise RoguelikeSokobanError(f"blank line in level: '{level['name']}'")
             for char in line:
                 if char == symbols["boulder"]:
                     level_counts["boulder"] += 1
@@ -122,22 +111,18 @@ def _validate_level_data(symbols: Symbols, levels: LevelsStr) -> None:
 
         if level_counts["player"] == 0:
             raise RoguelikeSokobanError(
-                "no player in level: '{name}'".format(name=level["name"])
+                f"no player in level: '{level['name']}'".format(name=level["name"])
             )
 
         if level_counts["player"] > 1:
-            raise RoguelikeSokobanError(
-                "multiple players in level: '{name}'".format(name=level["name"])
-            )
+            raise RoguelikeSokobanError(f"multiple players in level: '{level['name']}'")
 
         if level_counts["pit"] == 0:
-            raise RoguelikeSokobanError(
-                "no pits in level: '{name}'".format(name=level["name"])
-            )
+            raise RoguelikeSokobanError(f"no pits in level: '{level['name']}'")
 
         if level_counts["boulder"] < level_counts["pit"]:
             raise RoguelikeSokobanError(
-                "not enough boulders in level: '{name}'".format(name=level["name"])
+                f"not enough boulders in level: '{level['name']}'"
             )
 
 
@@ -173,9 +158,9 @@ class LevelLoader:
         min_height = 2 + 1 + len(self.levels) + 1 + 1
         if min_height > scrn.getmaxyx()[0]:
             raise RoguelikeSokobanError(TERMINAL_TOO_SMALL_TEXT)
-        welcome = "Welcome to {name}".format(name=GAME_NAME)
-        levels_found_header = "The following levels were found in {name}:".format(
-            name=self.level_filename
+        welcome = f"Welcome to {GAME_NAME}"
+        levels_found_header = (
+            f"The following levels were found in {self.level_filename}:"
         )
         scrn.clear()
         curses.endwin()
@@ -192,12 +177,11 @@ class LevelLoader:
         """Prompt the user for the level to play from the available choices."""
 
         first_prompt = (
-            "Enter the number of the level you want to play, or '{quit}' to "
-            "quit: ".format(quit=QUIT)
+            f"Enter the number of the level you want to play, or '{QUIT}' to quit: "
         )
         invalid_input_prompt = (
-            "Invalid choice, please enter the number of an available level, or "
-            "'{quit}' to quit: ".format(quit=QUIT)
+            f"Invalid choice, please enter the number of an available level, or '{QUIT}' to "
+            "quit: "
         )
 
         level_names = list(self.levels.keys())

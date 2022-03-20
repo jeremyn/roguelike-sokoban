@@ -233,7 +233,7 @@ def convert_one_level(filename: Path) -> tuple[str, _Level]:
     rewrite_final(level)
 
     # [1:] skips the leading '.'
-    level_name = "XSokoban level {level}".format(level=filename.suffix[1:])
+    level_name = f"XSokoban level {filename.suffix[1:]}"
 
     return level_name, level
 
@@ -278,23 +278,12 @@ def main(args: argparse.Namespace) -> None:
     input_dir: Path = args.input_dir
     max_level: int = args.max_level
     output_dir: Path = args.output_dir if args.output_dir else input_dir
-
-    constants = {
-        "boulder": RL_BOULDER,
-        "floor": RL_FLOOR,
-        "pit": RL_PIT,
-        "player": RL_PLAYER,
-        "delimiter": LevelFileConsts.DELIMITER + " ",
-        "maps_start": LevelFileConsts.MAPS_START,
-        "name_prefix": LevelFileConsts.NAME_PREFIX,
-    }
+    delimiter = LevelFileConsts.DELIMITER + " "
 
     for start, end in get_level_groups(max_level):
         levels: LevelsStr = []
         for j in range(start, end + 1):
-            level_name, level_lines = convert_one_level(
-                input_dir / "screen.{num}".format(num=j)
-            )
+            level_name, level_lines = convert_one_level(input_dir / f"screen.{j}")
             if is_good_level(level_lines):
                 levels.append(
                     {
@@ -306,27 +295,20 @@ def main(args: argparse.Namespace) -> None:
                     }
                 )
 
-        output_filename = output_dir / "xsokoban{start}-{end}.txt".format(
-            start=start, end=end
-        )
+        output_filename = output_dir / f"xsokoban{start}-{end}.txt"
         with output_filename.open(mode="w", encoding=UTF_8) as file:
             file.writelines(
                 (
-                    "boulder{delimiter}{boulder}\n".format(**constants),
-                    "floor{delimiter}{floor}\n".format(**constants),
-                    "pit{delimiter}{pit}\n".format(**constants),
-                    "player{delimiter}{player}\n".format(**constants),
-                    "{maps_start}\n".format(**constants),
+                    f"boulder{delimiter}{RL_BOULDER}\n",
+                    f"floor{delimiter}{RL_FLOOR}\n",
+                    f"pit{delimiter}{RL_PIT}\n",
+                    f"player{delimiter}{RL_PLAYER}\n",
+                    f"{LevelFileConsts.MAPS_START}\n",
                 )
             )
             for level in levels:
                 data = [
-                    (
-                        constants["name_prefix"]
-                        + constants["delimiter"]
-                        + level["name"]
-                        + "\n"
-                    ),
+                    f"{LevelFileConsts.NAME_PREFIX}{delimiter}{level['name']}\n",
                     level["map"],
                 ]
                 file.writelines(data)

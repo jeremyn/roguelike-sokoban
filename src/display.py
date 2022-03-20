@@ -117,65 +117,45 @@ class Display:
             "game_name": GAME_NAME,
             "bug_line": "",
             "instructions1": (
-                "Use the arrow keys to move around, '{quit}' to quit, and '{play_again}' to "
-                "restart this level.".format(quit=QUIT, play_again=PLAY_AGAIN)
+                f"Use the arrow keys to move around, '{QUIT}' to quit, and '{PLAY_AGAIN}' to "
+                "restart this level."
             ),
             "instructions2": (
-                "Move yourself ({player}) over floor ({floor}) into boulders ({boulder}) to "
-                "push them into pits ({pit}).".format(
-                    player=self.level_sym["player"],
-                    floor=self.level_sym["floor"],
-                    boulder=self.level_sym["boulder"],
-                    pit=self.level_sym["pit"],
-                )
+                f"Move yourself ({self.level_sym['player']}) over floor "
+                f"({self.level_sym['floor']}) into boulders ({self.level_sym['boulder']}) to push "
+                f"them into pits ({self.level_sym['pit']})."
             ),
-            "level_name": "Level: {level}".format(level=univ.level_name),
+            "level_name": f"Level: {univ.level_name}",
             "blank": "      ",
             # scroll_info_line here is just a max sized placeholder.
             # scroll_info_line is set in __set_scroll_line(...).
             "scroll_info_line": "Scroll: UP, DOWN, LEFT, RIGHT",
             "goal": "Fill every pit to solve the puzzle.",
-            "play_again_prompt": "-- Press '{play_again}' to play again --".format(
-                play_again=PLAY_AGAIN
-            ),
-            "quit_prompt": "-- Press '{quit}' to quit --".format(quit=QUIT),
+            "play_again_prompt": f"-- Press '{PLAY_AGAIN}' to play again --",
+            "quit_prompt": f"-- Press '{QUIT}' to quit --",
         }
         self.best_score = best_score
 
     def _return_lines(self, univ: Universe) -> _Lines:
         """Set some internal values and return lines to print to screen."""
-        self.text["status_pits"] = "Pits remaining: {pit_num}".format(
-            pit_num=univ.pits_remaining
-        )
-        self.text["status_moves"] = "Moves used: {move_num}".format(
-            move_num=univ.moves_taken
-        )
-        self.text["status_boulders"] = "Boulders remaining: {boulder_num}".format(
-            boulder_num=len(univ.boulders)
-        )
-        self.text[
-            "congratulations"
-        ] = "You solved the puzzle in {move_num} move{s}! Congratulations! ".format(
-            move_num=univ.moves_taken,
-            s="s" if univ.moves_taken > 1 else "",
+        self.text["status_pits"] = f"Pits remaining: {univ.pits_remaining}"
+        self.text["status_moves"] = f"Moves used: {univ.moves_taken}"
+        self.text["status_boulders"] = f"Boulders remaining: {len(univ.boulders)}"
+        self.text["congratulations"] = (
+            f"You solved the puzzle in {univ.moves_taken} "
+            f"move{'s' if univ.moves_taken > 1 else ''}! Congratulations! "
         )
         if self.best_score is None:
             self.text["best_score"] = "No current best score"
             self.text[
                 "compared_to_best_score"
-            ] = "You set the first best score of {move_num} moves!".format(
-                move_num=univ.moves_taken
-            )
+            ] = f"You set the first best score of {univ.moves_taken} moves!"
         else:
-            self.text["best_score"] = "Current best score: {score}".format(
-                score=self.best_score
-            )
+            self.text["best_score"] = f"Current best score: {self.best_score}"
             if univ.moves_taken < self.best_score:
                 self.text[
                     "compared_to_best_score"
-                ] = "You beat the current best score of {move_num} moves!".format(
-                    move_num=self.best_score
-                )
+                ] = f"You beat the current best score of {self.best_score} moves!"
             else:
                 self.text["compared_to_best_score"] = ""
 

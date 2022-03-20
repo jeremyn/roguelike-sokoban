@@ -9,9 +9,10 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from convert_xsokoban import get_level_groups, get_parser, main
+from src.util import TEST_DIR
 
 CONVERTED_LEVELS_DIR = Path("levels")
-SRC_LEVELS_DIR = Path("test") / "xsokoban_src"
+SRC_LEVELS_DIR = TEST_DIR / "xsokoban_src"
 
 CONVERTED_FILENAME_STR = "xsokoban1-10.txt"
 

@@ -20,6 +20,9 @@ TERMINAL_TOO_SMALL_TEXT = (
     "least 80x24 and try again."
 )
 
+TEST_DIR = Path("tests")
+TEST_LEVELS_DIR = TEST_DIR / "test_levels"
+
 UTF_8 = "utf-8"
 
 

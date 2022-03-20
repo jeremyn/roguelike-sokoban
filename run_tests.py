@@ -6,13 +6,10 @@ Released under the GPLv3. See included LICENSE file.
 import argparse
 import curses
 import unittest
-from pathlib import Path
 
 from src.main import main
-from src.util import QUIT
+from src.util import QUIT, TEST_DIR, TEST_LEVELS_DIR
 
-TEST_DIR = Path("test")
-TEST_LEVELS_DIR = TEST_DIR / "test_levels"
 TEST_LEVELS = (
     TEST_LEVELS_DIR / "simple_level.txt",
     TEST_LEVELS_DIR / "different_symbols.txt",

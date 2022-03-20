@@ -4,12 +4,9 @@ Released under the GPLv3. See included LICENSE file.
 
 """
 import unittest
-from pathlib import Path
 
 from src.levelloader import LevelLoader
-from src.util import RoguelikeSokobanError
-
-TEST_LEVELS_DIR = Path("test") / "test_levels"
+from src.util import TEST_LEVELS_DIR, RoguelikeSokobanError
 
 
 class TestLevelLoader(unittest.TestCase):

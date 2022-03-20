@@ -6,6 +6,7 @@ Released under the GPLv3. See included LICENSE file.
 import filecmp
 import json
 from pathlib import Path
+import shutil
 from tempfile import TemporaryDirectory
 from typing import Optional
 
@@ -75,4 +76,4 @@ class Scores:
                     except FileNotFoundError:
                         pass
                     if not files_match:
-                        temp_filename.rename(self._scores_filename)
+                        shutil.move(temp_filename, self._scores_filename)

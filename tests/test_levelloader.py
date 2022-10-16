@@ -1,6 +1,6 @@
 """
-Copyright 2021, Jeremy Nation <jeremy@jeremynation.me>
-Released under the GPLv3. See included LICENSE file.
+Copyright Jeremy Nation <jeremy@jeremynation.me>.
+Licensed under the GNU General Public License (GPL) v3.
 
 """
 import unittest

@@ -1,6 +1,6 @@
 # Roguelike Sokoban
 
-By: [Jeremy Nation](mailto:jeremy@jeremynation.me)
+By: [Jeremy Nation](mailto:jeremy@jeremynation.me).
 
 ## Description
 
@@ -36,4 +36,6 @@ By default, this will just run unit tests, but you can also play test levels by 
 
 ## License
 
-GPLv3 or later (see included `LICENSE` file).
+Copyright [Jeremy Nation](mailto:jeremy@jeremynation.me).
+
+Licensed under the GNU General Public License (GPL) v3. See the included [`LICENSE`](LICENSE) file for the full license text.
